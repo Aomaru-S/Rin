@@ -11,7 +11,6 @@ class EmployeeController (
     @Autowired
     val employeeRepository: EmployeeRepository
 ) {
-
     @GetMapping("/employeeList1")
     fun employeeList(): MutableList<Employee> {
         return employeeRepository.findAll()
