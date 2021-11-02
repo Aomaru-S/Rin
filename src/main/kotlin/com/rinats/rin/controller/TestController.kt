@@ -17,7 +17,12 @@ class TestController(
 ) {
 
     @GetMapping("/")
-    fun index(): MutableList<Role> {
+    fun index(): MutableList<Employee> {
+        return employeeRepository.findAll()
+    }
+
+    @GetMapping("/2")
+    fun index2(): MutableList<Role> {
         return roleRepository.findAll()
     }
 }

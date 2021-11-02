@@ -19,5 +19,8 @@ data class Employee(
     val isAndroid: Boolean,
     @ManyToOne
     @JoinColumn(name = "role_id")
-    val role: Role
+    val role: Role,
+    @OneToOne(cascade= [CascadeType.ALL], fetch=FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    val password: Password
 )
