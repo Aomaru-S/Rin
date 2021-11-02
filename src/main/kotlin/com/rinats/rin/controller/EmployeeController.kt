@@ -12,7 +12,7 @@ class EmployeeController (
     val employeeRepository: EmployeeRepository
 ) {
 
-    @GetMapping("/employeeList")
+    @GetMapping("/employeeLis")
     fun employeeList(): MutableList<Employee> {
         return employeeRepository.findAll()
     }
