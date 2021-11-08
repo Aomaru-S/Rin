@@ -1,15 +1,17 @@
 package com.rinats.rin.model
 
+import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "employee_level")
-data class EmployeeLevel(
+@Table(name = "tentative_shift")
+data class TentativeShift(
+    @Id
+    val date: Date,
     @Id
     @Column(name = "employee_id")
     val employeeId: String,
-    val level: Int
 )
