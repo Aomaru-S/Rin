@@ -1,5 +1,6 @@
 package com.rinats.rin.model
 
+import java.io.Serializable
 import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -19,4 +20,4 @@ data class StartWorkHistory(
     val changeCount: Int,
     @Column(name = "edit_employee_id")
     val editEmployeeId: String,
-)
+) : Serializable

@@ -1,5 +1,6 @@
 package com.rinats.rin.model
 
+import java.io.Serializable
 import java.sql.Time
 import java.util.*
 import javax.persistence.Column
@@ -16,4 +17,4 @@ data class StartWork(
     @Id
     val date: Date,
     val time: Time
-)
+) : Serializable

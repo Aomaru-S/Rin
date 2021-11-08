@@ -1,5 +1,6 @@
 package com.rinats.rin.model
 
+import java.io.Serializable
 import java.sql.Time
 import java.util.*
 import javax.persistence.Column
@@ -8,8 +9,8 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "work_end")
-data class EndWork(
+@Table(name = "end_work")
+data class EndWork (
     @Id
     @Column(name = "employee_id")
     val employeeId: String,
@@ -19,4 +20,4 @@ data class EndWork(
     @Id
     @Column(name = "time")
     val time: Time
-)
+) : Serializable
