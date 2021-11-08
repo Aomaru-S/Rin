@@ -17,10 +17,6 @@ data class Employee(
     val birthday: Date,
     @Column(name = "is_android_notification")
     val isAndroid: Boolean,
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    val role: Role,
-    @OneToOne(cascade= [CascadeType.ALL], fetch=FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
-    val password: Password
+    @Column(name = "role_id")
+    val roleId: String
 )
