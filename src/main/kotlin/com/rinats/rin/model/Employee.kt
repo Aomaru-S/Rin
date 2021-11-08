@@ -4,7 +4,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "Employee")
+@Table(name = "employee")
 data class Employee(
     @Id
     @Column(name = "employee_id")
