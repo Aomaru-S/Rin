@@ -1,15 +1,19 @@
 package com.rinats.rin.model
 
+import java.sql.Time
+import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "employee_level")
-data class EmployeeLevel(
+@Table(name = "start_work")
+data class StartWork(
     @Id
     @Column(name = "employee_id")
-    val employeeId: String,
-    val level: Int
+    val employee: String,
+    @Id
+    val date: Date,
+    val time: Time
 )

@@ -6,11 +6,10 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "role")
-data class Role (
+@Table(name = "table")
+data class Table (
     @Id
-    @Column(name = "role_id")
-    val roleId: String,
-    @Column(name = "role_name")
-    val roleName: String,
+    val name: String,
+    @Column(name = "num_of_people")
+    val numOfPeople: String
 )
