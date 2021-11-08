@@ -8,7 +8,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "work_end_history")
-data class WorkEndHistory(
+data class EndWorkHistory(
     @Id
     @Column(name = "employee_id")
     val employeeId: String,

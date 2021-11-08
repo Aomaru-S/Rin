@@ -9,7 +9,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "work_end")
-data class WorkEnd(
+data class EndWork(
     @Id
     @Column(name = "employee_id")
     val employeeId: String,
