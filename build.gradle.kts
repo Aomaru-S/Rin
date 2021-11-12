@@ -28,6 +28,7 @@ dependencies {
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0")
     implementation("org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.3.0")
     runtimeOnly("mysql:mysql-connector-java:8.0.25")
+    implementation ("commons-codec:commons-codec:1.15")
     testImplementation("org.springframework.boot:spring-boot-starter-test:2.5.6")
     testImplementation("org.springframework.security:spring-security-test:5.5.1")
     mybatisGenerator("org.mybatis.generator:mybatis-generator-core:1.4.0")
