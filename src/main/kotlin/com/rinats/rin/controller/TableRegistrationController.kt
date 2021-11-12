@@ -14,7 +14,7 @@ class TableRegistrationController(
     @Autowired
     val tableRegistrationService: TableRegistrationService
 ) {
-    @GetMapping("/table")
+    @GetMapping("/tableRegistration")
     fun tableRegistration(
         @Validated
         @ModelAttribute
