@@ -1,14 +1,14 @@
 package com.rinats.rin.model
 
+import com.rinats.rin.model.compositeKey.ShiftKey
 import java.io.Serializable
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
 @Table(name = "shift")
+@IdClass(value = ShiftKey::class)
 data class Shift(
     @Id
     val date: Date,

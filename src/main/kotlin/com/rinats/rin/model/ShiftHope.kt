@@ -1,14 +1,14 @@
 package com.rinats.rin.model
 
+import com.rinats.rin.model.compositeKey.ShiftHopeKey
 import java.io.Serializable
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
 @Table(name = "shift_hope")
+@IdClass(value = ShiftHopeKey::class)
 data class ShiftHope(
     @Id
     val date: Date,

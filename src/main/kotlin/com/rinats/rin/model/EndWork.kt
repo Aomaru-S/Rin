@@ -1,15 +1,16 @@
 package com.rinats.rin.model
 
+import com.rinats.rin.model.compositeKey.EndWorkKey
+
 import java.io.Serializable
 import java.sql.Time
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
 @Table(name = "end_work")
+@IdClass(value = EndWorkKey::class)
 data class EndWork (
     @Id
     @Column(name = "employee_id")
