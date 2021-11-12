@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 class TestRestController {
-    @GetMapping("/returnEmployee")
+    @GetMapping("/returnEmployee2")
     fun returnEmployee(request: HttpServletRequest): Employee {
         return request.getAttribute("employee") as Employee
     }
