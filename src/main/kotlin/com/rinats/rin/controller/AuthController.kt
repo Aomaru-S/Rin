@@ -21,7 +21,7 @@ class AuthController(
         @ModelAttribute
         authForm: AuthForm,
         validationResult: BindingResult
-    ): UUID? {
+    ): String? {
         val accessToken = authService.loginWithGetAccessToken(authForm.employeeId ?: "", authForm.password ?: "")
         if (validationResult.hasErrors() || accessToken == null) {
             return null

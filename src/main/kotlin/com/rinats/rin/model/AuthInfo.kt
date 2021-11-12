@@ -7,8 +7,8 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "password")
-data class Password(
+@Table(name = "auth_info")
+data class AuthInfo(
     @Id
     @Column(name = "employee_id")
     val employeeId: String,
@@ -17,6 +17,6 @@ data class Password(
     @Column(name = "is_lockout")
     val isLockout: Boolean,
     @Column(name = "access_token")
-    val accessToken: String,
-    val expire: Date
+    var accessToken: String,
+    var expire: Date
 )
