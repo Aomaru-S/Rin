@@ -1,5 +1,6 @@
 package com.rinats.rin.controller
 
+import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.Employee
 import com.rinats.rin.model.Role
 import com.rinats.rin.model.form.AuthForm
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @Controller
 class TestController {
-
+    @NonAuth
     @GetMapping("/form")
     fun form(model: Model): String {
         model.addAttribute("authForm", AuthForm())
