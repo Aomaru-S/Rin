@@ -1,8 +1,7 @@
 package com.rinats.rin.controller
 
-import com.rinats.rin.dao.AuthDAO
 import com.rinats.rin.model.form.AuthForm
-import com.rinats.rin.repository.PasswordRepository
+import com.rinats.rin.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
@@ -14,7 +13,7 @@ import java.util.*
 @RestController
 class AuthController(
     @Autowired
-    val passwordRepository: PasswordRepository
+    val authService: AuthService
 ) {
     @PostMapping("/login")
     fun login(
@@ -23,11 +22,10 @@ class AuthController(
         authForm: AuthForm,
         validationResult: BindingResult
     ): UUID? {
-        val authDao = AuthDAO(passwordRepository)
-        val result = authDao.login(authForm.userId ?: "", authForm.password ?: "")
-        if (validationResult.hasErrors() || !result) {
+        val accessToken = authService.loginWithGetAccessToken(authForm.employeeId ?: "", authForm.password ?: "")
+        if (validationResult.hasErrors() || accessToken == null) {
             return null
         }
-        return UUID.randomUUID()
+        return accessToken
     }
 }

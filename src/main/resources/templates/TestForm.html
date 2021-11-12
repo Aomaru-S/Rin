@@ -6,7 +6,7 @@
 </head>
 <body>
 <form action="#" th:action="@{/login}" method="post" th:object="${authForm}">
-    <input type="text" th:field="*{userId}" placeholder="UserID">
+    <input type="text" th:field="*{employeeId}" placeholder="UserID">
     <input type="text" th:field="*{password}" placeholder="Password">
     <input type="submit" value="Login">
 </form>
