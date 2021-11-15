@@ -1,5 +1,6 @@
 package com.rinats.rin.controller
 
+import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.Table
 import com.rinats.rin.service.TableCheckService
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +12,8 @@ class TableCheckController(
     @Autowired
     val tableCheckService: TableCheckService
 ) {
-    @GetMapping("/tableCheck")
+    @NonAuth
+    @GetMapping("/table_check")
     fun tableCheck(): List<Table> {
         return tableCheckService.getTable()
     }
