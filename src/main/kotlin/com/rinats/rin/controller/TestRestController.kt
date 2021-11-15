@@ -26,7 +26,6 @@ class TestRestController {
         return "Hello, World! This is public page."
     }
 
-    @PartTimeJob
     @GetMapping("/private")
     fun private(): String {
         return "Hello, World! This is private page."

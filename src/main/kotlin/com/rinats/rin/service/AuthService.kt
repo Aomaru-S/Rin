@@ -30,4 +30,8 @@ class AuthService(
         authInfoRepository.save(authInfo)
         return accessToken
     }
+
+    fun logout(accessToken: String) {
+
+    }
 }

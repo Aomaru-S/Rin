@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -31,5 +32,13 @@ class AuthController(
         }
         println("false")
         return accessToken
+    }
+
+    @PostMapping("logout")
+    fun logout(
+        @RequestParam("access_token")
+        accessToken: String
+    ) {
+        authService.logout(accessToken)
     }
 }
