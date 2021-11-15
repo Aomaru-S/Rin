@@ -31,7 +31,16 @@ class AuthService(
         return accessToken
     }
 
-    fun logout(accessToken: String) {
+    fun checkAccessToken(accessToken: String): Boolean {
+        if (authInfoRepository.existsByAccessToken(accessToken)) {
+            return authInfoRepository.findByAccessToken(accessToken).get().expire >= Date()
+        }
+        return false
+    }
 
+    fun logout(accessToken: String) {
+        val authInfo = authInfoRepository.findByAccessToken(accessToken).get()
+        authInfo.expire.time = 0
+        authInfoRepository.save(authInfo)
     }
 }

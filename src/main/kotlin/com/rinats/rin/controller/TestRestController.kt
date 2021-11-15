@@ -1,12 +1,10 @@
 package com.rinats.rin.controller
 
 import com.rinats.rin.annotation.NonAuth
-import com.rinats.rin.annotation.PartTimeJob
-import com.rinats.rin.annotation.StoreManager
 import com.rinats.rin.model.Employee
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -21,12 +19,12 @@ class TestRestController {
     }
 
     @NonAuth
-    @GetMapping("/")
+    @PostMapping("/public")
     fun index(): String {
         return "Hello, World! This is public page."
     }
 
-    @GetMapping("/private")
+    @PostMapping("/private")
     fun private(): String {
         return "Hello, World! This is private page."
     }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @Controller
 class TestController {
     @NonAuth
-    @GetMapping("/form")
+    @GetMapping("/")
     fun form(model: Model): String {
         model.addAttribute("authForm", AuthForm())
         return "TestForm"
