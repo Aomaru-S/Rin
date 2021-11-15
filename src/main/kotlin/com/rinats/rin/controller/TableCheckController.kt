@@ -11,7 +11,7 @@ class TableCheckController(
     @Autowired
     val tableCheckService: TableCheckService
 ) {
-    @GetMapping("/tableCheck")
+    @GetMapping("/table_check")
     fun tableCheck(): List<Table> {
         return tableCheckService.getTable()
     }
