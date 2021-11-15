@@ -20,11 +20,7 @@ class TableRegistrationController(
         @ModelAttribute
         tableRegistrationForm: TableRegistrationForm,
         validationResult: BindingResult
-    ): String {
-        val flag = tableRegistrationService.tableRegistration(tableRegistrationForm.name ?: "", tableRegistrationForm.numOfPeople)
-        if (flag || !(validationResult.hasErrors())) {
-            return "true"
-        }
-        return "false"
+    ) {
+        tableRegistrationService.tableRegistration(tableRegistrationForm.name ?: "", tableRegistrationForm.numOfPeople ?: 0)
     }
 }
