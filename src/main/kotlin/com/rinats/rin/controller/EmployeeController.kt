@@ -1,18 +1,23 @@
 package com.rinats.rin.controller
 
-import com.rinats.rin.model.Employee
-import com.rinats.rin.repository.EmployeeRepository
+import com.rinats.rin.model.form.AddEmployeeForm
+import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class EmployeeController (
+class EmployeeController(
     @Autowired
-    val employeeRepository: EmployeeRepository
+    val employeeService: EmployeeService
 ) {
-    @GetMapping("/employeeList")
-    fun employeeList(): MutableList<Employee> {
-        return employeeRepository.findAll()
+
+    @PostMapping("/add_employee")
+    fun addEmployee(@ModelAttribute @Validated addEmployeeForm: AddEmployeeForm, bindResult: BindingResult): String {
+        employeeService.addEmployee(addEmployeeForm)
+        return "Hello"
     }
 }

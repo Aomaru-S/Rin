@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 import javax.servlet.http.HttpServletRequest
+import kotlin.collections.HashMap
 
 @RestController
 class TestRestController {
@@ -20,12 +21,12 @@ class TestRestController {
 
     @NonAuth
     @PostMapping("/public")
-    fun index(): String {
-        return "Hello, World! This is public page."
+    fun index(): Map<String, String> {
+        return HashMap(hashMapOf("text" to "Hello, World! This is public page."))
     }
 
     @PostMapping("/private")
-    fun private(): String {
-        return "Hello, World! This is private page."
+    fun private(): Map<String, String> {
+        return HashMap(hashMapOf("text" to "Hello, World! This is private page."))
     }
 }

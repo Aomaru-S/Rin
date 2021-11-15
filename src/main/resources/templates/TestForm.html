@@ -25,5 +25,14 @@
     <input type="text" name="access_token" placeholder="AccessToken">
     <input type="submit" value="Logout">
 </form>
+<form action="#" th:action="@{/add_employee}" method="post" th:object="${addEmployeeForm}">
+    <input type="text" th:field="*{firstName}" placeholder="FirstName">
+    <input type="text" th:field="*{lastName}" placeholder="LastName">
+    <input type="text" th:field="*{gender}" placeholder="Gender">
+    <input type="date" th:field="*{birthday}" placeholder="Date">
+    <input type="text" th:field="*{mailAddress}" placeholder="MailAddress">
+    <input type="text" name="access_token" placeholder="AccessToken">
+    <input type="submit" value="ShowEmployee">
+</form>
 </body>
 </html>
