@@ -63,7 +63,7 @@ class AuthInterceptor(
     }
 
     private fun checkAuthResource(method: Method): Boolean {
-        return AnnotationUtils.findAnnotation(method, NonAuth::class.java) == null
+        return AnnotationUtils.findAnnotation(method, NonAuth::class.java) != null
     }
 
     private fun checkAccessToken(accessToken: String?): Boolean {
