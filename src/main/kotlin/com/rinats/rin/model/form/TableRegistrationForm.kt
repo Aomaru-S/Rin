@@ -9,5 +9,5 @@ data class TableRegistrationForm(
     var name: String? = null,
     @Min(1)
     @Max(100)
-    var numOfPeople: Int
+    var numOfPeople: Int? = null
 )
