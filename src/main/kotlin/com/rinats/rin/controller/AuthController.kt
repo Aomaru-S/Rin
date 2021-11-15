@@ -33,8 +33,8 @@ class AuthController(
     fun checkAccessToken(
         @RequestParam("access_token")
         accessToken: String
-    ): Boolean {
-        return authService.checkAccessToken(accessToken)
+    ): HashMap<String, Boolean> {
+        return hashMapOf("is_valid" to authService.checkAccessToken(accessToken))
     }
 
     @PostMapping("logout")

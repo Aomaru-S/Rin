@@ -12,12 +12,6 @@ import kotlin.collections.HashMap
 
 @RestController
 class TestRestController {
-    @GetMapping("/returnEmployee")
-    fun returnEmployee(request: HttpServletRequest, @ModelAttribute employee: Employee): Employee {
-        val oEmployee = request.getAttribute("employee") as Optional<*>
-        println(employee)
-        return oEmployee.get() as Employee
-    }
 
     @NonAuth
     @PostMapping("/public")
