@@ -10,15 +10,15 @@ import javax.persistence.Table
 @Table(name = "tentative_employee")
 data class TentativeEmployee(
     @Id
-    val id: String? = null,
+    val id: Int?,
     @Column(name = "first_name")
-    val firstName: String,
+    val firstName: String?,
     @Column(name = "last_name")
-    val lastName: String,
-    val gender: Boolean,
-    val birthday: Date,
+    val lastName: String?,
+    val gender: Boolean?,
+    val birthday: Date?,
     @Column(name = "role_id")
     val roleId: String,
     @Column(name = "mail_address")
-    val mailAddress: String
+    val mailAddress: String?
 )
