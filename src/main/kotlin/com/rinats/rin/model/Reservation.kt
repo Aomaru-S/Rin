@@ -22,5 +22,5 @@ data class Reservation (
     @Column(name = "employee_id")
     val employeeId: String,
     @Column(name = "table_id")
-    val tableID: String
+    val tableId: String
 )

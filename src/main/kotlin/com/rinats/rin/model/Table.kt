@@ -6,10 +6,10 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "table")
+@Table(name = "`table`")
 data class Table (
     @Id
-    val name: String,
+    var name: String,
     @Column(name = "num_of_people")
-    val numOfPeople: String
+    var numOfPeople: Int
 )
