@@ -27,9 +27,7 @@ class AuthInterceptor(
     ): Boolean {
         val method = getMethod(handler) ?: return false
 
-        val isNonAuth = AnnotationUtils.findAnnotation(method, NonAuth::class.java) != null
-        if (isNonAuth) {
-            println("nonauth")
+        if (checkAuthResource(method)) {
             return true
         }
 
