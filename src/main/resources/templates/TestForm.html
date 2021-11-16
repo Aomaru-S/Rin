@@ -34,5 +34,14 @@
     <input type="text" name="access_token" placeholder="AccessToken">
     <input type="submit" value="ShowEmployee">
 </form>
+<form action="#" th:action="@{/get_employee}" method="post">
+    <input type="text" name="employeeId" placeholder="EmployeeId">
+    <input type="text" name="access_token" placeholder="AccessToken">
+    <input type="submit" value="GetEmployee">
+</form>
+<form action="#" th:action="@{/get_employee_list}" method="post">
+    <input type="text" name="access_token" placeholder="AccessToken">
+    <input type="submit" value="GetEmployeeList">
+</form>
 </body>
 </html>

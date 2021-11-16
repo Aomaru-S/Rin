@@ -6,9 +6,9 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "retirement")
+@Table(name = "employee_retirement")
 data class Retirement (
     @Id
-    val id: String,
+    val employee_id: String,
     val date: Date
 )

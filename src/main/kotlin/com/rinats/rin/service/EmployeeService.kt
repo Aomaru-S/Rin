@@ -1,8 +1,10 @@
 package com.rinats.rin.service
 
+import com.rinats.rin.model.Employee
 import com.rinats.rin.model.SequenceNumber
 import com.rinats.rin.model.TentativeEmployee
 import com.rinats.rin.model.form.AddEmployeeForm
+import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.SequenceNumberRepository
 import com.rinats.rin.repository.TentativeEmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +15,8 @@ import java.text.SimpleDateFormat
 class EmployeeService(
     @Autowired
     private val tentativeEmployeeRepository: TentativeEmployeeRepository,
-    private val sequenceNumberRepository: SequenceNumberRepository
+    private val sequenceNumberRepository: SequenceNumberRepository,
+    private val employeeRepository: EmployeeRepository
 ) {
     fun addEmployee(addEmployeeForm: AddEmployeeForm) {
         val employeeId = sequenceNumberRepository.findById("employee_id").get().nextNumber
@@ -32,5 +35,18 @@ class EmployeeService(
         val sequenceNumber = sequenceNumberRepository.findById("employee_id").get()
         sequenceNumber.nextNumber++
         sequenceNumberRepository.save(sequenceNumber)
+    }
+
+    fun getEmployee(employeeId: String): Employee? {
+        return employeeRepository.findById(employeeId).orElse(null)
+    }
+
+    fun getEmployeeList(): List<Employee> {
+        return employeeRepository.findAll()
+    }
+
+    fun retireEmployee(employeeId: String) {
+        val employee = employeeRepository.findById(employeeId).orElse(null) ?: return
+
     }
 }
