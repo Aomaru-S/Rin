@@ -20,10 +20,10 @@ class AuthController(
         @ModelAttribute
         authForm: AuthForm,
         validationResult: BindingResult
-    ): HashMap<String, String>? {
+    ): HashMap<String, String?> {
         val accessToken = authService.loginWithGetAccessToken(authForm.employeeId ?: "", authForm.password ?: "")
         if (validationResult.hasErrors() || accessToken == null) {
-            return null
+            return hashMapOf("access_token" to null)
         }
         return hashMapOf("access_token" to accessToken)
     }
@@ -37,7 +37,7 @@ class AuthController(
         return hashMapOf("is_valid" to authService.checkAccessToken(accessToken))
     }
 
-    @PostMapping("logout")
+    @PostMapping("/logout")
     fun logout(
         @RequestParam("access_token")
         accessToken: String
