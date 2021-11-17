@@ -12,16 +12,16 @@
     <input type="text" name="access_token" placeholder="AccessToken">
     <input type="submit" value="Private">
 </form>
-<form action="#" th:action="@{/login}" method="post" th:object="${authForm}">
+<form action="#" th:action="@{/api/v1/login}" method="post" th:object="${authForm}">
     <input type="text" th:field="*{employeeId}" placeholder="UserId">
     <input type="text" th:field="*{password}" placeholder="Password">
     <input type="submit" value="Login">
 </form>
-<form action="#" th:action="@{/check_access_token}" method="post">
+<form action="#" th:action="@{/api/v1/check_access_token}" method="post">
     <input type="text" name="access_token" placeholder="AccessToken">
     <input type="submit" value="Check">
 </form>
-<form action="#" th:action="@{/logout}" method="post">
+<form action="#" th:action="@{/api/v1/logout}" method="post">
     <input type="text" name="access_token" placeholder="AccessToken">
     <input type="submit" value="Logout">
 </form>
