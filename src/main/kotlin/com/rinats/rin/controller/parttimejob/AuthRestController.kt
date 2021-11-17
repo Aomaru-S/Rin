@@ -1,4 +1,4 @@
-package com.rinats.rin.controller
+package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.form.AuthForm
@@ -9,8 +9,8 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/v1")
-class AuthApiController(
+@RequestMapping("/api/v1/auth")
+class AuthRestController(
     @Autowired
     val authService: AuthService
 ) {
