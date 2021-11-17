@@ -14,7 +14,7 @@ class TableEditCompleteController(
     val tableEditService: TableEditService
 ) {
     @NonAuth
-    @PostMapping("/table_edit_complete")
+//    @PostMapping("/table_edit_complete")
     fun tableEditComplete(request: HttpServletRequest, model: Model,): String {
         val name = request.getParameter("name")
         val numOfPeople = Integer.parseInt(request.getParameter("numOfPeople"))

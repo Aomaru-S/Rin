@@ -16,7 +16,7 @@ class TableCheckController(
     val tableCheckService: TableCheckService
 ) {
     @NonAuth
-    @GetMapping("/table_check")
+//    @GetMapping("/table_check")
     fun tableCheck(model: Model): String {
         model.addAttribute("tableList", tableCheckService.getTable())
         return "TableCheckPage"

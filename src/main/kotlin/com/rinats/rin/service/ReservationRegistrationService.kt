@@ -1,7 +1,9 @@
 package com.rinats.rin.service
 
 import com.rinats.rin.model.Reservation
+import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.ReservationRepository
+import com.rinats.rin.repository.TableRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -9,7 +11,9 @@ import java.time.LocalDateTime
 @Service
 class ReservationRegistrationService(
     @Autowired
-    private val reservationRepository : ReservationRepository
+    private val reservationRepository : ReservationRepository,
+    private val tableRepository: TableRepository,
+    private val employeeRepository: EmployeeRepository
 ) {
     fun reservationRegistration(
         customerName: String,
@@ -19,7 +23,10 @@ class ReservationRegistrationService(
         employeeId: String,
         tableId: String
     ): Boolean {
-        val reservation = Reservation("id", customerName, courseId,  dateTime, numOfPeople, employeeId, tableId)
+        if (tableRepository.findById(tableId).isEmpty) else return false
+        val id = reservationRepository.findAll().last().id ?: "0"
+        //employeeIdの取得が必要
+        val reservation = Reservation(id, customerName, courseId,  dateTime, numOfPeople, employeeId, tableId)
         reservationRepository.save(reservation)
         return true
     }

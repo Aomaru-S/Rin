@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 @Controller
 class TableEditConfController() {
     @NonAuth
-    @PostMapping("/table_edit_conf")
+//    @PostMapping("/table_edit_conf")
     fun tableEditConf(request: HttpServletRequest, model: Model): String {
         val name = request.getParameter("name")
         val numOfPeople = request.getParameter("numOfPeople")
