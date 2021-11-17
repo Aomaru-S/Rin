@@ -6,24 +6,29 @@
 </head>
 <body>
 <h1>メールアドレス変更画面</h1>
-<div align="center">
+ <div align="center">
     <table border="0">
         <tr>
-            <th>新メールアドレス入力</th>
+        <th>新メールアドレス入力</th>
             <td>
-                <input type="text" name="mail_input">
+                <label>
+                    <input type="text" name="mail_input">
+                </label>
             </td>
         </tr>
         <tr>
             <th>新メールアドレス確認</th>
             <td>
-                <input type="text" name="newmail_check" >
+                <label>
+                    <input type="text" name="newmail_check" >
+                </label>
             </td>
         </tr>
         <tr>
             <th>
-                <button type="button">認証メール送信
-                </button>
+                <input type="button"
+                       onclick="location.href='MailaddressChangeCheck.html'"
+                       value="認証">
             </th>
         </tr>
     </table>
