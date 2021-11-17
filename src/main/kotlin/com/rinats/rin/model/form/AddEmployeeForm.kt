@@ -4,7 +4,7 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
-data class AddTentativeEmployeeForm(
+data class AddEmployeeForm(
     @field:NotBlank
     @field:Size(max = 32)
     val firstName: String? = null,
