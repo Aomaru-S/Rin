@@ -9,7 +9,8 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class AuthController(
+@RequestMapping("/api/v1")
+class AuthApiController(
     @Autowired
     val authService: AuthService
 ) {
@@ -27,7 +28,6 @@ class AuthController(
         }
         return hashMapOf("access_token" to accessToken)
     }
-
 
 
     @NonAuth

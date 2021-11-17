@@ -1,39 +1,20 @@
-<html>
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>ログイン</title>
 </head>
 <body>
 <h1>ログイン画面</h1>
-<hr>
-<div align="center">
-    <table border="0">
-        <tr>
-            <th>従業員ID</th>
-            <td>
-                <input type="text" name="jugyoin_id" value="" size="30">
-            </td>
-        </tr>
-        <tr>
-            <th>パスワード</th>
-            <td>
-                <input type="text" name="password" value="" size="100">
-            </td>
-        </tr>
-        <tr>
-            <th>パスワード再設定</th>
-            <td>
-                <a href="http://localhost:63342/untitled/passwordchange2.html?_ijt=gc54btpivhd6fih6islv2f5bn6">ここが安全だよ</a>
-            </td>
-        </tr>
-        <tr>
-            <th>
-            <td colspan="2">
-                <input type="submit" value="ログイン">
-            </td>
-        </tr>
-        </form>
-    </table>
-</div>
+<form action="#" th:action="@{/perform_login}" th:object="${authForm}" method="post">
+    <label>
+        <input type="text" th:field="${authForm.employeeId}" placeholder="従業員ID"><br>
+    </label>
+    <label>
+        <input type="text" th:field="${authForm.password}" placeholder="パスワード"><br>
+    </label>
+    <input type="submit" value="ログイン"><br>
+    <a href="https://www.google.com">パスワード再設定</a>
+</form>
 </body>
 </html>

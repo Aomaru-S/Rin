@@ -13,7 +13,10 @@ class AuthService(
     @Autowired
     private val authInfoRepository: AuthInfoRepository
 ) {
-    fun login(userId: String, _password: String): String? {
+    fun login(userId: String?, _password: String?): String? {
+        if (userId == null || _password == null) {
+            return null
+        }
         val authInfo = authInfoRepository.findById(userId).orElse(null) ?: return null
         val digest = AuthUtil.getDigest(_password, authInfo.salt)
 
