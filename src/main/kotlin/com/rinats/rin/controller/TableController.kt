@@ -38,7 +38,7 @@ class TableController(
     }
 
     @NonAuth
-    @PostMapping("table_edit")
+    @PostMapping("/table_edit")
     fun tableEdit(request: HttpServletRequest, model: Model): String {
         val name = request.getParameter("name")
         val numOfPeople = request.getParameter("numOfPeople")
