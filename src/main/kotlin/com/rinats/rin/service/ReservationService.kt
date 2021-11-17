@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class ReservationRegistrationService(
+class ReservationService(
     @Autowired
     private val reservationRepository : ReservationRepository,
     private val tableRepository: TableRepository,

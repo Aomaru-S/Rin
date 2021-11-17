@@ -1,20 +1,19 @@
 package com.rinats.rin.controller
 
 import com.rinats.rin.model.form.ReservationRegistrationForm
-import com.rinats.rin.service.ReservationRegistrationService
+import com.rinats.rin.service.ReservationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 @RestController
-class ReservationRegistrationController (
+class ReservationController (
     @Autowired
-    val reservationRegistrationService: ReservationRegistrationService
+    val reservationService: ReservationService
 ) {
     @PostMapping("/reservation_registration")
     fun reservationRegistration(
@@ -23,7 +22,7 @@ class ReservationRegistrationController (
         reservationRegistrationForm: ReservationRegistrationForm,
         validationResult: BindingResult
     ) {
-        reservationRegistrationService.reservationRegistration(
+        reservationService.reservationRegistration(
             reservationRegistrationForm.customerName ?: "",
             reservationRegistrationForm.courseId ?: "",
             reservationRegistrationForm.dateTime ?: LocalDateTime.now(),
