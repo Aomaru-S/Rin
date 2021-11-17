@@ -16,7 +16,7 @@ data class Employee(
     val firstName: String,
     @Column(name = "last_name")
     val lastName: String,
-    val gender: Boolean,
+    val gender: Boolean?,
     val birthday: Date,
     @Column(name = "is_android_notification")
     val isAndroid: Boolean,

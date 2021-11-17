@@ -21,7 +21,7 @@ class AuthController(
         authForm: AuthForm,
         validationResult: BindingResult
     ): HashMap<String, String?> {
-        val accessToken = authService.loginWithGetAccessToken(authForm.employeeId ?: "", authForm.password ?: "")
+        val accessToken = authService.login(authForm.employeeId ?: "", authForm.password ?: "")
         if (validationResult.hasErrors() || accessToken == null) {
             return hashMapOf("access_token" to null)
         }

@@ -1,6 +1,7 @@
 package com.rinats.rin.service
 
 import com.rinats.rin.repository.AuthInfoRepository
+import com.rinats.rin.util.AuthUtil
 import org.apache.commons.codec.digest.DigestUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,9 +13,9 @@ class AuthService(
     @Autowired
     private val authInfoRepository: AuthInfoRepository
 ) {
-    fun loginWithGetAccessToken(userId: String, _password: String): String? {
+    fun login(userId: String, _password: String): String? {
         val authInfo = authInfoRepository.findById(userId).orElse(null) ?: return null
-        val digest = DigestUtils.sha512Hex(_password + authInfo.salt)
+        val digest = AuthUtil.getDigest(_password, authInfo.salt)
 
         if (authInfo.password != digest) {
             return null

@@ -31,7 +31,7 @@ class AuthInterceptor(
             return true
         }
 
-        val accessToken = request.getParameter("access_token")
+        val accessToken = request.getParameter("access_token") ?: return false
         val employeeId = authInfoRepository.findByAccessToken(accessToken).get().employeeId
         val employee = employeeRepository.findById(employeeId).get()
 

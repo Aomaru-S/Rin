@@ -1,7 +1,7 @@
 package com.rinats.rin.controller
 
 import com.rinats.rin.model.Employee
-import com.rinats.rin.model.form.AddEmployeeForm
+import com.rinats.rin.model.form.AddTentativeEmployeeForm
 import com.rinats.rin.model.form.GetEmployeeForm
 import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,15 +18,23 @@ class EmployeeController(
 ) {
 
     @PostMapping("/add_employee")
-    fun addEmployee(@ModelAttribute @Validated addEmployeeForm: AddEmployeeForm, bindResult: BindingResult) {
+    fun addTentativeEmployee(
+        @ModelAttribute @Validated
+        addTentativeEmployeeForm: AddTentativeEmployeeForm,
+        bindResult: BindingResult
+    ) {
         if (bindResult.hasErrors()) {
             return
         }
-        employeeService.addEmployee(addEmployeeForm)
+        employeeService.addEmployee(addTentativeEmployeeForm)
     }
 
     @PostMapping("/get_employee")
-    fun getEmployee(@ModelAttribute @Validated getEmployeeForm: GetEmployeeForm, bindResult: BindingResult): HashMap<String, Employee?> {
+    fun getEmployee(
+        @ModelAttribute @Validated
+        getEmployeeForm: GetEmployeeForm,
+        bindResult: BindingResult
+    ): HashMap<String, Employee?> {
         val employee = if (bindResult.hasErrors()) {
             null
         } else {

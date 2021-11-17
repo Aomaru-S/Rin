@@ -1,9 +1,8 @@
 package com.rinats.rin.service
 
 import com.rinats.rin.model.Employee
-import com.rinats.rin.model.SequenceNumber
 import com.rinats.rin.model.TentativeEmployee
-import com.rinats.rin.model.form.AddEmployeeForm
+import com.rinats.rin.model.form.AddTentativeEmployeeForm
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.SequenceNumberRepository
 import com.rinats.rin.repository.TentativeEmployeeRepository
@@ -18,18 +17,18 @@ class EmployeeService(
     private val sequenceNumberRepository: SequenceNumberRepository,
     private val employeeRepository: EmployeeRepository
 ) {
-    fun addEmployee(addEmployeeForm: AddEmployeeForm) {
+    fun addEmployee(addTentativeEmployeeForm: AddTentativeEmployeeForm) {
         val employeeId = sequenceNumberRepository.findById("employee_id").get().nextNumber
         val sdf = SimpleDateFormat("yyyy-MM-dd")
-        val birthday = sdf.parse(addEmployeeForm.birthday)
+        val birthday = sdf.parse(addTentativeEmployeeForm.birthday)
         val tentativeEmployee = TentativeEmployee(
             employeeId,
-            addEmployeeForm.firstName,
-            addEmployeeForm.lastName,
-            addEmployeeForm.gender,
+            addTentativeEmployeeForm.firstName,
+            addTentativeEmployeeForm.lastName,
+            addTentativeEmployeeForm.gender,
             birthday,
             "2",
-            addEmployeeForm.mailAddress
+            addTentativeEmployeeForm.mailAddress
         )
         tentativeEmployeeRepository.save(tentativeEmployee)
         val sequenceNumber = sequenceNumberRepository.findById("employee_id").get()
