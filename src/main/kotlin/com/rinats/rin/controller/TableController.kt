@@ -62,7 +62,6 @@ class TableController(
     fun tableEditComplete(request: HttpServletRequest, model: Model,): String {
         val name = request.getParameter("name")
         val numOfPeople = Integer.parseInt(request.getParameter("numOfPeople"))
-        println("################")
         tableService.tableUpdate(name, numOfPeople)
         return "TableEditCompletePage"
     }
