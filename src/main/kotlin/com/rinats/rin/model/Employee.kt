@@ -21,5 +21,7 @@ data class Employee(
     @Column(name = "is_android_notification")
     val isAndroid: Boolean,
     @Column(name = "role_id")
-    val roleId: String
+    val roleId: String,
+    @Column(name = "is_tentative")
+    val isTentative: Boolean
 )

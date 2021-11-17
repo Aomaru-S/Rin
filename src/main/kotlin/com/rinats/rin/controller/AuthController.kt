@@ -28,6 +28,8 @@ class AuthController(
         return hashMapOf("access_token" to accessToken)
     }
 
+
+
     @NonAuth
     @PostMapping("/check_access_token")
     fun checkAccessToken(
