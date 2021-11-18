@@ -42,4 +42,10 @@ class TestRestController(
     fun employee(request: HttpServletRequest): Employee {
         return request.getAttribute("employee") as Employee
     }
+
+    @NonAuth
+    @GetMapping("/test")
+    fun test() {
+        println("Hellooooooooooooooooooooooooooooooooooooooooooo")
+    }
 }

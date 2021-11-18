@@ -10,8 +10,10 @@ import com.rinats.rin.repository.EmployeeRepository
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
+import org.springframework.web.servlet.ModelAndView
 import java.lang.reflect.Method
 import java.util.*
+import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -25,11 +27,39 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
+        val at1 = request.getHeader("Authorization")
+        var at2 = ""
+        request.cookies?.forEach { cookie ->
+            if (cookie.name == "access_token") {
+                at2 = cookie.value
+            }
+        }
+        println(at1)
+        println(at2)
+
         val method = getMethod(handler) ?: return false
 
         if (checkAuthResource(method)) {
             return true
         }
+
+        /*var accessToken: String? = null
+
+        when(request.requestURI.startsWith("/api/v1")) {
+            true -> {
+                accessToken = request.getHeader("Authorization") ?: return false
+            }
+            false -> {
+                var at: String? = null
+                request.cookies?.forEach { cookie ->
+                    if (cookie.name == "access_token") {
+                        at = cookie.value
+                    }
+                }
+                accessToken = at
+                response.sendRedirect("https://www.google.com")
+            }
+        }*/
 
         val accessToken = request.getParameter("access_token") ?: return false
         val employeeId = authInfoRepository.findByAccessToken(accessToken).get().employeeId

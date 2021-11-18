@@ -2,7 +2,7 @@ package com.rinats.rin.model
 
 import com.rinats.rin.model.compositeKey.ShiftHopeKey
 import java.io.Serializable
-import java.util.*
+import java.sql.*
 import javax.persistence.*
 import javax.persistence.Table
 
