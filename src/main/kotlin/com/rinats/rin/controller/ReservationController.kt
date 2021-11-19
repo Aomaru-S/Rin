@@ -1,15 +1,13 @@
 package com.rinats.rin.controller
 
-import com.rinats.rin.model.form.ReservationRegistrationForm
+import com.rinats.rin.model.Employee
+import com.rinats.rin.model.form.ReservationForm
 import com.rinats.rin.service.ReservationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import org.springframework.validation.BindingResult
-import org.springframework.validation.annotation.Validated
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 import javax.servlet.http.HttpServletRequest
 
@@ -18,21 +16,70 @@ class ReservationController (
     @Autowired
     val reservationService: ReservationService
 ) {
-    @GetMapping("/reservation_registration")
+
+    @GetMapping("/reservation_entry")
+    fun reservationEntry(model: Model): String {
+        model.addAttribute("courseList",  reservationService.getCourse())
+        model.addAttribute("tableList",  reservationService.getTable())
+        return "ReservationEntry"
+    }
+
+    @PostMapping("/reservation_registration")
     fun reservationRegistration(
-        @Validated
-        @ModelAttribute
         request: HttpServletRequest,
-        reservationRegistrationForm: ReservationRegistrationForm,
-        validationResult: BindingResult
+        reservationForm: ReservationForm,
     ) {
+        val employee = request.getAttribute("employee") as Employee
         reservationService.reservationRegistration(
-            request,
-            reservationRegistrationForm.customerName ?: "",
-            reservationRegistrationForm.courseId ?: "",
-            reservationRegistrationForm.dateTime ?: LocalDateTime.now(),
-            reservationRegistrationForm.numOfPeople ?: 0,
-            reservationRegistrationForm.tableId ?: ""
+            reservationForm.customerName ?: "",
+            reservationForm.courseId ?: "",
+            reservationForm.dateTime ?: LocalDateTime.now(),
+            reservationForm.numOfPeople ?: 0,
+            employee.employeeId,
+            reservationForm.tableName ?: ""
         )
+    }
+
+    @GetMapping("/reservation_check")
+    fun reservationCheck(model: Model): String {
+        model.addAttribute("reservation", reservationService.getReservation())
+        return "reservatonCheckPage"
+    }
+
+    @PostMapping("/reservation_edit")
+    fun reservationEdit(model: Model, reservationForm: ReservationForm): String {
+        model.addAttribute("id", reservationForm.id)
+        model.addAttribute("customerName", reservationForm.customerName)
+        model.addAttribute("courseId", reservationForm.courseId)
+        model.addAttribute("dateTime", reservationForm.dateTime)
+        model.addAttribute("numOfPeople", reservationForm.numOfPeople)
+        model.addAttribute("tableName", reservationForm.tableName)
+        return "ReservationEditPage"
+    }
+
+    @PostMapping("/reservation_edit_conf")
+    fun reservationEditConf(model: Model, reservationForm: ReservationForm): String {
+        model.addAttribute("id", reservationForm.id)
+        model.addAttribute("customerName", reservationForm.customerName)
+        model.addAttribute("courseId", reservationForm.courseId)
+        model.addAttribute("dateTime", reservationForm.dateTime)
+        model.addAttribute("numOfPeople", reservationForm.numOfPeople)
+        model.addAttribute("tableName", reservationForm.tableName)
+        return "ReservationEditConfPage"
+    }
+
+    @PostMapping("reservation_edit_complete")
+    fun reservationEditComplete(model: Model, request: HttpServletRequest, reservationForm: ReservationForm): String {
+        val employee = request.getAttribute("employee") as Employee
+        reservationService.reservationUpdate(
+            reservationForm.id ?: "",
+            reservationForm.customerName ?: "",
+            reservationForm.courseId ?: "",
+            reservationForm.dateTime ?: LocalDateTime.now(),
+            reservationForm.numOfPeople ?: 0,
+            employee.employeeId,
+            reservationForm.tableName ?: ""
+        )
+        return "ReservationEditCompletePage"
     }
 }

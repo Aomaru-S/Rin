@@ -5,7 +5,7 @@ import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 
-data class ReservationRegistrationForm(
+data class ReservationForm(
     @field:NotBlank
     var id: String? = null,
     @field:NotBlank
@@ -18,5 +18,5 @@ data class ReservationRegistrationForm(
     @field:NotBlank
     var employeeId: String? = null,
     @field:NotBlank
-    var tableId: String? = null
+    var tableName: String? = null
 )

@@ -1,7 +1,7 @@
 package com.rinats.rin.controller
 
 import com.rinats.rin.annotation.NonAuth
-import com.rinats.rin.model.form.TableRegistrationForm
+import com.rinats.rin.model.form.TableForm
 import com.rinats.rin.service.TableService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -24,7 +24,7 @@ class TableController(
     fun tableRegistration(
         @Validated
         @ModelAttribute
-        tableRegistrationForm: TableRegistrationForm,
+        tableRegistrationForm: TableForm,
         validationResult: BindingResult
     ) {
         tableService.tableRegistration(tableRegistrationForm.name ?: "", tableRegistrationForm.numOfPeople ?: 0)
@@ -39,30 +39,24 @@ class TableController(
 
     @NonAuth
     @PostMapping("/table_edit")
-    fun tableEdit(request: HttpServletRequest, model: Model): String {
-        val name = request.getParameter("name")
-        val numOfPeople = request.getParameter("numOfPeople")
-        model.addAttribute("name", name)
-        model.addAttribute("numOfPeople", numOfPeople)
+    fun tableEdit(model: Model, tableForm: TableForm): String {
+        model.addAttribute("name", tableForm.name)
+        model.addAttribute("numOfPeople", tableForm.numOfPeople)
         return "TableEditPage"
     }
 
     @NonAuth
     @PostMapping("/table_edit_conf")
-    fun tableEditConf(request: HttpServletRequest, model: Model): String {
-        val name = request.getParameter("name")
-        val numOfPeople = request.getParameter("numOfPeople")
-        model.addAttribute("name", name)
-        model.addAttribute("numOfPeople", numOfPeople)
+    fun tableEditConf(model: Model, tableForm: TableForm): String {
+        model.addAttribute("name", tableForm.name)
+        model.addAttribute("numOfPeople", tableForm.numOfPeople)
         return "TableEditConfPage"
     }
 
     @NonAuth
     @PostMapping("/table_edit_complete")
-    fun tableEditComplete(request: HttpServletRequest, model: Model,): String {
-        val name = request.getParameter("name")
-        val numOfPeople = Integer.parseInt(request.getParameter("numOfPeople"))
-        tableService.tableUpdate(name, numOfPeople)
+    fun tableEditComplete(tableForm: TableForm): String {
+        tableService.tableUpdate(tableForm.name ?: "", tableForm.numOfPeople ?: 0)
         return "TableEditCompletePage"
     }
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class TableService(@Autowired private val tableRepository: TableRepository) {
 
-    fun tableRegistration(name: String, numOfPeople: Int) : Boolean {
+    fun tableRegistration(name: String, numOfPeople: Int): Boolean {
         val table = Table(name, numOfPeople)
         tableRepository.save(table)
         return true

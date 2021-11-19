@@ -4,7 +4,7 @@ import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 
-data class TableRegistrationForm(
+data class TableForm(
     @field:NotBlank
     var name: String? = null,
     @Min(1)
