@@ -5,9 +5,9 @@ import com.rinats.rin.model.Employee
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpServletRequest
-import kotlin.collections.HashMap
 
 @RestController
 class TestRestController(
@@ -21,11 +21,10 @@ class TestRestController(
         return HashMap(hashMapOf("text" to "Hello, World! This is public page."))
     }
 
-    @PostMapping("/private")
+    @GetMapping("/private")
     fun private(): Map<String, String> {
         return HashMap(hashMapOf("text" to "Hello, World! This is private page."))
     }
-
     @NonAuth
     @GetMapping("/mail")
     fun mail() {

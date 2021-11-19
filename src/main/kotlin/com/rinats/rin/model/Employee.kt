@@ -1,9 +1,7 @@
 package com.rinats.rin.model
 
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
@@ -21,5 +19,5 @@ data class Employee(
     @Column(name = "is_android_notification")
     val isAndroid: Boolean,
     @Column(name = "role_id")
-    var roleId: String,
+    var roleId: String
 )

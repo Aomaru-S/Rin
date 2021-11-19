@@ -15,6 +15,6 @@ class TestController {
     fun form(model: Model): String {
         model.addAttribute("addEmployeeForm", AddEmployeeForm())
         model.addAttribute("authForm", AuthForm())
-        return "test_formt"
+        return "test_form"
     }
 }

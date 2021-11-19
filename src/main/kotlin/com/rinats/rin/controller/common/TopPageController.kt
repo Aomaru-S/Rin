@@ -6,13 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping
 import javax.servlet.http.HttpServletRequest
 
 @Controller
-class TopPageController {
+class TopPageController(
+) {
     @GetMapping("/")
     fun forwardIndex(request: HttpServletRequest): String {
         val employee = request.getAttribute("employee") as Employee
-        if(employee.employeeId == "1") {
-            return "forward:/store_manager_top"
+        if (employee.roleId == "1") {
+            return "forward:store_manager_top"
         }
-        return "forward:/part_time_job_top"
+        return "forward:part_time_job_top"
     }
 }

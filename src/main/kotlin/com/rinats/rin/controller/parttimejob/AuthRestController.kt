@@ -31,7 +31,7 @@ class AuthRestController(
 
 
     @NonAuth
-    @PostMapping("/check_access_token")
+    @GetMapping("/check_access_token")
     fun checkAccessToken(
         @RequestParam("access_token")
         accessToken: String

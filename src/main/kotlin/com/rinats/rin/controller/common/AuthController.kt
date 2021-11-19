@@ -42,6 +42,7 @@ class AuthController(
             ?: return "redirect:login?error"
         val cookie = Cookie("access_token", accessToken)
         response.addCookie(cookie)
+
         return "redirect:/"
     }
 

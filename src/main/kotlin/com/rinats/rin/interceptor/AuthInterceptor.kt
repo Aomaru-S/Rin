@@ -11,10 +11,8 @@ import com.rinats.rin.repository.EmployeeRepository
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
-import org.springframework.web.servlet.ModelAndView
 import java.lang.reflect.Method
 import java.util.*
-import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -28,9 +26,10 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
-        val method = getMethod(handler) ?: return false
+        val method = getMethod(handler, response) ?: return false
 
         if (checkAuthResource(method)) {
+            println(2)
             return true
         }
 
@@ -50,7 +49,7 @@ class AuthInterceptor(
                 accessToken = at
                 if (accessToken == null) {
                     response.sendRedirect("/login")
-                    return false
+                    return true
                 }
             }
         }
@@ -59,13 +58,16 @@ class AuthInterceptor(
         val employee = employeeRepository.findById(employeeId).get()
 
         if (!checkAccessToken(accessToken)) {
+            response.sendError(401)
             return false
         }
         if (!checkRole(employee, method)) {
+            response.sendError(403)
             return false
         }
 
         if (!checkExpire(authInfoRepository.findByAccessToken(accessToken).get())) {
+            response.sendError(401)
             return false
         }
 
@@ -74,10 +76,11 @@ class AuthInterceptor(
         return true
     }
 
-    private fun getMethod(handler: Any): Method? {
+    private fun getMethod(handler: Any, response: HttpServletResponse): Method? {
         val hm = try {
             HandlerMethod::class.java.cast(handler)
         } catch (e: ClassCastException) {
+            response.sendError(404)
             return null
         }
         return hm.method
@@ -107,6 +110,11 @@ class AuthInterceptor(
         if (hasTentativeEmployee && roleId == "3") {
             return true
         }
+
+        if(!(hasStoreManager || hasPartTimeJob || hasTentativeEmployee)) {
+            return true
+        }
+
         return false
     }
 

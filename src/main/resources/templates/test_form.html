@@ -5,11 +5,10 @@
     <title>TestForm</title>
 </head>
 <body>
-<form action="#" th:action="@{/public}" method="post">
+<form action="#" th:action="@{/public}" method="get">
     <input type="submit" value="Public">
 </form>
-<form action="#" th:action="@{/private}" method="post">
-    <input type="text" name="access_token" placeholder="AccessToken">
+<form action="#" th:action="@{/private}" method="get">
     <input type="submit" value="Private">
 </form>
 <form action="#" th:action="@{/api/v1/auth/login}" method="post" th:object="${authForm}">
@@ -18,12 +17,7 @@
     <input type="submit" value="Login">
 </form>
 <form action="#" th:action="@{/api/v1/auth/check_access_token}" method="post">
-    <input type="text" name="access_token" placeholder="AccessToken">
     <input type="submit" value="Check">
-</form>
-<form action="#" th:action="@{/api/v1/auth/logout}" method="post">
-    <input type="text" name="access_token" placeholder="AccessToken">
-    <input type="submit" value="Logout">
 </form>
 <form action="#" th:action="@{/add_employee}" method="post" th:object="${addEmployeeForm}">
     <input type="text" th:field="*{firstName}" placeholder="FirstName">
