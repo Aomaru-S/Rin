@@ -33,8 +33,7 @@ class EmployeeService(
             addEmployeeForm.gender,
             birthday,
             false,
-            "2",
-            false
+            "2"
         )
         val date = Date()
         date.time = 0

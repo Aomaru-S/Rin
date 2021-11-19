@@ -22,8 +22,6 @@ data class Retirement(
     val isAndroid: Boolean,
     @Column(name = "role_id")
     val roleId: String,
-    @Column(name = "is_tentative")
-    val isTentative: Boolean,
     @Column(name = "retire_date")
     val retireDate: Date
 ) {
@@ -35,7 +33,6 @@ data class Retirement(
         employee.birthday,
         employee.isAndroid,
         employee.roleId,
-        employee.isTentative,
         Date()
     )
 }
