@@ -22,6 +22,4 @@ data class Employee(
     val isAndroid: Boolean,
     @Column(name = "role_id")
     val roleId: String,
-    @Column(name = "is_tentative")
-    val isTentative: Boolean
 )

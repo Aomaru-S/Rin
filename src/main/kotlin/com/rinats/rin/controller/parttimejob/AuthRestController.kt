@@ -41,7 +41,7 @@ class AuthRestController(
 
     @PostMapping("/logout")
     fun logout(
-        @RequestParam("access_token")
+        @RequestHeader("Authorization")
         accessToken: String
     ) {
         authService.logout(accessToken)

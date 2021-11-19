@@ -27,16 +27,6 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
-        val at1 = request.getHeader("Authorization")
-        var at2 = ""
-        request.cookies?.forEach { cookie ->
-            if (cookie.name == "access_token") {
-                at2 = cookie.value
-            }
-        }
-        println(at1)
-        println(at2)
-
         val method = getMethod(handler) ?: return false
 
         if (checkAuthResource(method)) {
@@ -58,7 +48,7 @@ class AuthInterceptor(
                 }
                 accessToken = at
                 if (accessToken == null) {
-                    response.sendRedirect("https://www.google.com")
+                    response.sendRedirect("/login")
                     return false
                 }
             }
