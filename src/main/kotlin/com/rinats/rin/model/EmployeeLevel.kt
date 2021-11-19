@@ -1,8 +1,6 @@
 package com.rinats.rin.model
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
@@ -10,6 +8,8 @@ import javax.persistence.Table
 data class EmployeeLevel(
     @Id
     @Column(name = "employee_id")
-    val employeeId: String,
+    @JoinColumn(name = "employee_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    val employeeId: Employee,
     val level: Int
 )
