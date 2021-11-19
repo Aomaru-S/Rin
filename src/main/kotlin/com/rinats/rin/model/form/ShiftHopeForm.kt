@@ -8,5 +8,5 @@ data class ShiftHopeForm(
     @NotBlank
     @Min(1)
     @Max(31)
-    val date: Int
+    val day: Int
 )
