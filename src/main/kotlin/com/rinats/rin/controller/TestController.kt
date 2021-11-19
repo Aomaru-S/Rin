@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping
 @Controller
 class TestController {
     @NonAuth
-    @GetMapping("/")
+    @GetMapping("/form")
     fun form(model: Model): String {
         model.addAttribute("addEmployeeForm", AddEmployeeForm())
         model.addAttribute("authForm", AuthForm())
-        return "TestForm"
+        return "test_formt"
     }
 }

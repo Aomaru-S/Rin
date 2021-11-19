@@ -3,6 +3,7 @@ package com.rinats.rin.interceptor
 import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.annotation.PartTimeJob
 import com.rinats.rin.annotation.StoreManager
+import com.rinats.rin.annotation.TentativeEmployee
 import com.rinats.rin.model.AuthInfo
 import com.rinats.rin.model.Employee
 import com.rinats.rin.repository.AuthInfoRepository
@@ -69,6 +70,7 @@ class AuthInterceptor(
         }
 
         request.setAttribute("employee", employee)
+        request.setAttribute("access_token", accessToken)
         return true
     }
 
@@ -93,19 +95,19 @@ class AuthInterceptor(
     private fun checkRole(employee: Employee, method: Method): Boolean {
         val hasStoreManager = AnnotationUtils.findAnnotation(method, StoreManager::class.java) != null
         val hasPartTimeJob = AnnotationUtils.findAnnotation(method, PartTimeJob::class.java) != null
-        if ((hasStoreManager && hasPartTimeJob) ||
-            !hasStoreManager && !hasPartTimeJob) {
+        val hasTentativeEmployee = AnnotationUtils.findAnnotation(method, TentativeEmployee::class.java) != null
+
+        val roleId = employee.roleId
+        if (hasStoreManager && roleId == "1") {
             return true
         }
-
-        return when(employee.roleId) {
-            "1" -> {
-                hasStoreManager
-            }
-            else -> {
-                hasPartTimeJob
-            }
+        if (hasPartTimeJob && roleId == "2") {
+            return true
         }
+        if (hasTentativeEmployee && roleId == "3") {
+            return true
+        }
+        return false
     }
 
     private fun checkExpire(authInfo: AuthInfo): Boolean {
