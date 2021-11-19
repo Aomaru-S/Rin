@@ -43,7 +43,7 @@ class AuthInterceptor(
             return true
         }
 
-        /*var accessToken: String? = null
+        var accessToken: String? = null
 
         when(request.requestURI.startsWith("/api/v1")) {
             true -> {
@@ -57,11 +57,13 @@ class AuthInterceptor(
                     }
                 }
                 accessToken = at
-                response.sendRedirect("https://www.google.com")
+                if (accessToken == null) {
+                    response.sendRedirect("https://www.google.com")
+                    return false
+                }
             }
-        }*/
+        }
 
-        val accessToken = request.getParameter("access_token") ?: return false
         val employeeId = authInfoRepository.findByAccessToken(accessToken).get().employeeId
         val employee = employeeRepository.findById(employeeId).get()
 
