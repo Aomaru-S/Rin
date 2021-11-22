@@ -1,4 +1,4 @@
-package com.rinats.rin.controller
+package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.form.AuthForm
@@ -9,7 +9,8 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class AuthController(
+@RequestMapping("api/v1/auth")
+class AuthRestController(
     @Autowired
     val authService: AuthService
 ) {
@@ -29,11 +30,10 @@ class AuthController(
     }
 
 
-
     @NonAuth
-    @PostMapping("/check_access_token")
+    @GetMapping("/check_access_token")
     fun checkAccessToken(
-        @RequestParam("access_token")
+        @RequestHeader("Authorization")
         accessToken: String
     ): HashMap<String, Boolean> {
         return hashMapOf("is_valid" to authService.checkAccessToken(accessToken))
@@ -41,7 +41,7 @@ class AuthController(
 
     @PostMapping("/logout")
     fun logout(
-        @RequestParam("access_token")
+        @RequestHeader("Authorization")
         accessToken: String
     ) {
         authService.logout(accessToken)

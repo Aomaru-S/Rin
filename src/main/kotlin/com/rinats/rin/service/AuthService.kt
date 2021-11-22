@@ -13,7 +13,11 @@ class AuthService(
     @Autowired
     private val authInfoRepository: AuthInfoRepository
 ) {
-    fun login(userId: String, _password: String): String? {
+// ログイン処理
+    fun login(userId: String?, _password: String?): String? {
+        if (userId == null || _password == null) {
+            return null
+        }
         val authInfo = authInfoRepository.findById(userId).orElse(null) ?: return null
         val digest = AuthUtil.getDigest(_password, authInfo.salt)
 
@@ -32,6 +36,7 @@ class AuthService(
         return accessToken
     }
 
+//    アクセストークンの有効性確認処理
     fun checkAccessToken(accessToken: String): Boolean {
         if (authInfoRepository.existsByAccessToken(accessToken)) {
             return authInfoRepository.findByAccessToken(accessToken).get().expire >= Date()
@@ -39,6 +44,7 @@ class AuthService(
         return false
     }
 
+//    ログアウト処理
     fun logout(accessToken: String) {
         val authInfo = authInfoRepository.findByAccessToken(accessToken).get()
         authInfo.expire.time = 0

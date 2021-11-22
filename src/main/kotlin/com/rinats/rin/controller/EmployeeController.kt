@@ -26,7 +26,7 @@ class EmployeeController(
         if (bindResult.hasErrors()) {
             return
         }
-        employeeService.addEmployee(addEmployeeForm)
+        employeeService.addTentativeEmployee(addEmployeeForm)
     }
 
     @PostMapping("/get_employee")
