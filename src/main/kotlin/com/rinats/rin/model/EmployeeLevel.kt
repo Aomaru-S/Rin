@@ -9,8 +9,7 @@ import javax.persistence.Table
 
 data class EmployeeLevel(
     @Id
-    @Column(name = "employee_id")
-//    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id")
     @OneToOne(cascade = [CascadeType.ALL],fetch = FetchType.LAZY)
     val employeeId: Employee,
     val level: Int
