@@ -13,8 +13,7 @@ class EmployeeLevelService(
     private val employeeRepository: EmployeeRepository
 ) {
 
-    fun getLabor(employeeId: String) {
-        val employee = employeeRepository.findById(employeeId).get()
-        val employeeLevel = EmployeeLevel(employee, 1)
+    fun getLabor(): MutableList<EmployeeLevel> {
+        return employeeLevelRepository.findAll()
     }
 }
