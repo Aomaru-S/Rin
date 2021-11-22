@@ -9,7 +9,7 @@ class DateUtil {
         fun getDate(year: Int, month: Int, day: Int): Date {
 
             val sYear = year.toString().padStart(4, '0')
-            val sMonth = month.toString().padStart(2, '0')
+            val sMonth = month.plus(1).toString().padStart(2, '0')
             val sDay = day.toString().padStart(2, '0')
             val sDate = "$sYear$sMonth$sDay"
 
