@@ -21,7 +21,7 @@ class ShiftService(
     val shiftHopeRepository: ShiftHopeRepository,
     val shiftRepository: ShiftRepository
 ) {
-    fun getShift(employeeId: String, year: Int, month: Int): ShiftHopeResponse {
+    fun getShiftHope(employeeId: String, year: Int, month: Int): ShiftHopeResponse {
         val shifts = shiftHopeRepository.findByEmployeeId(employeeId)
         val days = ArrayList<Int>()
         shifts.forEach {
@@ -59,5 +59,7 @@ class ShiftService(
         return true
     }
 
-
+    fun deleteShiftHope(employeeId: String) {
+        shiftHopeRepository.deleteByEmployeeId(employeeId)
+    }
 }

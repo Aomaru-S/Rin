@@ -9,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import java.util.*
-import javax.servlet.http.HttpServletRequest
 import kotlin.collections.HashMap
 
 @RestController
 @RequestMapping("api/v1/shift")
 class ShiftRestController(
     @Autowired
-    val shiftService: ShiftService,
+    val shiftHopeService: ShiftService,
 ) {
 
     @GetMapping("/shift_request")
@@ -29,7 +27,7 @@ class ShiftRestController(
         if (bindingResult.hasErrors()) {
             return null
         }
-        return shiftService.getShift(
+        return shiftHopeService.getShiftHope(
             employee.employeeId,
             getShiftsForm.year,
             getShiftsForm.month
@@ -45,8 +43,15 @@ class ShiftRestController(
         if (bindingResult.hasErrors()) {
             return hashMapOf("result" to false)
         }
-        val result = shiftService.submitShift(shiftHopeForm, employee.employeeId)
+        val result = shiftHopeService.submitShift(shiftHopeForm, employee.employeeId)
         return hashMapOf("result" to result)
+    }
+
+    @DeleteMapping("/shift_request")
+    fun deleteShiftHope(
+        @RequestAttribute employee: Employee
+    ) {
+        shiftHopeService.deleteShiftHope(employee.employeeId)
     }
 
     @GetMapping("/shift_table_check")

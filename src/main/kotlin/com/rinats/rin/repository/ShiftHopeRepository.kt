@@ -10,4 +10,5 @@ import java.sql.Date
 @Repository
 interface ShiftHopeRepository : JpaRepository<ShiftHope, ShiftHopeKey> {
     fun findByEmployeeId(employeeId: String): List<ShiftHope>
+    fun deleteByEmployeeId(employeeId: String): Boolean
 }
