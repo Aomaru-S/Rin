@@ -4,6 +4,8 @@ import com.rinats.rin.model.ShiftHope
 import com.rinats.rin.model.form.ShiftHopeForm
 import com.rinats.rin.model.response.ShiftHopeResponse
 import com.rinats.rin.repository.ShiftHopeRepository
+import com.rinats.rin.repository.ShiftRepository
+import com.rinats.rin.util.DateUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.text.DateFormat
@@ -16,7 +18,8 @@ import kotlin.collections.ArrayList
 @Service
 class ShiftService(
     @Autowired
-    val shiftHopeRepository: ShiftHopeRepository
+    val shiftHopeRepository: ShiftHopeRepository,
+    val shiftRepository: ShiftRepository
 ) {
     fun getShift(employeeId: String, year: Int, month: Int): ShiftHopeResponse {
         val shifts = shiftHopeRepository.findByEmployeeId(employeeId)
@@ -41,9 +44,7 @@ class ShiftService(
         shiftHopeForm.days.forEach { day ->
             println("$year$month$day")
             val date = try {
-                val dateFormat: DateFormat = SimpleDateFormat("yyyyMMdd")
-                dateFormat.isLenient = false
-                dateFormat.parse("$year$month$day")
+                DateUtil.getDate(year, month, day)
             } catch (e: ParseException) {
                 return false
             }
@@ -57,4 +58,6 @@ class ShiftService(
         }
         return true
     }
+
+
 }
