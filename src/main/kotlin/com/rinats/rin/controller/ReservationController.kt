@@ -48,23 +48,27 @@ class ReservationController (
 
     @PostMapping("/reservation_edit")
     fun reservationEdit(model: Model, reservationForm: ReservationForm): String {
-        model.addAttribute("id", reservationForm.id)
-        model.addAttribute("customerName", reservationForm.customerName)
-        model.addAttribute("courseId", reservationForm.courseId)
-        model.addAttribute("dateTime", reservationForm.dateTime)
-        model.addAttribute("numOfPeople", reservationForm.numOfPeople)
-        model.addAttribute("tableName", reservationForm.tableName)
+        model.apply {
+            addAttribute("id", reservationForm.id)
+            addAttribute("customerName", reservationForm.customerName)
+            addAttribute("courseId", reservationForm.courseId)
+            addAttribute("dateTime", reservationForm.dateTime)
+            addAttribute("numOfPeople", reservationForm.numOfPeople)
+            addAttribute("tableName", reservationForm.tableName)
+        }
         return "ReservationEditPage"
     }
 
     @PostMapping("/reservation_edit_conf")
     fun reservationEditConf(model: Model, reservationForm: ReservationForm): String {
-        model.addAttribute("id", reservationForm.id)
-        model.addAttribute("customerName", reservationForm.customerName)
-        model.addAttribute("courseId", reservationForm.courseId)
-        model.addAttribute("dateTime", reservationForm.dateTime)
-        model.addAttribute("numOfPeople", reservationForm.numOfPeople)
-        model.addAttribute("tableName", reservationForm.tableName)
+        model.apply {
+            addAttribute("id", reservationForm.id)
+            addAttribute("customerName", reservationForm.customerName)
+            addAttribute("courseId", reservationForm.courseId)
+            addAttribute("dateTime", reservationForm.dateTime)
+            addAttribute("numOfPeople", reservationForm.numOfPeople)
+            addAttribute("tableName", reservationForm.tableName)
+        }
         return "ReservationEditConfPage"
     }
 
