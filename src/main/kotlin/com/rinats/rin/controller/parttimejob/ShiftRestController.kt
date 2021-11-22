@@ -24,7 +24,6 @@ class ShiftRestController(
         @Validated getShiftsForm: GetShiftsForm,
         bindingResult: BindingResult
     ): ShiftHopeResponse? {
-        println(bindingResult.hasErrors())
         if (bindingResult.hasErrors()) {
             return null
         }
