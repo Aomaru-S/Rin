@@ -33,7 +33,7 @@ class AuthRestController(
     @NonAuth
     @GetMapping("/check_access_token")
     fun checkAccessToken(
-        @RequestParam("access_token")
+        @RequestHeader("Authorization")
         accessToken: String
     ): HashMap<String, Boolean> {
         return hashMapOf("is_valid" to authService.checkAccessToken(accessToken))
