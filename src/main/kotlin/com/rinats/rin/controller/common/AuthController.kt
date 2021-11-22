@@ -31,7 +31,8 @@ class AuthController(
     @NonAuth
     @PostMapping("/perform_login")
     fun login(
-        @ModelAttribute @Validated authForm: AuthForm,
+        @ModelAttribute @Validated
+        authForm: AuthForm,
         result: BindingResult,
         response: HttpServletResponse
     ): String {

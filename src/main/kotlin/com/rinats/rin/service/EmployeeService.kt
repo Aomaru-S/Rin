@@ -22,6 +22,7 @@ class EmployeeService(
     private val retirementRepository: RetirementRepository,
     private val sender: MailSender
 ) {
+//    従業員仮登録処理
     fun addTentativeEmployee(addEmployeeForm: AddEmployeeForm) {
         val employeeId = getAndUpdateSequence()
         val sdf = SimpleDateFormat("yyyy-MM-dd")
@@ -58,6 +59,7 @@ class EmployeeService(
         sendMail(addEmployeeForm, employeeId , password)
     }
 
+//    従業員本登録処理
     fun definitiveRegistration(employeeId: String): Boolean {
         val employee = employeeRepository.findById(employeeId).orElse(null) ?: return false
         if (employee.roleId == "3") {
@@ -68,10 +70,12 @@ class EmployeeService(
         return false
     }
 
+//    従業員情報取得処理
     fun getEmployee(employeeId: String): Employee? {
         return employeeRepository.findById(employeeId).orElse(null)
     }
 
+//    従業員一覧取得処理
     fun getEmployeeList(): List<Employee> {
         return employeeRepository.findAll()
     }
@@ -83,8 +87,6 @@ class EmployeeService(
         employeeRepository.deleteById(employeeId)
         return true
     }
-
-
 
     private fun getAndUpdateSequence(): Int {
         val next = sequenceNumberRepository.findById("employee_id").get().nextNumber
