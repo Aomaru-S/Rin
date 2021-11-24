@@ -59,7 +59,7 @@ class ShiftService(
         return true
     }
 
-    fun deleteShiftHope(employeeId: String) {
-        shiftHopeRepository.deleteByEmployeeId(employeeId)
+    fun deleteShiftHope(employeeId: String): Boolean {
+        return shiftHopeRepository.deleteByEmployeeId(employeeId)
     }
 }

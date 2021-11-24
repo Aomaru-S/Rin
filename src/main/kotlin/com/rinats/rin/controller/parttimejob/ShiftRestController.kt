@@ -50,8 +50,9 @@ class ShiftRestController(
     @DeleteMapping("/shift_request")
     fun deleteShiftHope(
         @RequestAttribute employee: Employee
-    ) {
-        shiftHopeService.deleteShiftHope(employee.employeeId)
+    ): HashMap<String, Boolean> {
+        val result = shiftHopeService.deleteShiftHope(employee.employeeId)
+        return hashMapOf("result" to result)
     }
 
     @GetMapping("/shift_table_check")

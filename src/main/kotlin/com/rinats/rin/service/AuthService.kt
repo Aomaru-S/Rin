@@ -13,6 +13,7 @@ class AuthService(
     @Autowired
     private val authInfoRepository: AuthInfoRepository
 ) {
+
 // ログイン処理
     fun login(userId: String?, _password: String?): String? {
         if (userId == null || _password == null) {
