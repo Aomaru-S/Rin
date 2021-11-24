@@ -16,14 +16,13 @@ class CourseController(
     val courseService: CourseService
 ) {
 
-    @NonAuth
     @PostMapping("/course_registration")
     fun courseRegistration(
         @ModelAttribute
         courseRegistrationForm: CourseForm,
     ): String {
         courseService.courseRegistration(courseRegistrationForm.name ?: "")
-        return "TopPage"
+        return "CourseRegistrationPage"
     }
 
     @GetMapping("/course_check")
