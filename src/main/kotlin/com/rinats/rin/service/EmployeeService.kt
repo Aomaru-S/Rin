@@ -4,7 +4,10 @@ import com.rinats.rin.model.AuthInfo
 import com.rinats.rin.model.Employee
 import com.rinats.rin.model.Retirement
 import com.rinats.rin.model.form.AddEmployeeForm
-import com.rinats.rin.repository.*
+import com.rinats.rin.repository.AuthInfoRepository
+import com.rinats.rin.repository.EmployeeRepository
+import com.rinats.rin.repository.RetirementRepository
+import com.rinats.rin.repository.SequenceNumberRepository
 import com.rinats.rin.util.AuthUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.MailSender
@@ -22,7 +25,7 @@ class EmployeeService(
     private val retirementRepository: RetirementRepository,
     private val sender: MailSender
 ) {
-//    従業員仮登録処理
+    //    従業員仮登録処理
     fun addTentativeEmployee(addEmployeeForm: AddEmployeeForm) {
         val employeeId = getAndUpdateSequence()
         val sdf = SimpleDateFormat("yyyy-MM-dd")
@@ -58,10 +61,10 @@ class EmployeeService(
         authInfoRepository.save(authInfo)
 
 
-        sendMail(addEmployeeForm, employeeId , password)
+        sendMail(addEmployeeForm, employeeId, password)
     }
 
-//    従業員本登録処理
+    //    従業員本登録処理
     fun definitiveRegistration(employeeId: String): Boolean {
         val employee = employeeRepository.findById(employeeId).orElse(null) ?: return false
         if (employee.roleId == "3") {
@@ -72,12 +75,12 @@ class EmployeeService(
         return false
     }
 
-//    従業員情報取得処理
+    //    従業員情報取得処理
     fun getEmployee(employeeId: String): Employee? {
         return employeeRepository.findById(employeeId).orElse(null)
     }
 
-//    従業員一覧取得処理
+    //    従業員一覧取得処理
     fun getEmployeeList(): List<Employee> {
         return employeeRepository.findAll()
     }
@@ -102,6 +105,16 @@ class EmployeeService(
         if (employee.mailAddress == mailAddress) {
             employee.mailAddress = mailAddress
         }
+    }
+
+    fun changePassword(authInfo: AuthInfo, oldPassword: String, newPassword: String): Boolean {
+        val oldDigest = AuthUtil.getDigest(oldPassword, authInfo.salt)
+        val nowDigest = AuthUtil.getDigest(authInfo.password, authInfo.salt)
+        if (oldDigest != nowDigest) {
+            return false
+        }
+        authInfo.password = AuthUtil.getDigest(newPassword, authInfo.salt)
+        return true
     }
 
     private fun getAndUpdateSequence(): Int {
@@ -130,8 +143,9 @@ class EmployeeService(
         sender.send(message)
     }
 
-    private fun sendForgetPasswordMail (
-        mailAddress: String
+    private fun sendForgetPasswordMail(
+        mailAddress: String,
+        uuid: String
     ) {
         val message = SimpleMailMessage()
         message.setFrom("info@rin-ats.com")
@@ -139,7 +153,7 @@ class EmployeeService(
         message.setSubject("パスワード再設定URLのお知らせ")
         message.setText(
             "Rinシステムのパスワード再設定をするには、以下のリンクを踏んでください。" +
-                    ""
+                    "http://localhost/forgetPassword?uuid=$uuid"
         )
     }
 }
