@@ -15,6 +15,7 @@ import org.springframework.mail.SimpleMailMessage
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 @Service
 class EmployeeService(
@@ -100,11 +101,15 @@ class EmployeeService(
         return true
     }
 
-    fun forgetPasswordMail(employeeId: String, mailAddress: String) {
-        val employee = employeeRepository.findByMailAddress(mailAddress).orElse(null) ?: return
-        if (employee.mailAddress == mailAddress) {
-            employee.mailAddress = mailAddress
+    fun forgetPasswordMail(employeeId: String, mailAddress: String): HashMap<String, Boolean> {
+        val employee = employeeRepository.findById(employeeId).orElse(null) ?: return hashMapOf("result" to false)
+        val tmp = employeeRepository.findByMailAddress(mailAddress).orElse(null) ?: return hashMapOf("result" to false)
+        val employeeId2 = tmp.employeeId
+        if (employee.employeeId != employeeId2) {
+            return hashMapOf("result" to false)
         }
+        sendForgetPasswordMail(employee.mailAddress, UUID.randomUUID().toString())
+        return hashMapOf("result" to true)
     }
 
     fun changePassword(authInfo: AuthInfo, oldPassword: String, newPassword: String): Boolean {
