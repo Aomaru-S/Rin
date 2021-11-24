@@ -18,7 +18,7 @@ data class Employee(
     val gender: Boolean?,
     val birthday: Date,
     @Column(name = "hourly_wage")
-    val hourlyWage: Int,
+    var hourlyWage: Int,
     @Column(name = "is_android_notification")
     val isAndroid: Boolean,
     var roleId: String,

@@ -34,6 +34,7 @@ class EmployeeService(
             addEmployeeForm.lastName ?: "",
             addEmployeeForm.gender,
             birthday,
+            1000,
             false,
             "3",
             addEmployeeForm.mailAddress ?: ""
