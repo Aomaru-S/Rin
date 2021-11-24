@@ -21,7 +21,7 @@ class ReservationController (
     fun reservationEntry(model: Model): String {
         model.addAttribute("courseList",  reservationService.getCourse())
         model.addAttribute("tableList",  reservationService.getTable())
-        return "ReservationEntry"
+        return "ReservationEntryPage"
     }
 
     @PostMapping("/reservation_registration")

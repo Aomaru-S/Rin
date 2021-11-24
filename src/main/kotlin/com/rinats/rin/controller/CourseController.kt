@@ -16,41 +16,36 @@ class CourseController(
     val courseService: CourseService
 ) {
 
-    @NonAuth
     @PostMapping("/course_registration")
     fun courseRegistration(
         @ModelAttribute
         courseRegistrationForm: CourseForm,
     ): String {
         courseService.courseRegistration(courseRegistrationForm.name ?: "")
-        return "TopPage"
+        return "CourseRegistrationPage"
     }
 
-    @NonAuth
     @GetMapping("/course_check")
     fun courseCheck(model: Model): String {
         model.addAttribute("courseList", courseService.getCourse())
         return "CourceCheckPage"
     }
 
-    @NonAuth
-    @PostMapping("/cource_edit")
+    @PostMapping("/course_edit")
     fun courseEdit(model: Model, courseForm: CourseForm): String {
         model.addAttribute("id", courseForm.id)
         model.addAttribute("name", courseForm.name)
         return "CourseEditPage"
     }
 
-    @NonAuth
-    @PostMapping("/cource_edit_conf")
+    @PostMapping("/course_edit_conf")
     fun courseEditConf(model: Model, courseForm: CourseForm): String {
         model.addAttribute("id", courseForm.id)
         model.addAttribute("name", courseForm.name)
         return "CourseEditConfPage"
     }
 
-    @NonAuth
-    @PostMapping("/cource_edit_complete")
+    @PostMapping("/course_edit_complete")
     fun courseEditComplete(model: Model, courseForm: CourseForm): String {
         courseService.courseUpdate(courseForm.id?.toString() ?: "0", courseForm.name ?: "")
         return "CourseEditConfPage"
