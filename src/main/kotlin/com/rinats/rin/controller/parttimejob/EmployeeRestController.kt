@@ -1,24 +1,23 @@
 package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.model.Employee
-import com.rinats.rin.service.AuthInfoService
+import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestAttribute
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
-@Controller
-class AuthInfoController(
+@RestController
+class EmployeeRestController(
     @Autowired
-    private val authInfoService: AuthInfoService
+    private val employeeService: EmployeeService
 ) {
-    @PostMapping("/password")
+    @PostMapping("change_password")
     fun changePassword(
         @RequestAttribute employee: Employee,
-        @RequestParam oldPassword: String,
-        @RequestParam newPassword: String
-    ): Boolean {
-        return authInfoService.changePassword(employee.employeeId, oldPassword, newPassword)
+        @RequestParam(name = "mail_address") mailAddress: String
+    ) {
+        employeeService.changeMailAddress(employee.employeeId, mailAddress)
     }
 }

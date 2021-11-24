@@ -19,7 +19,8 @@ data class Employee(
     val birthday: Date,
     @Column(name = "is_android_notification")
     val isAndroid: Boolean,
-    var roleId: String
+    var roleId: String,
+    var mailAddress: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

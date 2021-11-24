@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import javax.servlet.http.HttpServletRequest
 
 @Controller
-class PartTimeJobController {
+class PartTimeJobRestController {
     @PartTimeJob
     @GetMapping("/part_time_job_top")
     fun partTimeJobTop(request: HttpServletRequest): String {

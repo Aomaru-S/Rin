@@ -35,7 +35,8 @@ class EmployeeService(
             addEmployeeForm.gender,
             birthday,
             false,
-            "3"
+            "3",
+            addEmployeeForm.mailAddress ?: ""
         )
 
         val date = Date().apply {
@@ -88,6 +89,20 @@ class EmployeeService(
         return true
     }
 
+    fun changeMailAddress(employeeId: String, mailAddress: String): Boolean {
+        val employee = employeeRepository.findById(employeeId).orElse(null) ?: return false
+        employee.mailAddress = mailAddress
+        employeeRepository.save(employee)
+        return true
+    }
+
+    fun forgetPasswordMail(employeeId: String, mailAddress: String) {
+        val employee = employeeRepository.findByMailAddress(mailAddress).orElse(null) ?: return
+        if (employee.mailAddress == mailAddress) {
+            employee.mailAddress = mailAddress
+        }
+    }
+
     private fun getAndUpdateSequence(): Int {
         val next = sequenceNumberRepository.findById("employee_id").get().nextNumber
         val sequenceNumber = sequenceNumberRepository.findById("employee_id").get()
@@ -114,5 +129,16 @@ class EmployeeService(
         sender.send(message)
     }
 
-
+    private fun sendForgetPasswordMail (
+        mailAddress: String
+    ) {
+        val message = SimpleMailMessage()
+        message.setFrom("info@rin-ats.com")
+        message.setTo(mailAddress)
+        message.setSubject("パスワード再設定URLのお知らせ")
+        message.setText(
+            "Rinシステムのパスワード再設定をするには、以下のリンクを踏んでください。" +
+                    ""
+        )
+    }
 }

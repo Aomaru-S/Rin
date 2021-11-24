@@ -28,5 +28,6 @@ class AuthUtil {
             return DigestUtils.sha512Hex(password + salt)
         }
 
+
     }
 }
