@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestAttribute
 import org.springframework.web.bind.annotation.RequestParam
 
-@Controller
+@Controller("api/v1/auth_info")
 class AuthInfoRestController(
     @Autowired
     private val authInfoService: AuthInfoService
