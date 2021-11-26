@@ -16,10 +16,8 @@ class HourlyWageService(
     }
 
     fun hourlyWageUpdate(employeeId: String, hourlyWage: Int) {
-        if (employeeRepository.findById(employeeId).isEmpty) {
-            val employee = employeeRepository.findById(employeeId).orElse(null) ?: return
-            employee.hourlyWage = hourlyWage
-            employeeRepository.save(employee)
-        }
+        val employee = employeeRepository.findById(employeeId).orElse(null) ?: return
+        employee.hourlyWage = hourlyWage
+        employeeRepository.save(employee)
     }
 }

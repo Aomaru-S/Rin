@@ -5,9 +5,9 @@ import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
-@Table(name = "employee_level")
+@Table(name = "labor")
 
-data class EmployeeLevel(
+data class Labor(
     @Id
     @Column(name = "employee_id")
     val employeeId: String,

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>労働力編集画面</title>
+</head>
+<body>
+<div align="center">
+    <h1>労働力編集</h1>
+    <table border="1">
+    <tr>
+        <th>シークバー</th>
+    </tr>
+        <tr>
+            <td>
+                <form action="#" th:action="@{/labor_edit_check}" method="post">
+                    <h2 th:text="${name}"></h2>
+                    <input type="range" name="level" th:value="${level}" min="1" max="5" step="1">
+                    <input type="submit" value="確認">
+                </form>
+            </td>
+            <td>
+                <div id="value" th:value="${level}">
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
