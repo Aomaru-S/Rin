@@ -27,7 +27,7 @@ class ReservationController (
     @PostMapping("/reservation_registration")
     fun reservationRegistration(
         request: HttpServletRequest,
-        reservationForm: ReservationForm,
+        reservationForm: ReservationForm
     ) {
         val employee = request.getAttribute("employee") as Employee
         reservationService.reservationRegistration(
