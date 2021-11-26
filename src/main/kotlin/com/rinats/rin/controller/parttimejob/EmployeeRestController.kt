@@ -21,7 +21,7 @@ class EmployeeRestController(
     @PostMapping("/change_mailAddress")
     fun changeMailAddress(
         @RequestAttribute employee: Employee,
-        @Validated mailAddress: String
+        mailAddress: String
     ): HashMap<String, Boolean> {
         val result = employeeService.changeMailAddress(employee.employeeId, mailAddress)
         return hashMapOf("result" to result)

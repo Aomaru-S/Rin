@@ -19,7 +19,6 @@ class AuthInfoRestController(
     @PostMapping("/password")
     fun changePassword(
         @RequestAttribute employee: Employee,
-        @RequestParam(name = "employee_id") employeeId: String,
         @RequestParam oldPassword: String,
         @RequestParam newPassword: String
     ): Boolean {

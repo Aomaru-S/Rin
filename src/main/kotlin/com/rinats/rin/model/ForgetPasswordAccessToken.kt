@@ -9,8 +9,8 @@ import javax.persistence.Table
 @Entity
 class ForgetPasswordAccessToken(
     @Id
-    @Column(name = "employee_id", nullable = false, length = 6)
-    val id: String? = null,
     @Column(name = "uuid", length = 36)
-    val uuid: String? = null
+    val uuid: String? = null,
+    @Column(name = "employee_id", nullable = false, length = 6)
+    val employeeId: String? = null
 )

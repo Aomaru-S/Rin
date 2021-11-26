@@ -57,6 +57,7 @@ class AuthInterceptor(
         val employee = employeeRepository.findById(employeeId).get()
 
         if (!checkAccessToken(accessToken)) {
+            System.err.println("accessToken")
             response.sendError(401)
             return false
         }
@@ -66,6 +67,7 @@ class AuthInterceptor(
         }
 
         if (!checkExpire(authInfoRepository.findByAccessToken(accessToken).get())) {
+            println("expire")
             response.sendError(401)
             return false
         }
