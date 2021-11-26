@@ -7,11 +7,10 @@ import javax.persistence.Table
 
 @Table(name = "forget_password_access_token")
 @Entity
-class ForgetPasswordAccessToken {
+class ForgetPasswordAccessToken(
     @Id
     @Column(name = "employee_id", nullable = false, length = 6)
-    var id: String? = null
-
+    val id: String? = null,
     @Column(name = "uuid", length = 36)
-    var uuid: String? = null
-}
+    val uuid: String? = null
+)
