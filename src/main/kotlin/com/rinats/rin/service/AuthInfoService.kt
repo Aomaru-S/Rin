@@ -47,8 +47,8 @@ class AuthInfoService(
         sendForgetPasswordMail(employee.mailAddress, uuid)
 
         val forgetPasswordAccessToken = ForgetPasswordAccessToken(
-            employeeId,
-            uuid
+            uuid,
+            employeeId
         )
         forgetPasswordAccessTokenRepository.save(forgetPasswordAccessToken)
         return true

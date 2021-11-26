@@ -26,6 +26,11 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
+        val status = response.status
+        if (status / 100 == 4 || status / 100 == 5) {
+            return true
+        }
+
         val method = getMethod(handler, response) ?: return false
 
         if (checkAuthResource(method)) {

@@ -67,7 +67,7 @@ class AuthInfoController(
         }
         val isExists = forgetPasswordAccessTokenRepository.existsById(uuid)
         if (isExists) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND)
+            response.sendError(404)
         }
 
         return "setei"
