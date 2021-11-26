@@ -101,27 +101,6 @@ class EmployeeService(
         return true
     }
 
-    fun forgetPasswordMail(employeeId: String, mailAddress: String): HashMap<String, Boolean> {
-        val employee = employeeRepository.findById(employeeId).orElse(null) ?: return hashMapOf("result" to false)
-        val tmp = employeeRepository.findByMailAddress(mailAddress).orElse(null) ?: return hashMapOf("result" to false)
-        val employeeId2 = tmp.employeeId
-        if (employee.employeeId != employeeId2) {
-            return hashMapOf("result" to false)
-        }
-        sendForgetPasswordMail(employee.mailAddress, UUID.randomUUID().toString())
-        return hashMapOf("result" to true)
-    }
-
-    fun changePassword(authInfo: AuthInfo, oldPassword: String, newPassword: String): Boolean {
-        val oldDigest = AuthUtil.getDigest(oldPassword, authInfo.salt)
-        val nowDigest = AuthUtil.getDigest(authInfo.password, authInfo.salt)
-        if (oldDigest != nowDigest) {
-            return false
-        }
-        authInfo.password = AuthUtil.getDigest(newPassword, authInfo.salt)
-        return true
-    }
-
     private fun getAndUpdateSequence(): Int {
         val next = sequenceNumberRepository.findById("employee_id").get().nextNumber
         val sequenceNumber = sequenceNumberRepository.findById("employee_id").get()
@@ -146,19 +125,5 @@ class EmployeeService(
                     "パスワード: $password"
         )
         sender.send(message)
-    }
-
-    private fun sendForgetPasswordMail(
-        mailAddress: String,
-        uuid: String
-    ) {
-        val message = SimpleMailMessage()
-        message.setFrom("info@rin-ats.com")
-        message.setTo(mailAddress)
-        message.setSubject("パスワード再設定URLのお知らせ")
-        message.setText(
-            "Rinシステムのパスワード再設定をするには、以下のリンクを踏んでください。" +
-                    "http://localhost/forgetPassword?uuid=$uuid"
-        )
     }
 }

@@ -11,5 +11,4 @@ class PartTimeJobRestController {
     @GetMapping("/part_time_job_top")
     fun partTimeJobTop(request: HttpServletRequest): String {
         return "part_time_job_top"
-    }
-}
+    }}

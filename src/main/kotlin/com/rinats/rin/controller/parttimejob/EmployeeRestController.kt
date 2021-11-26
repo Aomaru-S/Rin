@@ -1,24 +1,29 @@
 package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.model.Employee
+import com.rinats.rin.model.form.ChangePasswordForm
 import com.rinats.rin.repository.AuthInfoRepository
+import com.rinats.rin.service.AuthInfoService
 import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestAttribute
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.constraints.NotBlank
 
 @RestController("api/v1/employee")
 class EmployeeRestController(
     @Autowired
     private val employeeService: EmployeeService,
-    private val authInfoRepository: AuthInfoRepository
+    private val authInfoService: AuthInfoService
 ) {
     @PostMapping("/change_mailAddress")
     fun changeMailAddress(
         @RequestAttribute employee: Employee,
-        @RequestParam(name = "mail_address") mailAddress: String
+        @Validated mailAddress: String
     ): HashMap<String, Boolean> {
         val result = employeeService.changeMailAddress(employee.employeeId, mailAddress)
         return hashMapOf("result" to result)
@@ -27,11 +32,18 @@ class EmployeeRestController(
     @PostMapping("/change_password")
     fun changePassword(
         @RequestAttribute employee: Employee,
-        @RequestParam oldPassword: String,
-        @RequestParam newPassword: String
+        @Validated
+        changePasswordForm: ChangePasswordForm,
+        bindingResult: BindingResult
     ): HashMap<String, Boolean> {
-        val authInfo = authInfoRepository.findById(employee.employeeId).orElse(null) ?: return hashMapOf("result" to false)
-        val result = employeeService.changePassword(authInfo, oldPassword, newPassword)
+        if (bindingResult.hasErrors()) {
+            return hashMapOf("result" to false)
+        }
+        val result = authInfoService.changePassword(
+            employee.employeeId,
+            changePasswordForm.oldPassword,
+            changePasswordForm.newPassword
+        )
         return hashMapOf("result" to result)
     }
 }
