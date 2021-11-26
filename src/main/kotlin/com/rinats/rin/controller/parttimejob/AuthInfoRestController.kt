@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestAttribute
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
-@Controller("api/v1/auth_info")
+@Controller
+@RequestMapping("api/v1/auth_info")
 class AuthInfoRestController(
     @Autowired
     private val authInfoService: AuthInfoService
@@ -29,7 +27,7 @@ class AuthInfoRestController(
     }
 
     @NonAuth
-    @PostMapping("/forgetPassword")
+    @PostMapping("/forget_password")
     fun forgetPassword(
         @Validated
         @ModelAttribute

@@ -8,13 +8,11 @@ import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestAttribute
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.validation.constraints.NotBlank
 
-@RestController("api/v1/employee")
+@RestController
+@RequestMapping("api/v1/employee")
 class EmployeeRestController(
     @Autowired
     private val employeeService: EmployeeService,

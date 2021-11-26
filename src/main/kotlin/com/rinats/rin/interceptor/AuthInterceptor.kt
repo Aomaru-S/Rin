@@ -29,7 +29,6 @@ class AuthInterceptor(
         val method = getMethod(handler, response) ?: return false
 
         if (checkAuthResource(method)) {
-            println(2)
             return true
         }
 

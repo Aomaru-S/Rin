@@ -33,7 +33,10 @@ class AuthInfoService(
         return true
     }
 
-    fun forgetPasswordMail(employeeId: String, mailAddress: String): Boolean {
+    fun forgetPasswordMail(employeeId: String?, mailAddress: String?): Boolean {
+        if (employeeId == null || mailAddress == null) {
+            return false
+        }
         val employee = employeeRepository.findById(employeeId).orElse(null) ?: return false
         val tmp = employeeRepository.findByMailAddress(mailAddress).orElse(null) ?: return false
         val employeeId2 = tmp.employeeId
@@ -60,7 +63,7 @@ class AuthInfoService(
         message.setTo(mailAddress)
         message.setSubject("パスワード再設定URLのお知らせ")
         message.setText(
-            "Rinシステムのパスワード再設定をするには、以下のリンクを踏んでください。" +
+            "Rinシステムのパスワード再設定をするには、以下のリンクを踏んでください。\n" +
                     "http://localhost/forgetPassword?uuid=$uuid"
         )
         sender.send(message)
