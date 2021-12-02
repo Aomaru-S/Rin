@@ -21,8 +21,9 @@ class AuthInfoRestController(
         @RequestAttribute employee: Employee,
         @RequestParam oldPassword: String,
         @RequestParam newPassword: String
-    ): Boolean {
-        return authInfoService.changePassword(employee.employeeId, oldPassword, newPassword)
+    ): HashMap<String, Boolean> {
+        val result= authInfoService.changePassword(employee.employeeId, oldPassword, newPassword)
+        return hashMapOf("result" to result)
     }
 
     @NonAuth
