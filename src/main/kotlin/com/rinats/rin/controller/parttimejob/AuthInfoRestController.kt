@@ -2,6 +2,7 @@ package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.Employee
+import com.rinats.rin.model.form.ChangePasswordForm
 import com.rinats.rin.model.form.ForgetPasswordForm
 import com.rinats.rin.service.AuthInfoService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,10 +20,14 @@ class AuthInfoRestController(
     @PostMapping("/password")
     fun changePassword(
         @RequestAttribute employee: Employee,
-        @RequestParam oldPassword: String,
-        @RequestParam newPassword: String
+        @ModelAttribute @Validated
+        changePasswordForm: ChangePasswordForm,
+        bindingResult: BindingResult
     ): HashMap<String, Boolean> {
-        val result= authInfoService.changePassword(employee.employeeId, oldPassword, newPassword)
+        if (bindingResult.hasErrors()) {
+            return hashMapOf("result" to false)
+        }
+        val result= authInfoService.changePassword(employee.employeeId, changePasswordForm.oldPassword, changePasswordForm.newPassword)
         return hashMapOf("result" to result)
     }
 
