@@ -10,6 +10,7 @@ data class ReservationForm(
     var id: String? = null,
     @field:NotBlank
     var customerName: String? = null,
+    @field:NotBlank
     var courseId: String? = null,
     var dateTime: LocalDateTime? = null,
     @Min(1)

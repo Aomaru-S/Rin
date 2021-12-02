@@ -36,6 +36,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test:2.5.6")
     testImplementation("org.springframework.security:spring-security-test:5.5.1")
     mybatisGenerator("org.mybatis.generator:mybatis-generator-core:1.4.0")
+    implementation ("org.thymeleaf.extras:thymeleaf-extras-java8time")
 }
 
 tasks.withType<KotlinCompile> {

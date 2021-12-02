@@ -34,6 +34,7 @@ class ReservationService(
         employeeId: String,
         tableName: String
     ) {
+        println(customerName)
         if (reservationRepository.findAll().isNullOrEmpty()) {
             val reservation = Reservation("1", customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
             reservationRepository.save(reservation)

@@ -1,5 +1,6 @@
 package com.rinats.rin.controller
 
+import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.Employee
 import com.rinats.rin.model.form.ReservationForm
 import com.rinats.rin.service.ReservationService
@@ -21,7 +22,7 @@ class ReservationController (
     fun reservationEntry(model: Model): String {
         model.addAttribute("courseList",  reservationService.getCourse())
         model.addAttribute("tableList",  reservationService.getTable())
-        return "ReservationEntryPage"
+        return "ReservationEntry"
     }
 
     @PostMapping("/reservation_registration")
@@ -34,18 +35,21 @@ class ReservationController (
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
             reservationForm.dateTime ?: LocalDateTime.now(),
+//            LocalDateTime.now(),
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""
         )
     }
 
+    @NonAuth
     @GetMapping("/reservation_check")
     fun reservationCheck(model: Model): String {
         model.addAttribute("reservation", reservationService.getReservation())
-        return "reservatonCheckPage"
+        return "ReservationCheck"
     }
 
+    @NonAuth
     @PostMapping("/reservation_edit")
     fun reservationEdit(model: Model, reservationForm: ReservationForm): String {
         model.apply {
@@ -56,9 +60,10 @@ class ReservationController (
             addAttribute("numOfPeople", reservationForm.numOfPeople)
             addAttribute("tableName", reservationForm.tableName)
         }
-        return "ReservationEditPage"
+        return "ReservationEditing"
     }
 
+    @NonAuth
     @PostMapping("/reservation_edit_conf")
     fun reservationEditConf(model: Model, reservationForm: ReservationForm): String {
         model.apply {
@@ -69,9 +74,10 @@ class ReservationController (
             addAttribute("numOfPeople", reservationForm.numOfPeople)
             addAttribute("tableName", reservationForm.tableName)
         }
-        return "ReservationEditConfPage"
+        return "ReservationEditingCheck"
     }
 
+    @NonAuth
     @PostMapping("reservation_edit_complete")
     fun reservationEditComplete(model: Model, request: HttpServletRequest, reservationForm: ReservationForm): String {
         val employee = request.getAttribute("employee") as Employee
@@ -84,6 +90,6 @@ class ReservationController (
             employee.employeeId,
             reservationForm.tableName ?: ""
         )
-        return "ReservationEditCompletePage"
+        return "top"
     }
 }
