@@ -14,7 +14,7 @@
             <option th:each="course: ${courseList}" th:text="${course.name}" name="courseId" th:value="${course.id}"></option>
         </select>
     </label><br>
-    日時<input type="datetime-local" name="dateTime" size="22"><br>
+    日時<input type="date" name="dateTime" size="22"><br>
     人数<input type="number" name="numOfPeople" size="22"><br>
     座席
     <label>
@@ -24,7 +24,7 @@
         </select>
     </label>
     <br>
-    <input type="submit" value="確認">
+    <input type="submit" value="登録">
 </form>
 </body>
 </html>

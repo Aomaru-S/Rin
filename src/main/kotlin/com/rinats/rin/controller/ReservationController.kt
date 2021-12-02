@@ -5,11 +5,19 @@ import com.rinats.rin.model.Employee
 import com.rinats.rin.model.form.ReservationForm
 import com.rinats.rin.service.ReservationService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestAttribute
+import org.springframework.web.bind.annotation.SessionAttribute
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 @Controller
@@ -27,19 +35,21 @@ class ReservationController (
 
     @PostMapping("/reservation_registration")
     fun reservationRegistration(
+        @RequestAttribute employee: Employee,
         request: HttpServletRequest,
-        reservationForm: ReservationForm
-    ) {
-        val employee = request.getAttribute("employee") as Employee
+        @Validated
+        reservationForm: ReservationForm,
+        bindingResult: BindingResult
+    ): String {
         reservationService.reservationRegistration(
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
-            reservationForm.dateTime ?: LocalDateTime.now(),
-//            LocalDateTime.now(),
+            reservationForm.dateTime ?: SimpleDateFormat("yyyy-mm-dd").parse(LocalDateTime.now().toString()),
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""
         )
+        return "top"
     }
 
     @NonAuth
@@ -85,7 +95,7 @@ class ReservationController (
             reservationForm.id ?: "",
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
-            reservationForm.dateTime ?: LocalDateTime.now(),
+            (reservationForm.dateTime ?: LocalDateTime.now()) as Date,
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""
