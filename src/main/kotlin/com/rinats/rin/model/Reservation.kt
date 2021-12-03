@@ -1,6 +1,5 @@
 package com.rinats.rin.model
 
-import org.hibernate.annotations.Formula
 import org.springframework.format.annotation.DateTimeFormat
 import java.util.Date
 import javax.persistence.Column
@@ -12,7 +11,6 @@ import javax.persistence.Table
 @Table(name = "reservation")
 data class Reservation (
     @Id
-    @Formula(value = "")
     val id: String,
     @Column(name = "customer_name")
     val customerName: String,

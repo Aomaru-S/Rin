@@ -6,9 +6,9 @@ import com.rinats.rin.model.Table
 import com.rinats.rin.repository.CourseRepository
 import com.rinats.rin.repository.ReservationRepository
 import com.rinats.rin.repository.TableRepository
+import org.mybatis.dynamic.sql.util.kotlin.elements.max
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort
-import org.springframework.data.util.CastUtils
 import org.springframework.stereotype.Service
 import java.util.Date
 
@@ -40,8 +40,7 @@ class ReservationService(
             val reservation = Reservation("1", customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
             reservationRepository.save(reservation)
         } else {
-            println(reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "id")))
-            val id = Integer.parseInt(reservationRepository.findAll().last().id) + 1
+            val id = reservationRepository.findAll().size + 1
             val reservation = Reservation(id.toString(), customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
             reservationRepository.save(reservation)
         }
