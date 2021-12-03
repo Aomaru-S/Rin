@@ -1,0 +1,30 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>予約登録</title>
+</head>
+<body>
+<form action="#" th:action="@{reservation_registration}" method="post">
+    <h1>予約登録</h1>
+    氏名入力<input type="text" name="customerName" value="" size="22"><br>
+    コース名
+    <label>
+        <select required>
+<!--            <option value="" selected></option>-->
+            <option th:each="course: ${courseList}" th:text="${course.name}" name="courseId" th:value="${course.id}"></option>
+        </select>
+    </label><br>
+    日時<input type="date" name="dateTime" size="22"><br>
+    人数<input type="number" name="numOfPeople" size="22"><br>
+    座席
+    <label>
+        <select required>
+<!--            <option value="" selected></option>-->
+            <option th:each="table: ${tableList}" th:text="${table.name}" name="tableId" th:value="${table.name}"></option>
+        </select>
+    </label>
+    <br>
+    <input type="submit" value="登録">
+</form>
+</body>
+</html>

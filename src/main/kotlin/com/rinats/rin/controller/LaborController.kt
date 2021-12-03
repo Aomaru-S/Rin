@@ -37,9 +37,11 @@ class LaborController(
     @NonAuth
     @PostMapping("labor_edit_check")
     fun laborEditCheck(model: Model, employeeLevelForm: EmployeeLevelForm): String {
+        val name = laborService.getByName(employeeLevelForm.employeeId ?: "")
         model.apply {
             addAttribute("employeeId", employeeLevelForm.employeeId)
             addAttribute("level", employeeLevelForm.level)
+            addAttribute("name", name)
         }
         return "LaborEditingCheck"
     }

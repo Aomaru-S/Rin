@@ -1,14 +1,23 @@
 package com.rinats.rin.controller
 
+import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.Employee
 import com.rinats.rin.model.form.ReservationForm
 import com.rinats.rin.service.ReservationService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestAttribute
+import org.springframework.web.bind.annotation.SessionAttribute
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 @Controller
@@ -21,31 +30,36 @@ class ReservationController (
     fun reservationEntry(model: Model): String {
         model.addAttribute("courseList",  reservationService.getCourse())
         model.addAttribute("tableList",  reservationService.getTable())
-        return "ReservationEntryPage"
+        return "ReservationEntry"
     }
 
     @PostMapping("/reservation_registration")
     fun reservationRegistration(
+        @RequestAttribute employee: Employee,
         request: HttpServletRequest,
+        @Validated
         reservationForm: ReservationForm,
-    ) {
-        val employee = request.getAttribute("employee") as Employee
+        bindingResult: BindingResult
+    ): String {
         reservationService.reservationRegistration(
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
-            reservationForm.dateTime ?: LocalDateTime.now(),
+            reservationForm.dateTime ?: SimpleDateFormat("yyyy-mm-dd").parse(LocalDateTime.now().toString()),
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""
         )
+        return "top"
     }
 
+    @NonAuth
     @GetMapping("/reservation_check")
     fun reservationCheck(model: Model): String {
         model.addAttribute("reservation", reservationService.getReservation())
-        return "reservatonCheckPage"
+        return "ReservationCheck"
     }
 
+    @NonAuth
     @PostMapping("/reservation_edit")
     fun reservationEdit(model: Model, reservationForm: ReservationForm): String {
         model.apply {
@@ -56,9 +70,10 @@ class ReservationController (
             addAttribute("numOfPeople", reservationForm.numOfPeople)
             addAttribute("tableName", reservationForm.tableName)
         }
-        return "ReservationEditPage"
+        return "ReservationEditing"
     }
 
+    @NonAuth
     @PostMapping("/reservation_edit_conf")
     fun reservationEditConf(model: Model, reservationForm: ReservationForm): String {
         model.apply {
@@ -69,9 +84,10 @@ class ReservationController (
             addAttribute("numOfPeople", reservationForm.numOfPeople)
             addAttribute("tableName", reservationForm.tableName)
         }
-        return "ReservationEditConfPage"
+        return "ReservationEditingCheck"
     }
 
+    @NonAuth
     @PostMapping("reservation_edit_complete")
     fun reservationEditComplete(model: Model, request: HttpServletRequest, reservationForm: ReservationForm): String {
         val employee = request.getAttribute("employee") as Employee
@@ -79,11 +95,11 @@ class ReservationController (
             reservationForm.id ?: "",
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
-            reservationForm.dateTime ?: LocalDateTime.now(),
+            (reservationForm.dateTime ?: LocalDateTime.now()) as Date,
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""
         )
-        return "ReservationEditCompletePage"
+        return "top"
     }
 }
