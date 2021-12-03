@@ -1,65 +1,38 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.ShiftHope
-import com.rinats.rin.model.form.ShiftHopeForm
-import com.rinats.rin.model.response.ShiftHopeResponse
-import com.rinats.rin.repository.ShiftHopeRepository
+import com.rinats.rin.model.response.ShiftResponse
+import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.ShiftRepository
-import com.rinats.rin.util.DateUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.text.DateFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.sql.Date
 import java.util.*
 import kotlin.collections.ArrayList
 
 @Service
 class ShiftService(
     @Autowired
-    val shiftHopeRepository: ShiftHopeRepository,
-    val shiftRepository: ShiftRepository
+    val shiftRepository: ShiftRepository,
+    val employeeRepository: EmployeeRepository
 ) {
-    fun getShiftHope(employeeId: String, year: Int, month: Int): ShiftHopeResponse {
-        val shifts = shiftHopeRepository.findByEmployeeId(employeeId)
-        val days = ArrayList<Int>()
+    fun getShift(year: Int, month: Int): ShiftResponse? {
+        val shifts = shiftRepository.findAll()
+        val days = ArrayList<ShiftDay>()
         shifts.forEach {
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = it.date.time
-            val y = calendar.get(Calendar.YEAR)
-            val m = calendar.get(Calendar.MONTH)
-            if (year == y && month == m) {
-                days.add(calendar.get(Calendar.DAY_OF_MONTH))
+            if (calendar.get(Calendar.YEAR) == year &&
+                calendar.get(Calendar.MONTH) + 1 == month
+            ) {
+                val employee = employeeRepository.findById(it.employeeId).orElse(null) ?: return null
+                days.add(ShiftDay(calendar.get(Calendar.DAY_OF_MONTH), employee.firstName, employee.lastName))
             }
         }
-
-        return ShiftHopeResponse(year, month, days)
+        return ShiftResponse(year, month, days)
     }
 
-    fun submitShift(shiftHopeForm: ShiftHopeForm, employeeId: String): Boolean {
-        val year = shiftHopeForm.year
-        val month = shiftHopeForm.month
-
-        shiftHopeForm.days.forEach { day ->
-            println("$year$month$day")
-            val date = try {
-                DateUtil.getDate(year, month, day)
-            } catch (e: ParseException) {
-                return false
-            }
-
-            println(date)
-            val shiftHope = ShiftHope(
-                Date(date.time),
-                employeeId
-            )
-            shiftHopeRepository.save(shiftHope)
-        }
-        return true
-    }
-
-    fun deleteShiftHope(employeeId: String): Boolean {
-        return shiftHopeRepository.deleteByEmployeeId(employeeId)
-    }
+    data class ShiftDay(
+        val day: Int,
+        val firstName: String,
+        val lastName: String
+    )
 }

@@ -13,7 +13,7 @@ data class AuthInfo(
     @Column(name = "employee_id")
     val employeeId: String,
     var password: String,
-    val salt: String,
+    var salt: String,
     @Column(name = "is_lockout")
     val isLockout: Boolean,
     @Column(name = "access_token")

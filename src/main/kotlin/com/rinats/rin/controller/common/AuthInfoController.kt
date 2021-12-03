@@ -11,10 +11,11 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.SessionAttribute
 import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.HttpSession
 
 @Controller
 class AuthInfoController(
@@ -58,18 +59,38 @@ class AuthInfoController(
 
     @NonAuth
     @GetMapping("/reset_password")
-    fun resetPassword(
+    fun resetPasswordForm(
+        session: HttpSession,
         response: HttpServletResponse,
         @RequestParam(required = false) uuid: String?
     ): String {
         if (uuid == null || uuid.isBlank()) {
-            return "redirect:https://google.com"
-        }
-        val isExists = forgetPasswordAccessTokenRepository.existsById(uuid)
-        if (isExists) {
             response.sendError(404)
         }
+        val isExist = if (uuid != null) {
+            forgetPasswordAccessTokenRepository.existsById(uuid)
+        } else {
+            false
+        }
+        if (!isExist) {
+            response.sendError(404)
+        }
+        session.setAttribute("uuid", uuid)
+        return "reset_password"
+    }
 
-        return "setei"
+    @NonAuth
+    @PostMapping("/reset_password")
+    fun resetPassword(
+        @SessionAttribute
+        uuid: String?,
+        @RequestParam(name = "new_password")
+        newPassword: String?
+    ): String {
+        if (uuid == null || uuid.isEmpty() || newPassword == null) {
+            return "redirect:https://google.com"
+        }
+        authInfoService.resetPassword(uuid, newPassword)
+        return "reset_password"
     }
 }

@@ -21,7 +21,7 @@ class AuthInfoService(
     private val forgetPasswordAccessTokenRepository: ForgetPasswordAccessTokenRepository,
     private val sender: MailSender
 ) {
-    fun changePassword(employeeId: String, oldPassword: String, newPassword: String): Boolean{
+    fun changePassword(employeeId: String, oldPassword: String, newPassword: String): Boolean {
         val authInfo = authInfoRepository.findById(employeeId).orElse(null) ?: return false
         val oldDigest = AuthUtil.getDigest(oldPassword, authInfo.salt)
         if (authInfo.password != oldDigest) {
@@ -54,6 +54,24 @@ class AuthInfoService(
         return true
     }
 
+    fun resetPassword(
+        uuid: String,
+        newPassword: String
+    ): Boolean {
+        val fpa = forgetPasswordAccessTokenRepository.findById(uuid).orElse(null) ?: return false
+        if (fpa.employeeId == null) {
+            return false
+        }
+        val authInfo = authInfoRepository.findById(fpa.employeeId).orElse(null) ?: return false
+        val newSalt = AuthUtil.generateSalt()
+        val newDigest = AuthUtil.getDigest(newPassword, newSalt)
+
+        authInfo.salt = newSalt
+        authInfo.password = newDigest
+
+        return true
+    }
+
     private fun sendForgetPasswordMail(
         mailAddress: String,
         uuid: String
@@ -64,7 +82,7 @@ class AuthInfoService(
         message.setSubject("パスワード再設定URLのお知らせ")
         message.setText(
             "Rinシステムのパスワード再設定をするには、以下のリンクを踏んでください。\n" +
-                    "http://localhost/forgetPassword?uuid=$uuid"
+                    "http://localhost/reset_password?uuid=$uuid"
         )
         sender.send(message)
     }

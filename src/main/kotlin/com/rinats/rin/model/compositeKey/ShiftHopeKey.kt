@@ -7,6 +7,5 @@ data class ShiftHopeKey(
     var date: Date,
     var employeeId: String
 ) : Serializable {
-    constructor() : this(Date(0), "") {
-    }
+    constructor() : this(Date(0), "")
 }

@@ -1,18 +1,17 @@
 package com.rinats.rin.model
 
+import com.rinats.rin.model.compositeKey.SettingId
 import javax.persistence.Column
+import javax.persistence.EmbeddedId
 import javax.persistence.Entity
-import javax.persistence.Id
 import javax.persistence.Table
 
-@Entity
 @Table(name = "setting")
-data class Setting (
-    @Id
-    @Column(name = "setting_key")
-    val settingKey: String,
-    @Column(name = "setting_value")
-    val settingValue: String,
-    @Column(name = "value_type")
-    val valueType: String
-)
+@Entity
+open class Setting {
+    @EmbeddedId
+    open var id: SettingId? = null
+
+    @Column(name = "setting_value", length = 128)
+    open var settingValue: String? = null
+}

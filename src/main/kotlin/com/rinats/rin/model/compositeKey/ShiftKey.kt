@@ -6,4 +6,6 @@ import java.util.*
 data class ShiftKey(
     val date: Date,
     val employeeId: String
-) : Serializable
+) : Serializable {
+    constructor() : this(Date(0), "")
+}

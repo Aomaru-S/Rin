@@ -4,6 +4,7 @@ import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.Employee
 import com.rinats.rin.model.form.ChangePasswordForm
 import com.rinats.rin.model.form.ForgetPasswordForm
+import com.rinats.rin.repository.ForgetPasswordAccessTokenRepository
 import com.rinats.rin.service.AuthInfoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("api/v1/auth_info")
 class AuthInfoRestController(
     @Autowired
-    private val authInfoService: AuthInfoService
+    private val authInfoService: AuthInfoService,
+    private val forgetPasswordAccessTokenRepository: ForgetPasswordAccessTokenRepository
 ) {
     @PostMapping("/password")
     fun changePassword(
