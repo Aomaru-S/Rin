@@ -26,10 +26,14 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
+        val status = response.status
+        if (status / 100 == 4 || status / 100 == 5) {
+            return true
+        }
+
         val method = getMethod(handler, response) ?: return false
 
         if (checkAuthResource(method)) {
-            println(2)
             return true
         }
 
@@ -58,6 +62,7 @@ class AuthInterceptor(
         val employee = employeeRepository.findById(employeeId).get()
 
         if (!checkAccessToken(accessToken)) {
+            System.err.println("accessToken")
             response.sendError(401)
             return false
         }
@@ -67,6 +72,7 @@ class AuthInterceptor(
         }
 
         if (!checkExpire(authInfoRepository.findByAccessToken(accessToken).get())) {
+            println("expire")
             response.sendError(401)
             return false
         }

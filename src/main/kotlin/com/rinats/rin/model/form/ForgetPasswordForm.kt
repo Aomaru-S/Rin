@@ -4,9 +4,9 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
 data class ForgetPasswordForm(
-    @NotBlank
-    val employeeId: String,
-    @NotBlank
-    @Email
-    val mailAddress: String
+    @field:NotBlank
+    var employeeId: String? = null,
+    @field:NotBlank
+    @field:Email
+    var mailAddress: String? = null
 )

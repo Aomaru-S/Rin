@@ -46,5 +46,11 @@
     <input type="text" name="access_token" placeholder="AccessToken">
     <input type="submit" value="Add">
 </form>
+<form action="#" th:action="@{/setting_test}" th:object="${setting}" method="get">
+    <input type="text" th:field="${setting.id.employeeId}" placeholder="EmployeeId">
+    <input type="text" th:field="${setting.id.settingKey}" placeholder="SettingKey">
+    <input type="text" th:field="${setting.settingValue}" placeholder="SettingValue">
+    <input type="submit" value="Setting">
+</form>
 </body>
 </html>

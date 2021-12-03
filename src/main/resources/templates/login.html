@@ -8,13 +8,13 @@
 <h1>ログイン画面</h1>
 <form action="#" th:action="@{/perform_login}" th:object="${authForm}" method="post">
     <label>
-        <input type="text" th:field="${authForm.employeeId}" placeholder="従業員ID"><br>
-    </label>
+        <input type="text" th:field="${authForm.employeeId}" placeholder="従業員ID">
+    </label><br>
     <label>
-        <input type="text" th:field="${authForm.password}" placeholder="パスワード"><br>
-    </label>
-    <input type="submit" value="ログイン"><br>
-    <a href="https://www.google.com">パスワード再設定</a>
+        <input type="text" th:field="${authForm.password}" placeholder="パスワード">
+    </label><br>
+    <input type="submit" value="ログイン">
 </form>
+パスワードを忘れた場合は<a th:href="@{/forget_password}">こちら</a>
 </body>
 </html>
