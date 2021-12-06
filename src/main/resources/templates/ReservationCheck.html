@@ -4,7 +4,6 @@
     <title>予約確認</title>
 </head>
 <body>
-<h1>予約確認機能</h1>
 <h1>予約確認</h1>
 <div style="align: center">
     <table border="1">
@@ -15,14 +14,17 @@
             <th>人数</th>
             <th>座席</th>
         </tr>
-        <tr th:each="reservation: ${reservationList}">
+        <tr th:inline="text" th:each="reservation, item: ${reservationList}">
             <td th:text="${reservation.customerName}"></td>
-            <td th:each="course: ${courseName}" th:text="${course}"></td>
-            <td th:text="${reservation.dateTime}"></td>
+            <td th:text="${courseName[item.count -1]}"></td>
+            <td th:text="${#temporals.format(reservation.dateTime, 'yyyy/MM/dd HH:mm')}"></td>
+
+
             <td th:text="${reservation.numOfPeople}"></td>
             <td th:text="${reservation.tableName}"></td>
             <td>
-                <form action="#" th:action="@{/reservation_edit}" method="post">
+                <form action="#" th:action="@{reservation_edit}" method="post">
+                    <input type="hidden" name="id" th:value="${reservation.id}">
                     <input type="hidden" name="customerName" th:value="${reservation.customerName}">
                     <input type="hidden" name="courseId" th:value="${reservation.courseId}">
                     <input type="hidden" name="dateTime" th:value="${reservation.dateTime}">

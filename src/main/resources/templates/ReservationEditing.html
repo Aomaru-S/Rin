@@ -13,16 +13,16 @@
         <select name="courseId" required>
             <option th:each="course: ${courseList}" th:text="${courseName}" th:value="${courseId}"></option>
         </select>
-    </label>
-    日時<input type="date" name="dateTime" th:valut="${dateTime}">
-    人数<input type="text" name="numOfPeople" th:value="${numOfPeople}">
+    </label><br>
+    日時<input th:type="date" name="dateTime" th:value="${#dates.format(dateTime, 'yyyy/MM/dd/hh/mm')}"><br>
+    人数<input type="text" name="numOfPeople" th:value="${numOfPeople}"><br>
     座席
     <label>
         <select name="tableName" required>
             <option value="" selected></option>
             <option th:each="table: ${tableList}" th:text="${table.name}" th:value="${table.name}"></option>
         </select>
-    </label>
+    </label><br>
 </div>
 </body>
 </html>

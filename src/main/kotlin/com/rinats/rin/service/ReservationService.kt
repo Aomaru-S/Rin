@@ -8,6 +8,7 @@ import com.rinats.rin.repository.ReservationRepository
 import com.rinats.rin.repository.TableRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.Date
 
 @Service
@@ -29,12 +30,12 @@ class ReservationService(
     fun reservationRegistration(
         customerName: String,
         courseId: String,
-        dateTime: Date,
+        dateTime: LocalDateTime,
         numOfPeople: Int,
         employeeId: String,
         tableName: String
     ) {
-        if (reservationRepository.findAll().isNullOrEmpty()) {
+        if (reservationRepository.findAll().isEmpty()) {
             val reservation = Reservation("1", customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
             reservationRepository.save(reservation)
         } else {
@@ -64,7 +65,7 @@ class ReservationService(
         id: String,
         customerName: String,
         courseId: String,
-        dateTime: Date,
+        dateTime: LocalDateTime,
         numOfPeople: Int,
         employeeId: String,
         tableName: String

@@ -44,7 +44,7 @@ class ReservationController (
         reservationService.reservationRegistration(
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
-            reservationForm.dateTime ?: SimpleDateFormat("yyyy-mm-dd").parse(LocalDateTime.now().toString()),
+            reservationForm.dateTime ?: LocalDateTime.now(),
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""
@@ -60,7 +60,12 @@ class ReservationController (
     }
 
     @PostMapping("/reservation_edit")
-    fun reservationEdit(model: Model, reservationForm: ReservationForm): String {
+    fun reservationEdit(
+        model: Model,
+        @Validated
+        reservationForm: ReservationForm,
+        bindingResult: BindingResult
+    ): String {
         model.apply {
             addAttribute("id", reservationForm.id)
             addAttribute("customerName", reservationForm.customerName)
@@ -76,7 +81,12 @@ class ReservationController (
     }
 
     @PostMapping("/reservation_edit_conf")
-    fun reservationEditConf(model: Model, reservationForm: ReservationForm): String {
+    fun reservationEditConf(
+        model: Model,
+        @Validated
+        reservationForm: ReservationForm,
+        bindingResult: BindingResult
+    ): String {
         model.apply {
             addAttribute("id", reservationForm.id)
             addAttribute("customerName", reservationForm.customerName)
@@ -95,7 +105,7 @@ class ReservationController (
             reservationForm.id ?: "",
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
-            (reservationForm.dateTime ?: LocalDateTime.now()) as Date,
+            reservationForm.dateTime ?: LocalDateTime.now(),
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""
