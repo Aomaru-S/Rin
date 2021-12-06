@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>予約編集画面</title>
 </head>
 <body>
-
+<div style="align: center">
+    <h1>予約編集</h1>
+    氏名入力<input type="text" name="customerName" th:value="${customerName}" size="22"><br>
+    コース名
+    <label>
+        <select name="courseId" required>
+            <option th:each="course: ${courseList}" th:text="${courseName}" th:value="${courseId}"></option>
+        </select>
+    </label>
+    日時<input type="date" name="dateTime" th:valut="${dateTime}">
+    人数<input type="text" name="numOfPeople" th:value="${numOfPeople}">
+    座席
+    <label>
+        <select name="tableName" required>
+            <option value="" selected></option>
+            <option th:each="table: ${tableList}" th:text="${table.name}" th:value="${table.name}"></option>
+        </select>
+    </label>
+</div>
 </body>
 </html>
