@@ -5,11 +5,10 @@ import com.rinats.rin.model.Employee
 import com.rinats.rin.model.Setting
 import com.rinats.rin.repository.SettingRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpMethod
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
 @RestController
@@ -19,16 +18,50 @@ class TestRestController(
     private val settingRepository: SettingRepository
 ) {
 
+    @CrossOrigin(methods = [RequestMethod.GET])
     @NonAuth
     @GetMapping("/public")
-    fun index(): Map<String, String> {
-        return HashMap(hashMapOf("text" to "Hello, World! This is public page."))
+    fun getPublic(
+        a: String?,
+    ): String {
+        println(a)
+//        val list = arrayListOf("a", "b")
+//        println(list[-1])
+        return "get: $a"
+    }
+
+    @CrossOrigin(methods = [RequestMethod.POST, RequestMethod.OPTIONS])
+    @NonAuth
+    @PostMapping("/public")
+    fun public(
+        a: String?
+    ): String {
+        println(a)
+//        val list = arrayListOf("a", "b")
+//        println(list[-1])
+        return "post: $a"
+    }
+
+    @NonAuth
+    @GetMapping("/api/public")
+    fun apiPublic(): String {
+        return "/api/public"
     }
 
     @GetMapping("/private")
-    fun private(): Map<String, String> {
-        return HashMap(hashMapOf("text" to "Hello, World! This is private page."))
+    fun private(
+        a: String?
+    ): String {
+        println(a)
+        return "/private"
     }
+
+    @GetMapping("/api/private")
+    fun apiPrivate(): HashMap<String, String> {
+        return hashMapOf("result" to "private")
+    }
+
+
     @NonAuth
     @GetMapping("/mail")
     fun mail() {
@@ -42,14 +75,11 @@ class TestRestController(
     }
 
     @GetMapping("/employee")
-    fun employee(request: HttpServletRequest): Employee {
-        return request.getAttribute("employee") as Employee
-    }
-
-    @NonAuth
-    @GetMapping("/test")
-    fun test() {
-        println("Hellooooooooooooooooooooooooooooooooooooooooooo")
+    fun employee(
+        @RequestAttribute
+        employee: Employee
+    ): Employee {
+        return employee
     }
 
     @NonAuth

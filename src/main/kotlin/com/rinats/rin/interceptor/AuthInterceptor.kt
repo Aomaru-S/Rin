@@ -9,6 +9,7 @@ import com.rinats.rin.model.Employee
 import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.repository.EmployeeRepository
 import org.springframework.core.annotation.AnnotationUtils
+import org.springframework.http.HttpMethod
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import java.lang.reflect.Method
@@ -26,9 +27,18 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
-        val status = response.status
-        if (status / 100 == 4 || status / 100 == 5) {
+        if (HttpMethod.OPTIONS.matches(request.method)) {
             return true
+        }
+
+        val status = response.status
+        if (status == 404) {
+            response.sendError(404)
+            return false
+        }
+        if (status / 100 == 4 || status / 100 == 5) {
+            response.sendError(status)
+            return false
         }
 
         val method = getMethod(handler, response) ?: return false
@@ -39,9 +49,15 @@ class AuthInterceptor(
 
         var accessToken: String? = null
 
-        when(request.requestURI.startsWith("/api/v1")) {
+        val isApi = request.requestURI.startsWith("/api")
+
+        when(isApi) {
             true -> {
-                accessToken = request.getHeader("Authorization") ?: return false
+                accessToken = request.getHeader("Authorization")
+                if (accessToken == null) {
+                    response.sendError(401)
+                    return false
+                }
             }
             false -> {
                 var at: String? = null
@@ -62,7 +78,10 @@ class AuthInterceptor(
         val employee = employeeRepository.findById(employeeId).get()
 
         if (!checkAccessToken(accessToken)) {
-            System.err.println("accessToken")
+            if (!isApi) {
+                response.sendRedirect("/login")
+                return true
+            }
             response.sendError(401)
             return false
         }
@@ -72,7 +91,10 @@ class AuthInterceptor(
         }
 
         if (!checkExpire(authInfoRepository.findByAccessToken(accessToken).get())) {
-            println("expire")
+            if (!isApi) {
+                response.sendRedirect("/login")
+                return false
+            }
             response.sendError(401)
             return false
         }
