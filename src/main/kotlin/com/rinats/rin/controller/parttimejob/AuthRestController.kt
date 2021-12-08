@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api/auth")
-@CrossOrigin
+@CrossOrigin(methods = [RequestMethod.POST, RequestMethod.OPTIONS])
 class AuthRestController(
     @Autowired
     val authService: AuthService

@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("api/v1/auth_info")
+@RequestMapping("api/auth_info")
 class AuthInfoRestController(
     @Autowired
     private val authInfoService: AuthInfoService,

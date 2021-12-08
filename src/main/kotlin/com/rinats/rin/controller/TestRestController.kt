@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
 @RestController
+@CrossOrigin(methods = [RequestMethod.POST, RequestMethod.OPTIONS])
 class TestRestController(
     @Autowired
     private val sender: MailSender,
@@ -30,15 +31,17 @@ class TestRestController(
         return "get: $a"
     }
 
-    @CrossOrigin(methods = [RequestMethod.POST, RequestMethod.OPTIONS])
+//    @CrossOrigin(methods = [RequestMethod.POST, RequestMethod.OPTIONS])
     @NonAuth
     @PostMapping("/public")
     fun public(
         request: HttpServletRequest,
         @RequestParam
-        a: String?
+        a: String?,
+        b: String?
     ): String {
         println("RequestParam: $a")
+        println(b)
 //        val list = arrayListOf("a", "b")
 //        println(list[-1])
         return "{\"a\":\"$a\"}"
