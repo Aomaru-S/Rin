@@ -34,12 +34,14 @@ class TestRestController(
     @NonAuth
     @PostMapping("/public")
     fun public(
+        request: HttpServletRequest,
+        @RequestParam
         a: String?
     ): String {
-        println(a)
+        println("RequestParam: $a")
 //        val list = arrayListOf("a", "b")
 //        println(list[-1])
-        return "post: $a"
+        return "{\"a\":\"$a\"}"
     }
 
     @NonAuth

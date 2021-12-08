@@ -23,6 +23,7 @@ class AuthController(
     @NonAuth
     @GetMapping("/login")
     fun authForm(model: Model): String {
+        println("get login")
         model.addAttribute("authForm", AuthForm())
         return "login"
     }
