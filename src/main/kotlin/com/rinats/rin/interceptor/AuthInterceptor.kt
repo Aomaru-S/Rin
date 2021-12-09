@@ -6,8 +6,10 @@ import com.rinats.rin.annotation.StoreManager
 import com.rinats.rin.annotation.TentativeEmployee
 import com.rinats.rin.model.AuthInfo
 import com.rinats.rin.model.Employee
+import com.rinats.rin.model.LaborId
 import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.repository.EmployeeRepository
+import com.rinats.rin.repository.LaborRepository
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.http.HttpMethod
 import org.springframework.web.method.HandlerMethod
@@ -146,14 +148,10 @@ class AuthInterceptor(
         val hasPartTimeJob = AnnotationUtils.findAnnotation(method, PartTimeJob::class.java) != null
         val hasTentativeEmployee = AnnotationUtils.findAnnotation(method, TentativeEmployee::class.java) != null
 
-        val roleId = employee.roleId
-        if (hasStoreManager && roleId == "1") {
+        if (hasStoreManager && employee.roleId == "1") {
             return true
         }
-        if (hasPartTimeJob && roleId == "2") {
-            return true
-        }
-        if (hasTentativeEmployee && roleId == "3") {
+        if (hasPartTimeJob && employee.roleId == "2") {
             return true
         }
 

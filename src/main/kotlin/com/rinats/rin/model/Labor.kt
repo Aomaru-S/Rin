@@ -1,18 +1,14 @@
 package com.rinats.rin.model
 
-import java.io.Serializable
 import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
 @Table(name = "labor")
+open class Labor {
+    @EmbeddedId
+    open var id: LaborId? = null
 
-data class Labor(
-    @Id
-    @Column(name = "employee_id")
-    val employeeId: String,
-    @JoinColumn(name = "employee_id")
-    @OneToOne(cascade = [CascadeType.ALL],fetch = FetchType.LAZY)
-    val employee: Employee,
-    val level: Int,
-) : Serializable
+    @Column(name = "level", nullable = false)
+    open var level: Int? = null
+}

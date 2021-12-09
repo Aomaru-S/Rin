@@ -16,7 +16,6 @@ class TopPageController {
         @RequestAttribute
         employee: Employee
     ): String {
-        println("Top page Top page Top page Top page Top page Top page")
         if (employee.roleId == "1") {
             return "store_manager_top"
         }

@@ -1,11 +1,10 @@
 package com.rinats.rin.controller
 
 import com.rinats.rin.annotation.NonAuth
-import com.rinats.rin.model.Employee
 import com.rinats.rin.model.Setting
+import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.SettingRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpMethod
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.web.bind.annotation.*
@@ -16,7 +15,8 @@ import javax.servlet.http.HttpServletRequest
 class TestRestController(
     @Autowired
     private val sender: MailSender,
-    private val settingRepository: SettingRepository
+    private val settingRepository: SettingRepository,
+    private val employeeRepository: EmployeeRepository
 ) {
 
     @CrossOrigin(methods = [RequestMethod.GET])
@@ -79,12 +79,16 @@ class TestRestController(
         sender.send(message)
     }
 
+    @NonAuth
     @GetMapping("/employee")
     fun employee(
-        @RequestAttribute
-        employee: Employee
-    ): Employee {
-        return employee
+        a: String?
+    ): String {
+        if (a == null) {
+            return "null"
+        }
+        val employee = employeeRepository.findById(a).orElse(null)
+        return employee?.toString() ?: "null"
     }
 
     @NonAuth

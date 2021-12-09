@@ -6,11 +6,13 @@ import com.rinats.rin.model.response.ShiftHopeResponse
 import com.rinats.rin.repository.ShiftHopeRepository
 import com.rinats.rin.util.DateUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 import java.sql.Date
 import java.text.ParseException
 import java.util.*
 import kotlin.collections.ArrayList
 
+@Service
 class ShiftHopeService(
     @Autowired
     val shiftHopeRepository: ShiftHopeRepository
@@ -42,7 +44,6 @@ class ShiftHopeService(
                 return false
             }
 
-            println(date)
             val shiftHope = ShiftHope(
                 Date(date.time),
                 employeeId

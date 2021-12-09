@@ -1,5 +1,6 @@
 package com.rinats.rin.model
 
+import org.hibernate.Hibernate
 import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -20,8 +21,6 @@ data class Retirement(
     val birthday: Date,
     @Column(name = "is_android_notification")
     val isAndroid: Boolean,
-    @Column(name = "role_id")
-    val roleId: String,
     @Column(name = "retire_date")
     val retireDate: Date
 ) {
@@ -32,7 +31,21 @@ data class Retirement(
         employee.gender,
         employee.birthday,
         employee.isAndroid,
-        employee.roleId,
         Date()
     )
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
+        other as Retirement
+
+        return employeeId != null && employeeId == other.employeeId
+    }
+
+    override fun hashCode(): Int = javaClass.hashCode()
+
+    @Override
+    override fun toString(): String {
+        return this::class.simpleName + "(employeeId = $employeeId , firstName = $firstName , lastName = $lastName , gender = $gender , birthday = $birthday , isAndroid = $isAndroid , retireDate = $retireDate )"
+    }
 }

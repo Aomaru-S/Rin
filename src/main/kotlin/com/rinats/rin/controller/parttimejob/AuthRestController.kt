@@ -23,14 +23,10 @@ class AuthRestController(
         authForm: AuthForm,
         validationResult: BindingResult
     ): HashMap<String, String?> {
-        println("ID: ${authForm.employeeId}")
-        println("Password: ${authForm.password}")
         val accessToken = authService.login(authForm.employeeId ?: "", authForm.password ?: "")
         if (validationResult.hasErrors() || accessToken == null) {
-            println("login failed")
             return hashMapOf("access_token" to null)
         }
-        println("login success")
         return hashMapOf("access_token" to accessToken)
     }
 

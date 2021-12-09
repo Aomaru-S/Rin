@@ -7,7 +7,9 @@ import javax.validation.constraints.NotBlank
 data class EmployeeLevelForm(
     @field:NotBlank
     var employeeId: String? = null,
-    @Min(1)
-    @Max(5)
+    @field:NotBlank
+    var roleId: String? = null,
+    @field:Min(1)
+    @field:Max(5)
     var level: Int? = null
 )
