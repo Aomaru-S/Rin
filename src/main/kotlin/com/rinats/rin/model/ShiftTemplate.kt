@@ -1,16 +1,17 @@
 package com.rinats.rin.model
 
+import com.rinats.rin.model.compositeKey.ShiftTemplateId
 import javax.persistence.Column
+import javax.persistence.EmbeddedId
 import javax.persistence.Entity
-import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
 @Table(name = "shift_template")
-data class ShiftTemplate(
-    @Id
-    @Column(name = "day_of_week")
-    val dayOfWeek: String,
-    @Column(name = "num_of_people")
-    val numOfPeople: Int
-)
+open class ShiftTemplate {
+    @EmbeddedId
+    open var id: ShiftTemplateId? = null
+
+    @Column(name = "num_of_people", nullable = false)
+    open var numOfPeople: Int? = null
+}

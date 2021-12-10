@@ -1,27 +1,16 @@
-package com.rinats.rin.model
+package com.rinats.rin.model.compositeKey
 
 import org.hibernate.Hibernate
 import java.io.Serializable
 import java.util.*
 import javax.persistence.Column
 import javax.persistence.Embeddable
-import javax.persistence.Entity
 
 @Embeddable
-class LaborId() : Serializable {
-    @Column(name = "employee_id", nullable = false, length = 6)
-    var employeeId: String? = null
-
-    @Column(name = "role_id", nullable = false, length = 2)
-    var roleId: String? = null
-
-    constructor(
-        employeeId: String,
-        roleId: String
-    ) : this() {
-        this.employeeId = employeeId
-        this.roleId = roleId
-    }
+class LaborId(
+    @Column(name = "employee_id", nullable = false, length = 6) var employeeId: String?,
+    @Column(name = "role_id", nullable = false, length = 2) var roleId: String?
+) : Serializable {
 
     override fun hashCode(): Int = Objects.hash(employeeId, roleId)
     override fun equals(other: Any?): Boolean {

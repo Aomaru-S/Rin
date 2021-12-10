@@ -1,6 +1,7 @@
 package com.rinats.rin.service
 
 import com.rinats.rin.model.*
+import com.rinats.rin.model.compositeKey.LaborId
 import com.rinats.rin.model.form.AddEmployeeForm
 import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.repository.EmployeeRepository

@@ -1,7 +1,7 @@
 package com.rinats.rin.service
 
 import com.rinats.rin.model.Labor
-import com.rinats.rin.model.LaborId
+import com.rinats.rin.model.compositeKey.LaborId
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.LaborRepository
 import org.springframework.beans.factory.annotation.Autowired
