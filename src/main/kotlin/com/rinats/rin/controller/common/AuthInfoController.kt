@@ -93,4 +93,9 @@ class AuthInfoController(
         authInfoService.resetPassword(uuid, newPassword)
         return "reset_password"
     }
+
+    @GetMapping("change_password")
+    fun changePasswordForm(): String{
+        return "change_password"
+    }
 }
