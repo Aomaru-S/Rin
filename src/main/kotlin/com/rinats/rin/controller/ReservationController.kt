@@ -13,11 +13,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestAttribute
-import org.springframework.web.bind.annotation.SessionAttribute
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 @Controller
@@ -80,8 +76,8 @@ class ReservationController (
         return "ReservationEditing"
     }
 
-    @PostMapping("/reservation_edit_conf")
-    fun reservationEditConf(
+    @PostMapping("/reservation_edit_check")
+    fun reservationEditCheck(
         model: Model,
         @Validated
         reservationForm: ReservationForm,
@@ -91,6 +87,7 @@ class ReservationController (
             addAttribute("id", reservationForm.id)
             addAttribute("customerName", reservationForm.customerName)
             addAttribute("courseId", reservationForm.courseId)
+            addAttribute("courseName", reservationService.getCourseName(reservationForm.courseId))
             addAttribute("dateTime", reservationForm.dateTime)
             addAttribute("numOfPeople", reservationForm.numOfPeople)
             addAttribute("tableName", reservationForm.tableName)
@@ -99,8 +96,13 @@ class ReservationController (
     }
 
     @PostMapping("reservation_edit_complete")
-    fun reservationEditComplete(model: Model, request: HttpServletRequest, reservationForm: ReservationForm): String {
-        val employee = request.getAttribute("employee") as Employee
+    fun reservationEditComplete(
+        @RequestAttribute employee: Employee,
+        request: HttpServletRequest,
+        @Validated
+        reservationForm: ReservationForm,
+        bindingResult: BindingResult
+    ): String {
         reservationService.reservationUpdate(
             reservationForm.id ?: "",
             reservationForm.customerName ?: "",

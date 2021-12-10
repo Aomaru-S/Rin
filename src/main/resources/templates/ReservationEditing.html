@@ -6,23 +6,26 @@
 </head>
 <body>
 <div style="align: center">
-    <h1>予約編集</h1>
-    氏名入力<input type="text" name="customerName" th:value="${customerName}" size="22"><br>
-    コース名
-    <label>
-        <select name="courseId" required>
-            <option th:each="course: ${courseList}" th:text="${courseName}" th:value="${courseId}"></option>
-        </select>
-    </label><br>
-    日時<input th:type="date" name="dateTime" th:value="${#dates.format(dateTime, 'yyyy/MM/dd/hh/mm')}"><br>
-    人数<input type="text" name="numOfPeople" th:value="${numOfPeople}"><br>
-    座席
-    <label>
-        <select name="tableName" required>
-            <option value="" selected></option>
-            <option th:each="table: ${tableList}" th:text="${table.name}" th:value="${table.name}"></option>
-        </select>
-    </label><br>
+    <form action="#" th:action="@{reservation_edit_check}" method="post">
+        <h1>予約編集</h1>
+        氏名入力<input type="text" name="customerName" th:value="${customerName}" size="22"><br>
+        コース名
+        <label>
+            <select name="courseId" required>
+                <option th:each="course: ${courseList}" th:value="${course.id}" th:selected="${course.id == courseId}" th:inline="text">[[${course.name}]]</option>
+            </select>
+        </label><br>
+        日時<input type="datetime-local" name="dateTime" th:value="${dateTime}"><br>
+        人数<input type="text" name="numOfPeople" th:value="${numOfPeople}"><br>
+        座席
+        <label>
+            <select name="tableName" required>
+                <option th:each="table: ${tableList}" th:value="${table.name}" th:selected="${table.name == tableName}" th:inline="text">[[${table.name}]]</option>
+            </select>
+        </label><br>
+        <input type="hidden" name="id" th:value="${id}">
+        <input type="submit" value="確認">
+    </form>
 </div>
 </body>
 </html>

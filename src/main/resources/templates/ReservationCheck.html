@@ -18,8 +18,6 @@
             <td th:text="${reservation.customerName}"></td>
             <td th:text="${courseName[item.count -1]}"></td>
             <td th:text="${#temporals.format(reservation.dateTime, 'yyyy/MM/dd HH:mm')}"></td>
-
-
             <td th:text="${reservation.numOfPeople}"></td>
             <td th:text="${reservation.tableName}"></td>
             <td>
