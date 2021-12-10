@@ -4,6 +4,7 @@ import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.Setting
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.SettingRepository
+import com.rinats.rin.service.ShiftGeneratorService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
@@ -16,7 +17,8 @@ class TestRestController(
     @Autowired
     private val sender: MailSender,
     private val settingRepository: SettingRepository,
-    private val employeeRepository: EmployeeRepository
+    private val employeeRepository: EmployeeRepository,
+    private val shiftGeneratorService: ShiftGeneratorService
 ) {
 
     @CrossOrigin(methods = [RequestMethod.GET])
@@ -97,5 +99,11 @@ class TestRestController(
         @ModelAttribute setting: Setting
     ) {
         settingRepository.save(setting)
+    }
+
+    @NonAuth
+    @GetMapping("/shift_generator")
+    fun generateShift() {
+        shiftGeneratorService.shiftGenerator()
     }
 }
