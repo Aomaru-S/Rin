@@ -4,7 +4,6 @@ import com.rinats.rin.model.Labor
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.LaborRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service

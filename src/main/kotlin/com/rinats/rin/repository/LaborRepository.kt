@@ -1,8 +1,8 @@
-package com.rinats.rin.repository
+package com.rinats.rin.repository;
 
 import com.rinats.rin.model.Labor
+import com.rinats.rin.model.compositeKey.LaborId
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
 
-@Repository
-interface LaborRepository : JpaRepository<Labor, String>
+interface LaborRepository : JpaRepository<Labor, LaborId> {
+}
