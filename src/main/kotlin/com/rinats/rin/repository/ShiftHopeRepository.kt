@@ -13,6 +13,6 @@ interface ShiftHopeRepository : JpaRepository<ShiftHope, ShiftHopeKey> {
     fun findByEmployeeId(employeeId: String): List<ShiftHope>
     fun deleteByEmployeeId(employeeId: String): Boolean
 
-    @Query("SELECT * FROM shift_hope WHERE date BETWEEN %:start% AND %:end%")
-    fun findByDate(@Param("start") start: Date, @Param("end")end: Date): List<ShiftHope>
+    //@Query("SELECT * FROM shift_hope WHERE date >= %:start%")
+    //fun findByDate(@Param("start") start: Date): List<ShiftHope>
 }
