@@ -44,7 +44,7 @@ class ReservationController (
         reservationService.reservationRegistration(
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
-            reservationForm.dateTime ?: SimpleDateFormat("yyyy-mm-dd").parse(LocalDateTime.now().toString()),
+            reservationForm.dateTime ?: LocalDateTime.now(),
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""
@@ -52,30 +52,41 @@ class ReservationController (
         return "top"
     }
 
-    @NonAuth
     @GetMapping("/reservation_check")
     fun reservationCheck(model: Model): String {
-        model.addAttribute("reservation", reservationService.getReservation())
+        model.addAttribute("reservationList", reservationService.getReservation())
+        model.addAttribute("courseName", reservationService.getAllCourseName())
         return "ReservationCheck"
     }
 
-    @NonAuth
     @PostMapping("/reservation_edit")
-    fun reservationEdit(model: Model, reservationForm: ReservationForm): String {
+    fun reservationEdit(
+        model: Model,
+        @Validated
+        reservationForm: ReservationForm,
+        bindingResult: BindingResult
+    ): String {
         model.apply {
             addAttribute("id", reservationForm.id)
             addAttribute("customerName", reservationForm.customerName)
             addAttribute("courseId", reservationForm.courseId)
+            addAttribute("courseName", reservationService.getCourseName(reservationForm.courseId))
             addAttribute("dateTime", reservationForm.dateTime)
             addAttribute("numOfPeople", reservationForm.numOfPeople)
             addAttribute("tableName", reservationForm.tableName)
+            addAttribute("courseList",  reservationService.getCourse())
+            addAttribute("tableList",  reservationService.getTable())
         }
         return "ReservationEditing"
     }
 
-    @NonAuth
     @PostMapping("/reservation_edit_conf")
-    fun reservationEditConf(model: Model, reservationForm: ReservationForm): String {
+    fun reservationEditConf(
+        model: Model,
+        @Validated
+        reservationForm: ReservationForm,
+        bindingResult: BindingResult
+    ): String {
         model.apply {
             addAttribute("id", reservationForm.id)
             addAttribute("customerName", reservationForm.customerName)
@@ -87,7 +98,6 @@ class ReservationController (
         return "ReservationEditingCheck"
     }
 
-    @NonAuth
     @PostMapping("reservation_edit_complete")
     fun reservationEditComplete(model: Model, request: HttpServletRequest, reservationForm: ReservationForm): String {
         val employee = request.getAttribute("employee") as Employee
@@ -95,7 +105,7 @@ class ReservationController (
             reservationForm.id ?: "",
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
-            (reservationForm.dateTime ?: LocalDateTime.now()) as Date,
+            reservationForm.dateTime ?: LocalDateTime.now(),
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""

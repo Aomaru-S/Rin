@@ -1,17 +1,40 @@
-<html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>予約確認</title>
 </head>
 <body>
-<h1>予約確認機能</h1>
-<hr>
-<div align="center">
-    <table border="0">
+<h1>予約確認</h1>
+<div style="align: center">
+    <table border="1">
         <tr>
-            <th>
-                <a href="http://localhost:63342/untitled/yoyakutouroku.html?_ijt=ep2iquk1noaeig6ht83m9boug8">予約登録
+            <th>氏名</th>
+            <th>コース名</th>
+            <th>日時</th>
+            <th>人数</th>
+            <th>座席</th>
+        </tr>
+        <tr th:inline="text" th:each="reservation, item: ${reservationList}">
+            <td th:text="${reservation.customerName}"></td>
+            <td th:text="${courseName[item.count -1]}"></td>
+            <td th:text="${#temporals.format(reservation.dateTime, 'yyyy/MM/dd HH:mm')}"></td>
+
+
+            <td th:text="${reservation.numOfPeople}"></td>
+            <td th:text="${reservation.tableName}"></td>
+            <td>
+                <form action="#" th:action="@{reservation_edit}" method="post">
+                    <input type="hidden" name="id" th:value="${reservation.id}">
+                    <input type="hidden" name="customerName" th:value="${reservation.customerName}">
+                    <input type="hidden" name="courseId" th:value="${reservation.courseId}">
+                    <input type="hidden" name="dateTime" th:value="${reservation.dateTime}">
+                    <input type="hidden" name="numOfPeople" th:value="${reservation.numOfPeople}">
+                    <input type="hidden" name="tableName" th:value="${reservation.tableName}">
+                    <input type="submit" value="編集">
+                </form>
             </td>
         </tr>
-        <tr>
-            <th>
+    </table>
+</div>
+</body>
+</html>

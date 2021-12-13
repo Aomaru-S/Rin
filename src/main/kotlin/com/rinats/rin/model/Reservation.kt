@@ -1,7 +1,7 @@
 package com.rinats.rin.model
 
 import org.springframework.format.annotation.DateTimeFormat
-import java.util.Date
+import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -17,8 +17,8 @@ data class Reservation (
     @Column(name = "course_id")
     val courseId: String,
     @Column(name = "date_time")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    val dateTime: Date,
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    val dateTime: LocalDateTime,
     @Column(name = "num_of_people")
     val numOfPeople: Int,
     @Column(name = "employee_id")

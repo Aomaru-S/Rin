@@ -6,10 +6,9 @@ import com.rinats.rin.model.Table
 import com.rinats.rin.repository.CourseRepository
 import com.rinats.rin.repository.ReservationRepository
 import com.rinats.rin.repository.TableRepository
-import org.mybatis.dynamic.sql.util.kotlin.elements.max
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.Date
 
 @Service
@@ -31,12 +30,12 @@ class ReservationService(
     fun reservationRegistration(
         customerName: String,
         courseId: String,
-        dateTime: Date,
+        dateTime: LocalDateTime,
         numOfPeople: Int,
         employeeId: String,
         tableName: String
     ) {
-        if (reservationRepository.findAll().isNullOrEmpty()) {
+        if (reservationRepository.findAll().isEmpty()) {
             val reservation = Reservation("1", customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
             reservationRepository.save(reservation)
         } else {
@@ -50,11 +49,23 @@ class ReservationService(
         return reservationRepository.findAll()
     }
 
+    fun getAllCourseName(): List<String> {
+        val list = mutableListOf<String>()
+        for (i in 0 until reservationRepository.findAll().size) {
+            list.add(i, courseRepository.findById(reservationRepository.findAll()[i].courseId).get().name)
+        }
+        return list
+    }
+
+    fun getCourseName(courseId: String?): String {
+        return courseRepository.findById(courseId ?: "").get().name
+    }
+
     fun reservationUpdate(
         id: String,
         customerName: String,
         courseId: String,
-        dateTime: Date,
+        dateTime: LocalDateTime,
         numOfPeople: Int,
         employeeId: String,
         tableName: String
