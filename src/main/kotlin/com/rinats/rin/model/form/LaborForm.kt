@@ -4,7 +4,7 @@ import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 
-data class EmployeeLevelForm(
+data class LaborForm(
     @field:NotBlank
     var employeeId: String? = null,
     @field:NotBlank

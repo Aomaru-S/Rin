@@ -1,7 +1,7 @@
 package com.rinats.rin.controller
 
 import com.rinats.rin.annotation.NonAuth
-import com.rinats.rin.model.form.EmployeeLevelForm
+import com.rinats.rin.model.form.LaborForm
 import com.rinats.rin.service.LaborService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -24,7 +24,7 @@ class LaborController(
 
     @NonAuth
     @PostMapping("labor_edit")
-    fun laborEdit(model: Model, employeeLevelForm: EmployeeLevelForm): String {
+    fun laborEdit(model: Model, employeeLevelForm: LaborForm): String {
         val name = laborService.getByName(employeeLevelForm.employeeId ?: "")
         model.apply {
             addAttribute("employeeId", employeeLevelForm.employeeId)
@@ -36,7 +36,7 @@ class LaborController(
 
     @NonAuth
     @PostMapping("labor_edit_check")
-    fun laborEditCheck(model: Model, employeeLevelForm: EmployeeLevelForm): String {
+    fun laborEditCheck(model: Model, employeeLevelForm: LaborForm): String {
         val name = laborService.getByName(employeeLevelForm.employeeId ?: "")
         model.apply {
             addAttribute("employeeId", employeeLevelForm.employeeId)
@@ -48,7 +48,7 @@ class LaborController(
 
     @NonAuth
     @PostMapping("labor_edit_complete")
-    fun laborEditComplete(model: Model, employeeLevelForm: EmployeeLevelForm): String {
+    fun laborEditComplete(model: Model, employeeLevelForm: LaborForm): String {
         laborService.levelUpdate(employeeLevelForm.employeeId ?: "", employeeLevelForm.roleId ?: "2", employeeLevelForm.level ?: 1)
         return "top"
     }
