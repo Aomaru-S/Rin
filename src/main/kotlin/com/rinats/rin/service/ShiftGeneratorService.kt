@@ -27,21 +27,6 @@ class ShiftGeneratorService(
     private val salary = 0 //今までの合計給与
 
     fun shiftGenerator() {
-        val calendar = Calendar.getInstance()
-        calendar.timeZone = TimeZone.getTimeZone("Asia/Tokyo")
-        calendar.isLenient = false
-        calendar.timeInMillis = 0
-
-        //翌月の1日目を取得
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 2, 1)
-
-        //翌月の日毎の配列生成
-        val dateList: MutableList<Date> = mutableListOf()
-        var date = 0
-        do {
-            calendar.set(Calendar.DATE, date++)
-            val result = runCatching { dateList.add(calendar.time) }
-        } while (result.isSuccess)
 
         //従業員と役職の連関エンティティ取得
         val employeeList = employeeRepository.findAll()
@@ -57,11 +42,10 @@ class ShiftGeneratorService(
         employeeRoleMap.forEach { (role, employeeList) ->
             var laborArray = arrayOf<Int>()
             employeeList.forEach { employee ->
-                val labor = laborList.single { labor ->
-                    employee.employeeId == labor.id?.employeeId && role.roleId == labor.id?.roleId
-                }
                 laborArray += 1
-                laborArray[laborArray.lastIndex] = labor.level ?: throw NullPointerException("unknown error!!!")
+                laborArray[laborArray.lastIndex] = laborList.single {
+                    employee.employeeId == it.id?.employeeId && role.roleId == it.id?.roleId
+                }.level ?: throw NullPointerException("unknown error!!!")
             }
             Arrays.sort(laborArray)
             val central = laborArray.size / 2
@@ -72,11 +56,28 @@ class ShiftGeneratorService(
             medianMap[role] = median
         }
 
+        val calendar = Calendar.getInstance()
+        calendar.timeZone = TimeZone.getTimeZone("Asia/Tokyo")
+        calendar.isLenient = false
+        calendar.timeInMillis = 0
+
+        //翌月の1日目を取得
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 2, 1)
+/*
+        //翌月の日毎の配列生成
+        val dateList: MutableList<Date> = mutableListOf()
+        var date = 0
+        do {
+            calendar.set(Calendar.DATE, date++)
+            val result = runCatching { dateList.add(calendar.time) }
+        } while (result.isSuccess)
+
+*/
+
         //シフト希望を日付ごとに
-        val dateFirst = dateList.first() as java.sql.Date
-        val dateLast = dateList.last() as java.sql.Date
-        val shiftHopeList = shiftHopeRepository.findByDate(dateFirst, dateLast)
-        val shiftHopeMap = shiftHopeList.groupBy(
+        //val dateFirst = dateList.first() as java.sql.Date
+        val shiftHopeList = shiftHopeRepository.findAll()
+        val shiftHopeMap = shiftHopeList.filter { it.date.after(calendar.time) }.groupBy(
             { it.date },
             { shiftHope -> employeeList.single { shiftHope.employeeId == it.employeeId } }
         )
@@ -87,7 +88,7 @@ class ShiftGeneratorService(
         shiftHopeMap.forEach { (date, shiftHopeList) ->
             //祝日に対する処理がない、曜日に対する定数をどうするか？、仮の定数を入れてます
             calendar.time = date
-            for ((role, median) in medianMap) {
+            medianMap.forEach { (role, median) ->
                 val template = templateList.filter { it.id?.roleId == role.roleId }
                 val people: Int = when (calendar.get(Calendar.DAY_OF_WEEK)) {
                     Calendar.SUNDAY -> template.single { it.id?.dayOfWeek == "日曜日" }.numOfPeople
@@ -100,7 +101,7 @@ class ShiftGeneratorService(
                     else -> throw IllegalArgumentException("unknown error!!!")
                 } ?: throw NullPointerException("unknown error!!!")
 
-                if (people < 0) continue
+                if (people < 0) return
 
                 //必要な労働力の合計
                 val totalLabor = median * people
@@ -120,16 +121,16 @@ class ShiftGeneratorService(
                     val tentativeShiftDetail = TentativeShiftDetail()
                     tentativeShiftDetail.id = date.toLocalDate()
                     tentativeShiftDetail.isEmployeeInsufficient = true
-                    continue
+                    return
                 }
 
                 //totalLaborを超える組み合わせ
                 val upTotalLaborList: MutableList<MutableList<Employee>> = mutableListOf()
-                label1@ for (combination in combinationList) {
+                combinationList.forEach label1@{ combination ->
                     var labor = 0
-                    for (employee in combination) {
+                    combination.forEach { employee ->
                         labor += when (taxable < salary) {
-                            true -> continue@label1
+                            true -> return@label1
                             false -> laborList.single { employee.employeeId == it.id?.employeeId && role.roleId == it.id?.roleId }.level
                                 ?: throw NullPointerException("unknown error!!!")
                         }
@@ -143,8 +144,9 @@ class ShiftGeneratorService(
                     val tentativeShiftDetail = TentativeShiftDetail()
                     tentativeShiftDetail.id = date.toLocalDate()
                     tentativeShiftDetail.isLaborInsufficient = true
-                    continue
+                    return
                 }
+
 
                 //合計給与がが一番少ない組み合わせ
                 val fixedCombination: MutableList<Employee> = mutableListOf()
