@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>トップページ</title>
@@ -10,7 +10,7 @@
     <table border="0">
         <tr>
             <th>
-                <a href="Configuration.html">設定</a>
+                <a th:href="@{/setting}">設定</a>
             </th>
         </tr>
 
@@ -113,6 +113,12 @@
             <th>
                 <a href="TableEditCheck.html">テーブル編集</a>
             </th>
+        </tr>
+        <tr>
+            <th>
+                <a th:href="@{shift_generator}">シフト生成</a>
+            </th>
+        </tr>
     </table>
 </div>
 </body>

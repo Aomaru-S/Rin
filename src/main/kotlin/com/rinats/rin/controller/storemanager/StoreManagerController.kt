@@ -11,4 +11,10 @@ class StoreManagerController {
     fun storeManagerTop(): String {
         return "/store_manager_top"
     }
+
+    @StoreManager
+    @GetMapping("/setting")
+    fun setting(): String {
+        return "setting"
+    }
 }

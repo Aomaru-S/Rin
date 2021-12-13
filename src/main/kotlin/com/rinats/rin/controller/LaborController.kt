@@ -49,7 +49,7 @@ class LaborController(
     @NonAuth
     @PostMapping("labor_edit_complete")
     fun laborEditComplete(model: Model, employeeLevelForm: EmployeeLevelForm): String {
-        laborService.levelUpdate(employeeLevelForm.employeeId ?: "", employeeLevelForm.level ?: 1)
+        laborService.levelUpdate(employeeLevelForm.employeeId ?: "", employeeLevelForm.roleId ?: "2", employeeLevelForm.level ?: 1)
         return "top"
     }
 }

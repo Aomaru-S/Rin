@@ -9,6 +9,7 @@ import com.rinats.rin.model.Employee
 import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.repository.EmployeeRepository
 import org.springframework.core.annotation.AnnotationUtils
+import org.springframework.http.HttpMethod
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import java.lang.reflect.Method
@@ -26,34 +27,61 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
-        val status = response.status
-        if (status / 100 == 4 || status / 100 == 5) {
+        println("Status: ${response.status}")
+        if (HttpMethod.OPTIONS.matches(request.method)) {
+            System.err.println("option ok")
             return true
         }
 
-        val method = getMethod(handler, response) ?: return false
+        val status = response.status
+        if (status == 404) {
+            System.err.println("404 ng")
+            response.sendError(404)
+            return false
+        }
+        if (status / 100 == 4 || status / 100 == 5) {
+            System.err.println("error ng")
+            response.sendError(status)
+            return false
+        }
+
+        val method = getMethod(handler, response)
+        if (method == null) {
+            System.err.println("method null ng")
+            return false
+        }
 
         if (checkAuthResource(method)) {
+            println("NonNull ok")
             return true
         }
 
         var accessToken: String? = null
 
-        when(request.requestURI.startsWith("/api/v1")) {
+        val isApi = request.requestURI.startsWith("/api")
+
+        when(isApi) {
             true -> {
-                accessToken = request.getHeader("Authorization") ?: return false
+                accessToken = request.getHeader("Authorization")
+                if (accessToken == null) {
+                    System.err.println("accessToken null ng1")
+                    response.sendError(401)
+                    return false
+                }
             }
             false -> {
                 var at: String? = null
                 request.cookies?.forEach { cookie ->
                     if (cookie.name == "access_token") {
+                        println("has cookie")
                         at = cookie.value
                     }
                 }
                 accessToken = at
                 if (accessToken == null) {
+                    System.err.println("accessToken null ng2")
                     response.sendRedirect("/login")
-                    return true
+                    return false
                 }
             }
         }
@@ -62,23 +90,35 @@ class AuthInterceptor(
         val employee = employeeRepository.findById(employeeId).get()
 
         if (!checkAccessToken(accessToken)) {
-            System.err.println("accessToken")
+            if (!isApi) {
+                System.err.println("invalid accessToken ng1")
+                response.sendRedirect("/login")
+                return false
+            }
             response.sendError(401)
+            System.err.println("invalid accessToken ng2")
             return false
         }
         if (!checkRole(employee, method)) {
+            System.err.println("invalid role ng")
             response.sendError(403)
             return false
         }
 
         if (!checkExpire(authInfoRepository.findByAccessToken(accessToken).get())) {
-            println("expire")
+            if (!isApi) {
+                System.err.println("expire ng1")
+                response.sendRedirect("/login")
+                return false
+            }
+            System.err.println("expire ng2")
             response.sendError(401)
             return false
         }
 
         request.setAttribute("employee", employee)
         request.setAttribute("access_token", accessToken)
+        println("auth ok")
         return true
     }
 
@@ -86,7 +126,7 @@ class AuthInterceptor(
         val hm = try {
             HandlerMethod::class.java.cast(handler)
         } catch (e: ClassCastException) {
-            response.sendError(404)
+            println("ClassCastException")
             return null
         }
         return hm.method
@@ -106,14 +146,10 @@ class AuthInterceptor(
         val hasPartTimeJob = AnnotationUtils.findAnnotation(method, PartTimeJob::class.java) != null
         val hasTentativeEmployee = AnnotationUtils.findAnnotation(method, TentativeEmployee::class.java) != null
 
-        val roleId = employee.roleId
-        if (hasStoreManager && roleId == "1") {
+        if (hasStoreManager && employee.roleId == "1") {
             return true
         }
-        if (hasPartTimeJob && roleId == "2") {
-            return true
-        }
-        if (hasTentativeEmployee && roleId == "3") {
+        if (hasPartTimeJob && employee.roleId == "2") {
             return true
         }
 

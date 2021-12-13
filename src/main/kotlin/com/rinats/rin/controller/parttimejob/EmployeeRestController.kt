@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.constraints.NotBlank
 
 @RestController
-@RequestMapping("api/v1/employee")
+@RequestMapping("api/employee")
 class EmployeeRestController(
     @Autowired
     private val employeeService: EmployeeService,

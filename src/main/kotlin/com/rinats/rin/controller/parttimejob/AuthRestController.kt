@@ -9,7 +9,8 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("api/auth")
+@CrossOrigin(methods = [RequestMethod.POST, RequestMethod.OPTIONS])
 class AuthRestController(
     @Autowired
     val authService: AuthService

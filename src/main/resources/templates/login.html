@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>ログイン画面</h1>
-<form action="#" th:action="@{/perform_login}" th:object="${authForm}" method="post">
+<form action="#" th:action="@{/login}" th:object="${authForm}" method="post">
     <label>
         <input type="text" th:field="${authForm.employeeId}" placeholder="従業員ID">
     </label><br>

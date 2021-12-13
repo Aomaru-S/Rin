@@ -1,10 +1,10 @@
 package com.rinats.rin.service
 
 import com.rinats.rin.model.Labor
+import com.rinats.rin.model.compositeKey.LaborId
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.LaborRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -23,9 +23,12 @@ class LaborService(
         return employee.get().lastName + " " + employee.get().firstName
     }
 
-    fun levelUpdate(employeeId: String, level: Int) {
-        val employee = laborRepository.findById(employeeId).get().employee
-        val labor = Labor(employeeId, employee, level)
+    fun levelUpdate(employeeId: String, roleId: String, level: Int) {
+        val laborId = LaborId(employeeId, roleId)
+        val employee = employeeRepository.findById(employeeId)
+        val labor = Labor()
+        labor.id = laborId
+        labor.level = level
         laborRepository.save(labor)
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -22,14 +21,15 @@ class AuthController(
     val authService: AuthService
 ) {
     @NonAuth
-    @RequestMapping("/login")
+    @GetMapping("/login")
     fun authForm(model: Model): String {
+        println("get login")
         model.addAttribute("authForm", AuthForm())
         return "login"
     }
 
     @NonAuth
-    @PostMapping("/perform_login")
+    @PostMapping("/login")
     fun login(
         @ModelAttribute @Validated
         authForm: AuthForm,

@@ -1,8 +1,7 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.AuthInfo
-import com.rinats.rin.model.Employee
-import com.rinats.rin.model.Retirement
+import com.rinats.rin.model.*
+import com.rinats.rin.model.compositeKey.LaborId
 import com.rinats.rin.model.form.AddEmployeeForm
 import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.repository.EmployeeRepository
@@ -15,6 +14,7 @@ import org.springframework.mail.SimpleMailMessage
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 @Service
@@ -28,20 +28,27 @@ class EmployeeService(
 ) {
     //    従業員仮登録処理
     fun addTentativeEmployee(addEmployeeForm: AddEmployeeForm) {
-        val employeeId = getAndUpdateSequence()
+        val employeeId = getAndUpdateSequence().toString()
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val birthday = sdf.parse(addEmployeeForm.birthday)
 
+        val labor = Labor()
+        labor.id = LaborId(employeeId, "2")
+        labor.level = 2
+        val laborList = arrayListOf<Labor>()
+        laborList.add(labor)
+
         val employee = Employee(
-            employeeId.toString(),
+            employeeId,
             addEmployeeForm.firstName ?: "",
             addEmployeeForm.lastName ?: "",
             addEmployeeForm.gender,
             birthday,
             1000,
             false,
-            "3",
-            addEmployeeForm.mailAddress ?: ""
+            addEmployeeForm.mailAddress ?: "",
+            "2",
+            laborList
         )
 
         val date = Date().apply {
@@ -51,7 +58,7 @@ class EmployeeService(
         val salt = AuthUtil.generateSalt()
 
         val authInfo = AuthInfo(
-            employeeId.toString(),
+            employeeId,
             AuthUtil.getDigest(password, salt),
             AuthUtil.generateSalt(),
             false,
@@ -67,12 +74,14 @@ class EmployeeService(
 
     //    従業員本登録処理
     fun definitiveRegistration(employeeId: String): Boolean {
-        val employee = employeeRepository.findById(employeeId).orElse(null) ?: return false
-        if (employee.roleId == "3") {
-            employee.roleId = "2"
-            employeeRepository.save(employee)
-            return true
-        }
+        /* val employee = employeeRepository.findById(employeeId).orElse(null) ?: return false
+         val roleList = arrayListOf<String>()
+         for (labor in employee.laborList) {
+             val roleId = labor.id?.roleId ?: continue
+             roleList.add(roleId)
+         }
+             employee.roleId = "2"
+             employeeRepository.save(employee)*/
         return false
     }
 
@@ -111,7 +120,7 @@ class EmployeeService(
 
     private fun sendMail(
         addEmployeeForm: AddEmployeeForm,
-        employeeId: Int,
+        employeeId: String,
         password: String
     ) {
         val message = SimpleMailMessage()
