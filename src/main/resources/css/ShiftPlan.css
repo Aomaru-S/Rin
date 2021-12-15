@@ -1,11 +1,29 @@
 h1{
-    color: #fdd456;
+    position: relative;
+    color: #158b2b;
+    font-size: 20px;
+    padding: 10px 0;
+    text-align: center;
+    margin: 1.5em 0;
 }
-
+h1:before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    width: 150px;
+    height: 58px;
+    border-radius: 50%;
+    border: 5px solid #a6ddb0;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+{
+    color: #6eb0f9;
+}
 
 tr {
-    font-size: 30px;
-}
-body {
-    background-color:aliceblue;
+    font-size: 20px;
 }

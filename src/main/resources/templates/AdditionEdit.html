@@ -10,13 +10,17 @@
 <div align="center">
     <form action="AdditionEditCheck.html" method="post">
         <table border="0">
-            <div class="item">
-                <label class="label">月選択</label>
-                <input class="inputs" type="month" name="name">
-            </div>
+            <tr>
+                <th>月選択</th>
+                <td>
+                    <label>
+                        <input type="month" name="example">
+                    </label>
+                </td>
+            </tr>
 
             <tr>
-                <th>日付入力フォーム</th>
+                <th>日付入力</th>
                 <td>
                     <label>
                         <input type="date" name="example">
@@ -24,10 +28,10 @@
                 </td>
             </tr>
             <tr>
-                <th>必要人数入力フォーム</th>
+                <th>必要人数入力</th>
                 <td>
                     <label>
-                        <input type="number" name="example">
+                        <input type="number" min="0" max="20" name="example">
                     </label>
                 </td>
             </tr>
