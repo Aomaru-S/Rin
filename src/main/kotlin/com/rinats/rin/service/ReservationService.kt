@@ -7,8 +7,10 @@ import com.rinats.rin.repository.CourseRepository
 import com.rinats.rin.repository.ReservationRepository
 import com.rinats.rin.repository.TableRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Date
 
 @Service
@@ -45,14 +47,15 @@ class ReservationService(
         }
     }
 
-    fun getReservation(): List<Reservation> {
-        return reservationRepository.findAll()
+    fun getReservation(dateNow: LocalDateTime): List<Reservation> {
+        return reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime"))
+            .filter { it.dateTime.isAfter(dateNow) }
     }
 
-    fun getAllCourseName(): List<String> {
+    fun getAllCourseName(dateNow: LocalDateTime): List<String> {
         val list = mutableListOf<String>()
-        for (i in 0 until reservationRepository.findAll().size) {
-            list.add(i, courseRepository.findById(reservationRepository.findAll()[i].courseId).get().name)
+        for (i in 0 until reservationRepository.findAll().filter { it.dateTime.isAfter(dateNow) }.size) {
+            list.add(i, courseRepository.findById(reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime")).filter { it.dateTime.isAfter(dateNow) }[i].courseId).get().name)
         }
         return list
     }

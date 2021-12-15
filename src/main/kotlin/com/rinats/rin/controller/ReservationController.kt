@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestAttribute
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.servlet.http.HttpServletRequest
 
 @Controller
@@ -50,8 +51,9 @@ class ReservationController (
 
     @GetMapping("/reservation_check")
     fun reservationCheck(model: Model): String {
-        model.addAttribute("reservationList", reservationService.getReservation())
-        model.addAttribute("courseName", reservationService.getAllCourseName())
+        val dateNow = LocalDateTime.now()
+        model.addAttribute("reservationList", reservationService.getReservation(dateNow))
+        model.addAttribute("courseName", reservationService.getAllCourseName(dateNow))
         return "ReservationCheck"
     }
 
@@ -68,6 +70,7 @@ class ReservationController (
             addAttribute("courseId", reservationForm.courseId)
             addAttribute("courseName", reservationService.getCourseName(reservationForm.courseId))
             addAttribute("dateTime", reservationForm.dateTime)
+//            addAttribute("dateNow", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")))
             addAttribute("numOfPeople", reservationForm.numOfPeople)
             addAttribute("tableName", reservationForm.tableName)
             addAttribute("courseList",  reservationService.getCourse())
