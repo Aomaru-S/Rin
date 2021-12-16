@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>予約登録エラー</title>
+</head>
+<body>
+<h1>予約登録エラー</h1>
+<h3>既に同じ日の同じ席に予約が入っています。</h3>
+<h3>予約を入れたい場合は予約済みの予約を削除してから予約登録をしてください。</h3>
+<form action="#" th:action="@{reservation_registration_continue}" method="post">
+    <input type="submit" value="登録し直す">
+</form>
+<form action="#" th:action="@{reservation_cancel}" method="post">
+    <input type="submit" value="トップページに戻る">
+</form>
+</body>
+</html>

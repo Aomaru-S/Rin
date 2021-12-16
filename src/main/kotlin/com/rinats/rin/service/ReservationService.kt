@@ -38,23 +38,18 @@ class ReservationService(
         numOfPeople: Int,
         employeeId: String,
         tableName: String
-    ) {
+    ): Boolean {
         if (reservationRepository.findAll().isEmpty()) {
-             if (searchDuplicate(dateTime, tableName)) return
+             if (searchDuplicate(dateTime, tableName)) return false
             val reservation = Reservation("1", customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
             reservationRepository.save(reservation)
+            return true
         } else {
-            if (searchDuplicate(dateTime, tableName)) return
+            if (searchDuplicate(dateTime, tableName)) return false
             val id = reservationRepository.findAll().size + 1
             val reservation = Reservation(id.toString(), customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
             reservationRepository.save(reservation)
-        }
-    }
-
-    fun searchDuplicate(dateTime: LocalDateTime, tableName: String): Boolean {
-        return reservationRepository.findAll().any {
-            it.dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) == dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                    && it.tableName == tableName
+            return true
         }
     }
 
@@ -83,8 +78,17 @@ class ReservationService(
         numOfPeople: Int,
         employeeId: String,
         tableName: String
-    ) {
+    ): Boolean {
+        if (searchDuplicate(dateTime, tableName)) return false
         val reservation = Reservation(id, customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
         reservationRepository.save(reservation)
+        return true
+    }
+
+    fun searchDuplicate(dateTime: LocalDateTime, tableName: String): Boolean {
+        return reservationRepository.findAll().any {
+            it.dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) == dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    && it.tableName == tableName
+        }
     }
 }

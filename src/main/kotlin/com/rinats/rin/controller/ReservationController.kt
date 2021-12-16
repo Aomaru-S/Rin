@@ -38,14 +38,27 @@ class ReservationController (
         reservationForm: ReservationForm,
         bindingResult: BindingResult
     ): String {
-        reservationService.reservationRegistration(
+        return when(
+            reservationService.reservationRegistration(
             reservationForm.customerName ?: "",
             reservationForm.courseId ?: "",
             reservationForm.dateTime ?: LocalDateTime.now(),
             reservationForm.numOfPeople ?: 0,
             employee.employeeId,
             reservationForm.tableName ?: ""
-        )
+            )
+        ) {
+            true -> "top"
+            false -> "ReservationEntryError"
+        }
+    }
+
+    @PostMapping("/reservation_registration_continue")
+    fun reservationRegistrationContinue(): String {
+        return "ReservationEntry"
+    }
+    @PostMapping("/reservation_cancel")
+    fun reservationRegistrationCancel(): String {
         return "top"
     }
 
@@ -105,15 +118,19 @@ class ReservationController (
         reservationForm: ReservationForm,
         bindingResult: BindingResult
     ): String {
-        reservationService.reservationUpdate(
-            reservationForm.id ?: "",
-            reservationForm.customerName ?: "",
-            reservationForm.courseId ?: "",
-            reservationForm.dateTime ?: LocalDateTime.now(),
-            reservationForm.numOfPeople ?: 0,
-            employee.employeeId,
-            reservationForm.tableName ?: ""
-        )
-        return "top"
+        return when (
+            reservationService.reservationUpdate(
+                reservationForm.id ?: "",
+                reservationForm.customerName ?: "",
+                reservationForm.courseId ?: "",
+                reservationForm.dateTime ?: LocalDateTime.now(),
+                reservationForm.numOfPeople ?: 0,
+                employee.employeeId,
+                reservationForm.tableName ?: ""
+            )
+        ) {
+            true -> "top"
+            false -> "ReservationEditError"
+        }
     }
 }
