@@ -152,6 +152,6 @@ class ReservationController (
             employee.employeeId,
             reservationForm.tableName ?: ""
         )
-        return reservationCheck(model)
+        return "redirect:/reservation_check"
     }
 }

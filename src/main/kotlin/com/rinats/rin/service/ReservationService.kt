@@ -60,7 +60,6 @@ class ReservationService(
     fun getAllCourseName(): List<String> {
         val list = mutableListOf<String>()
         for (i in 0 until reservationRepository.findAll().size) {
-//            list.add(i, courseRepository.findById(reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime")).filter { it.dateTime.isAfter(dateNow) }[i].courseId).get().name)
             list.add(i, courseRepository.findById(reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime"))[i].courseId).get().name)
         }
         return list
