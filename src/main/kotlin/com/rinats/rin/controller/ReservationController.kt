@@ -51,9 +51,8 @@ class ReservationController (
 
     @GetMapping("/reservation_check")
     fun reservationCheck(model: Model): String {
-        val dateNow = LocalDateTime.now()
-        model.addAttribute("reservationList", reservationService.getReservation(dateNow))
-        model.addAttribute("courseName", reservationService.getAllCourseName(dateNow))
+        model.addAttribute("reservationList", reservationService.getReservation())
+        model.addAttribute("courseName", reservationService.getAllCourseName())
         return "ReservationCheck"
     }
 

@@ -8,7 +8,9 @@ import com.rinats.rin.repository.ReservationRepository
 import com.rinats.rin.repository.TableRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -38,24 +40,33 @@ class ReservationService(
         tableName: String
     ) {
         if (reservationRepository.findAll().isEmpty()) {
+             if (searchDuplicate(dateTime, tableName)) return
             val reservation = Reservation("1", customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
             reservationRepository.save(reservation)
         } else {
+            if (searchDuplicate(dateTime, tableName)) return
             val id = reservationRepository.findAll().size + 1
             val reservation = Reservation(id.toString(), customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
             reservationRepository.save(reservation)
         }
     }
 
-    fun getReservation(dateNow: LocalDateTime): List<Reservation> {
-        return reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime"))
-            .filter { it.dateTime.isAfter(dateNow) }
+    fun searchDuplicate(dateTime: LocalDateTime, tableName: String): Boolean {
+        return reservationRepository.findAll().any {
+            it.dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) == dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    && it.tableName == tableName
+        }
     }
 
-    fun getAllCourseName(dateNow: LocalDateTime): List<String> {
+    fun getReservation(): List<Reservation> {
+        return reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime"))
+    }
+
+    fun getAllCourseName(): List<String> {
         val list = mutableListOf<String>()
-        for (i in 0 until reservationRepository.findAll().filter { it.dateTime.isAfter(dateNow) }.size) {
-            list.add(i, courseRepository.findById(reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime")).filter { it.dateTime.isAfter(dateNow) }[i].courseId).get().name)
+        for (i in 0 until reservationRepository.findAll().size) {
+//            list.add(i, courseRepository.findById(reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime")).filter { it.dateTime.isAfter(dateNow) }[i].courseId).get().name)
+            list.add(i, courseRepository.findById(reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime"))[i].courseId).get().name)
         }
         return list
     }
