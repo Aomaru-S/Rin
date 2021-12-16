@@ -31,6 +31,17 @@
                     <input type="submit" value="編集">
                 </form>
             </td>
+            <td>
+                <form action="#" th:action="@{reservation_delete}" method="post">
+                    <input type="hidden" name="id" th:value="${reservation.id}">
+                    <input type="hidden" name="customerName" th:value="${reservation.customerName}">
+                    <input type="hidden" name="courseId" th:value="${reservation.courseId}">
+                    <input type="hidden" name="dateTime" th:value="${reservation.dateTime}">
+                    <input type="hidden" name="numOfPeople" th:value="${reservation.numOfPeople}">
+                    <input type="hidden" name="tableName" th:value="${reservation.tableName}">
+                    <input type="submit" value="削除">
+                </form>
+            </td>
         </tr>
     </table>
 </div>

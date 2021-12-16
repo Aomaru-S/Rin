@@ -133,4 +133,25 @@ class ReservationController (
             false -> "ReservationEditError"
         }
     }
+
+    @PostMapping("reservation_delete")
+    fun reservationDelete(
+        @RequestAttribute employee: Employee,
+        request: HttpServletRequest,
+        @Validated
+        reservationForm: ReservationForm,
+        bindingResult: BindingResult,
+        model: Model
+    ): String {
+        reservationService.reservationDelete(
+            reservationForm.id ?: "",
+            reservationForm.customerName ?: "",
+            reservationForm.courseId ?: "",
+            reservationForm.dateTime ?: LocalDateTime.now(),
+            reservationForm.numOfPeople ?: 0,
+            employee.employeeId,
+            reservationForm.tableName ?: ""
+        )
+        return reservationCheck(model)
+    }
 }

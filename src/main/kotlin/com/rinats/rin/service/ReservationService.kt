@@ -85,6 +85,19 @@ class ReservationService(
         return true
     }
 
+    fun reservationDelete(
+        id: String,
+        customerName: String,
+        courseId: String,
+        dateTime: LocalDateTime,
+        numOfPeople: Int,
+        employeeId: String,
+        tableName: String
+    ) {
+        val reservation = Reservation(id, customerName, courseId,  dateTime, numOfPeople, employeeId, tableName)
+        reservationRepository.delete(reservation)
+    }
+
     fun searchDuplicate(dateTime: LocalDateTime, tableName: String): Boolean {
         return reservationRepository.findAll().any {
             it.dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) == dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
