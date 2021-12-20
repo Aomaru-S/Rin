@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/TemporaryShiftEditing.css">
     <title>仮シフト編集ボタン</title>
 </head>
 <body>
-<h1>仮シフト編集ボタン</h1>
+<h1>仮シフト編集</h1>
 <div align="center">
     <table border="0">
         <tr>
@@ -20,7 +21,7 @@
             <th>従業員指名入力</th>
             <td>
                 <label>
-                <input type="text" name="example">
+                    <input id="input_name" type="text" name="name" value="" placeholder="山田 太郎">
                 </label>
             </td>
         </tr>
@@ -28,7 +29,7 @@
             <th>
                 <input type="button"
                        onclick="location.href='TemporaryShiftEditCheck.html'"
-                       value="確認">
+                       value="確認" class="btn">
             </th>
         </tr>
     </table>

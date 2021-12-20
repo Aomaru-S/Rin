@@ -1,4 +1,4 @@
-h1 {border-collapse: collapse;
+h1 {
     text-align: center;
 }
 input[type=""],
@@ -29,6 +29,9 @@ textarea:focus {
     background: #e9f5fb;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-table{
+input[type="submit"]{
+    color: #000;
+    background-color: #fff100;
+    border-bottom: 5px solid #ccc100;
     text-align: center;
 }
