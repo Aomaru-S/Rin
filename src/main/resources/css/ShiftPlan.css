@@ -1,29 +1,24 @@
-h1{
+ul li {
     position: relative;
-    color: #158b2b;
-    font-size: 20px;
-    padding: 10px 0;
-    text-align: center;
-    margin: 1.5em 0;
-}
-h1:before {
-    content: "";
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    width: 150px;
-    height: 58px;
-    border-radius: 50%;
-    border: 5px solid #a6ddb0;
-    border-left-color: transparent;
-    border-right-color: transparent;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-}
-{
-    color: #6eb0f9;
+    list-style-type: none!important;/*ポチ消す*/
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    margin-bottom: 5px;
+    line-height: 1.5;
+    background: #dbebf8;
+    vertical-align: middle;
+    color: #505050;
+    border-radius: 15px 0 0 15px;
+
 }
 
-tr {
-    font-size: 20px;
+ul li:before{
+    display:inline-block;
+    vertical-align: middle;
+    /*以下白丸つくる*/
+    content:'';
+    width:1em;
+    height: 1em;
+    background: #fff;
+    border-radius: 50%;
+    margin-right: 8px;
 }
