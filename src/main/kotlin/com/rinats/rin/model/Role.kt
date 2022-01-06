@@ -1,16 +1,19 @@
 package com.rinats.rin.model
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
-@Table(name = "role")
-data class Role (
+@Table(name = "role2")
+open class Role {
     @Id
-    @Column(name = "role_id")
-    val roleId: String,
-    @Column(name = "role_name")
-    val roleName: String,
-)
+    @Column(name = "role_id", nullable = false)
+    open var id: Int? = null
+
+    @Column(name = "role_name", nullable = false, length = 32)
+    open var roleName: String? = null
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "authority_id", nullable = false)
+    open var authority: Authority? = null
+}

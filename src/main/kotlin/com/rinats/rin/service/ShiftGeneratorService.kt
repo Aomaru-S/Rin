@@ -1,51 +1,88 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.Employee
-import com.rinats.rin.model.Role
-import com.rinats.rin.model.TentativeShift
-import com.rinats.rin.model.TentativeShiftDetail
+import com.alias.kh.shiftgenerator.service.SetSettingValueInDBService
 import com.rinats.rin.repository.*
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
+import java.time.ZoneId
 import java.util.*
 
 @Service
 class ShiftGeneratorService(
-    @Autowired
     private val employeeRepository: EmployeeRepository,
     private val roleRepository: RoleRepository,
-    private val laborRepository: LaborRepository,
+    private val employeeLaborRepository: EmployeeLaborRepository,
     private val shiftTemplateRepository: ShiftTemplateRepository,
     private val shiftHopeRepository: ShiftHopeRepository,
     private val tentativeShiftRepository: TentativeShiftRepository,
-    private val tentativeShiftDetailRepository: TentativeShiftDetailRepository
+    private val tentativeShiftDetailRepository: TentativeShiftDetailRepository,
+    private val totalSalaryRepository: TotalSalaryRepository,
+    private val setSettingValueInDBService: SetSettingValueInDBService,
+    private val settingRepository: SettingRepository,
+    private val getHolidaysJpApiService: GetHolidaysJpApiService
 ) {
+    //1日の労働時間がいる
+    //private val workingHours = 6
 
     //給与関係のテーブルがないので仮データ
-    private val taxable = 1000000 //100万円 課税対象額
-    private val salary = 0 //今までの合計給与
+    //private val taxable = 1000000 //100万円 課税対象額
 
     fun shiftGenerator() {
+        val calendar = Calendar.getInstance()
+        calendar.timeZone = TimeZone.getTimeZone(ZoneId.systemDefault())
+        calendar.isLenient = false
+
+        //翌月の初日と最終日を取得
+        when (calendar.get(Calendar.MONTH) == Calendar.DECEMBER) {
+            true -> {
+                calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1)
+                calendar.set(Calendar.MONTH, Calendar.JANUARY)
+            }
+            false -> {
+                calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
+                calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1)
+            }
+        }
+        calendar.set(Calendar.DATE, 1)
+        val startDate = calendar.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        var date = 28
+        do {
+            calendar.set(Calendar.DATE, ++date)
+            val result = runCatching { calendar.time }
+        } while (result.isSuccess)
+        calendar.set(Calendar.DATE, --date)
+        val lastDate = calendar.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+
+        val shiftHopeList = shiftHopeRepository.findById_ShiftDateBetween(startDate, lastDate)
+        val totalSalaryList = totalSalaryRepository.findAll().filter { calendar.get(Calendar.YEAR) == it.id?.year }
+        val holidaysJpMap =
+            getHolidaysJpApiService.getHolidaysJpApi(calendar.get(Calendar.YEAR)) ?: throw NullPointerException("")
 
         //従業員と役職の連関エンティティ取得
+        val employeeLaborList = employeeLaborRepository.findAll()
         val employeeList = employeeRepository.findAll()
-        val roleList = roleRepository.findAll()
-        val laborList = laborRepository.findAll()
-        val employeeRoleMap = laborList.groupBy(
-            { employeeRole -> roleList.single { employeeRole.id?.roleId.equals(it.roleId) } },
-            { employeeRole -> employeeList.single { employeeRole.id?.employeeId.equals(it.employeeId) } }
-        )
+        val templateList = shiftTemplateRepository.findAll()
 
-        //中央値を従業員のグループごとに算出
-        val medianMap: MutableMap<Role, Double> = mutableMapOf()
-        employeeRoleMap.forEach { (role, employeeList) ->
+        if (setSettingValueInDBService.isKeysNull()) setSettingValueInDBService.makeKeys()
+
+        val settingKeys = settingRepository.findAll()
+        val workingHours = Integer.parseInt(settingKeys.single { it.id == "working_hours" }.settingValue)
+        val taxable = Integer.parseInt(settingKeys.single { it.id == "taxable" }.settingValue)
+
+        val roleIdToEmployeeLaborListMap = employeeLaborList.groupBy { it.id?.roleId!! }
+
+        //閾値を業種ごとに算出
+        val medianMap: SortedMap<Int, Double> = sortedMapOf()
+        roleIdToEmployeeLaborListMap.forEach { (roleId, employeeLaborList) ->
+            //平均値
+            var total = 0
+            employeeLaborList.forEach { total += it.labor!! }
+            val average = total / employeeLaborList.size.toDouble()
+
+            //中央値
             var laborArray = arrayOf<Int>()
-            employeeList.forEach { employee ->
+            employeeLaborList.forEach {
                 laborArray += 1
-                laborArray[laborArray.lastIndex] = laborList.single {
-                    employee.employeeId == it.id?.employeeId && role.roleId == it.id?.roleId
-                }.level ?: throw NullPointerException("unknown error!!!")
+                laborArray[laborArray.lastIndex] = it.labor!!
             }
             Arrays.sort(laborArray)
             val central = laborArray.size / 2
@@ -53,63 +90,56 @@ class ShiftGeneratorService(
                 true -> laborArray[central].toDouble()
                 false -> laborArray[central - 1] + laborArray[central] / 2.0
             }
-            medianMap[role] = median
+
+            //平均値か中央値の低い方を閾値にする
+            medianMap[roleId] = when (average < median) {
+                true -> average
+                false -> median
+            }
         }
 
-        val calendar = Calendar.getInstance()
-        calendar.timeZone = TimeZone.getTimeZone("Asia/Tokyo")
-        calendar.isLenient = false
-        calendar.timeInMillis = 0
-
-        //翌月の1日目を取得
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 2, 1)
-/*
-        //翌月の日毎の配列生成
-        val dateList: MutableList<Date> = mutableListOf()
-        var date = 0
-        do {
-            calendar.set(Calendar.DATE, date++)
-            val result = runCatching { dateList.add(calendar.time) }
-        } while (result.isSuccess)
-
-*/
-
         //シフト希望を日付ごとに
-        //val dateFirst = dateList.first() as java.sql.Date
-        val shiftHopeList = shiftHopeRepository.findAll()
-        val shiftHopeMap = shiftHopeList.filter { it.date.after(calendar.time) }.groupBy(
-            { it.date },
-            { shiftHope -> employeeList.single { shiftHope.employeeId == it.employeeId } }
-        )
+        val shiftHopeMap = shiftHopeList.groupBy({ it.id?.shiftDate!! }, { it.id?.employeeId }).toSortedMap()
 
         //仮シフト作成
-        val templateList = shiftTemplateRepository.findAll()
-        val tentativeShiftMap: MutableMap<Role, TentativeShift> = mutableMapOf()
-        shiftHopeMap.forEach { (date, shiftHopeList) ->
-            //祝日に対する処理がない、曜日に対する定数をどうするか？、仮の定数を入れてます
-            calendar.time = date
-            medianMap.forEach { (role, median) ->
-                val template = templateList.filter { it.id?.roleId == role.roleId }
-                val people: Int = when (calendar.get(Calendar.DAY_OF_WEEK)) {
-                    Calendar.SUNDAY -> template.single { it.id?.dayOfWeek == "日曜日" }.numOfPeople
-                    Calendar.MONDAY -> template.single { it.id?.dayOfWeek == "月曜日" }.numOfPeople
-                    Calendar.TUESDAY -> template.single { it.id?.dayOfWeek == "火曜日" }.numOfPeople
-                    Calendar.WEDNESDAY -> template.single { it.id?.dayOfWeek == "水曜日" }.numOfPeople
-                    Calendar.THURSDAY -> template.single { it.id?.dayOfWeek == "木曜日" }.numOfPeople
-                    Calendar.FRIDAY -> template.single { it.id?.dayOfWeek == "金曜日" }.numOfPeople
-                    Calendar.SATURDAY -> template.single { it.id?.dayOfWeek == "土曜日" }.numOfPeople
-                    else -> throw IllegalArgumentException("unknown error!!!")
-                } ?: throw NullPointerException("unknown error!!!")
+        val employeeToSalaryMap: MutableMap<Employee, Int> = mutableMapOf()
+        employeeList.forEach { employeeToSalaryMap[it] = 0 }
 
-                if (people < 0) return
+        val tentativeShiftList: MutableList<TentativeShift> = mutableListOf()
+        val tentativeShiftDetailList: MutableList<TentativeShiftDetail> = mutableListOf()
 
-                //必要な労働力の合計
-                val totalLabor = median * people
+        shiftHopeMap.forEach { (date, employeeIdList) ->
+            calendar.time = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant())
+            val calendarLocalDate = calendar.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 
-                //filter内容 → shiftHopeListからroleに当てはまるemployeeをemployeeRoleMapから検索する
-                val subject: MutableList<Employee> = mutableListOf()
-                shiftHopeList.forEach { shiftHope ->
-                    subject.addAll(employeeRoleMap.getValue(role).filter { shiftHope.employeeId == it.employeeId })
+            val tempTentativeShiftList: MutableList<TentativeShift> = mutableListOf()
+
+            medianMap.forEach loop1@{ (roleId, median) ->
+                val template = templateList.filter { it.id?.roleId == roleId }
+                val people = when (holidaysJpMap.containsKey(calendarLocalDate)) {
+                    true -> template.single { it.weeksAndHolidayName == "HOLIDAY" }.numOfPeople
+                    false -> when (calendar.get(Calendar.DAY_OF_WEEK)) {
+                        Calendar.SUNDAY -> template.single { it.id?.shiftTemplateId == Calendar.SUNDAY }.numOfPeople
+                        Calendar.MONDAY -> template.single { it.id?.shiftTemplateId == Calendar.MONDAY }.numOfPeople
+                        Calendar.TUESDAY -> template.single { it.id?.shiftTemplateId == Calendar.TUESDAY }.numOfPeople
+                        Calendar.WEDNESDAY -> template.single { it.id?.shiftTemplateId == Calendar.WEDNESDAY }.numOfPeople
+                        Calendar.THURSDAY -> template.single { it.id?.shiftTemplateId == Calendar.THURSDAY }.numOfPeople
+                        Calendar.FRIDAY -> template.single { it.id?.shiftTemplateId == Calendar.FRIDAY }.numOfPeople
+                        Calendar.SATURDAY -> template.single { it.id?.shiftTemplateId == Calendar.SATURDAY }.numOfPeople
+                        else -> throw IllegalArgumentException("unknown error!!!")
+                    }
+                }!!
+
+                if (people < 0) return@loop1
+
+                //filter内容 → employeeIdからroleに当てはまるemployeeをemployeeLaborMapから検索する
+                val subject: MutableList<String> = mutableListOf()
+                employeeIdList.forEach { employeeId ->
+                    roleIdToEmployeeLaborListMap.getValue(roleId).filter { employeeLaborList ->
+                        employeeId == employeeLaborList.id?.employeeId
+                    }.forEach {
+                        subject.add(it.id?.employeeId!!)
+                    }
                 }
 
                 //全ての組み合わせ
@@ -117,86 +147,148 @@ class ShiftGeneratorService(
 
                 //従業員不足
                 if (combinationList.isEmpty()) {
-                    //処理未完成
-                    val tentativeShiftDetail = TentativeShiftDetail()
-                    tentativeShiftDetail.id = date.toLocalDate()
-                    tentativeShiftDetail.isEmployeeInsufficient = true
-                    return
+                    val pair = makeTentativeShiftPair(
+                        TentativeShiftData(
+                            subject, date, roleId, isLaborInsufficient = true, isNumOfPeopleInsufficient = true
+                        )
+                    )
+                    tempTentativeShiftList.addAll(pair.first)
+                    tentativeShiftDetailList.add(pair.second)
+                    return@loop1
                 }
 
-                //totalLaborを超える組み合わせ
-                val upTotalLaborList: MutableList<MutableList<Employee>> = mutableListOf()
-                combinationList.forEach label1@{ combination ->
+                //必要な労働力の合計
+                val totalLabor = median * people
+
+                //totalLaborを超え年内の給料合計が課税対象額以内の組み合わせ
+                val upTotalLaborList: MutableList<MutableList<String>> = mutableListOf()
+                combinationList.forEach loop2@{ combination ->
                     var labor = 0
-                    combination.forEach { employee ->
-                        labor += when (taxable < salary) {
-                            true -> return@label1
-                            false -> laborList.single { employee.employeeId == it.id?.employeeId && role.roleId == it.id?.roleId }.level
-                                ?: throw NullPointerException("unknown error!!!")
+                    combination.forEach loop3@{ employeeId ->
+                        val employee = employeeList.single { it.id == employeeId }
+                        if (employee.isTaxableOk!!) {
+                            labor += roleIdToEmployeeLaborListMap.getValue(roleId)
+                                .single { employeeId == it.id?.employeeId }.labor!!
+                            return@loop3
                         }
-                        if (totalLabor <= labor) upTotalLaborList.add(combination)
+                        val onCalcSalary = employeeToSalaryMap.getValue(employee)
+                        val pastSalary = totalSalaryList.single { employeeId == it.id?.employeeId }.salary!!
+                        val nowSalary = pastSalary + onCalcSalary
+                        when (taxable < nowSalary) {
+                            true -> return@loop2
+                            false -> labor += roleIdToEmployeeLaborListMap.getValue(roleId)
+                                .single { employeeId == it.id?.employeeId }.labor!!
+                        }
                     }
+                    if (totalLabor <= labor && combination.size == people) upTotalLaborList.add(combination)
                 }
 
                 //労働力不足
                 if (upTotalLaborList.isEmpty()) {
-                    //処理未完成
-                    val tentativeShiftDetail = TentativeShiftDetail()
-                    tentativeShiftDetail.id = date.toLocalDate()
-                    tentativeShiftDetail.isLaborInsufficient = true
-                    return
+                    val pair = makeTentativeShiftPair(
+                        TentativeShiftData(
+                            subject, date, roleId, isLaborInsufficient = true, isNumOfPeopleInsufficient = false
+                        )
+                    )
+                    tempTentativeShiftList.addAll(pair.first)
+                    tentativeShiftDetailList.add(pair.second)
+                    return@loop1
                 }
 
+                //合計給与がが一番少なく、役職ごとに被りがない組み合わせ
+                upTotalLaborList.sortBy { combination ->
+                    combination.sumOf { employeeId ->
+                        val onCalcSalary = employeeToSalaryMap.getValue(employeeList.single { it.id == employeeId })
+                        val pastSalary = totalSalaryList.single { employeeId == it.id?.employeeId }.salary!!
+                        onCalcSalary + pastSalary
+                    }
+                }
 
-                //合計給与がが一番少ない組み合わせ
-                val fixedCombination: MutableList<Employee> = mutableListOf()
-                var minSalary = people * taxable
-                upTotalLaborList.forEach { combination ->
-                    var salary = 0
-                    combination.forEach { _ ->
-                        salary += this.salary
-                    }
-                    if (salary < minSalary) {
-                        minSalary = salary
-                        fixedCombination.removeAll(fixedCombination)
-                        fixedCombination.addAll(combination)
+                val fixedCombination: MutableList<String> = mutableListOf()
+                run run1@{
+                    upTotalLaborList.forEach { combination ->
+                        if (combination.intersect(tempTentativeShiftList.groupBy { it.id?.employeeId }.keys)
+                                .isEmpty()
+                        ) {
+                            fixedCombination.addAll(combination)
+                            return@run1
+                        }
                     }
                 }
-                fixedCombination.forEach {
-                    tentativeShiftRepository.save(TentativeShift(date, it.employeeId))
+
+                if (fixedCombination.isEmpty()) {
+                    val pair = makeTentativeShiftPair(
+                        TentativeShiftData(
+                            subject, date, roleId, isLaborInsufficient = true, isNumOfPeopleInsufficient = true
+                        )
+                    )
+                    tempTentativeShiftList.addAll(pair.first)
+                    tentativeShiftDetailList.add(pair.second)
+                    return@loop1
                 }
-                val tentativeShiftDetail = TentativeShiftDetail()
-                tentativeShiftDetail.id = date.toLocalDate()
-                tentativeShiftDetail.isLaborInsufficient = false
-                tentativeShiftDetail.isEmployeeInsufficient = false
-                tentativeShiftDetailRepository.save(tentativeShiftDetail)
+
+                fixedCombination.forEach { employeeId ->
+                    val employee = employeeList.single { it.id == employeeId }
+                    employeeToSalaryMap.replace(
+                        employee, employee.hourlyWage!! * workingHours
+                    )
+                }
+
+                val pair = makeTentativeShiftPair(
+                    TentativeShiftData(
+                        fixedCombination, date, roleId, isLaborInsufficient = false, isNumOfPeopleInsufficient = false
+                    )
+                )
+                tempTentativeShiftList.addAll(pair.first)
+                tentativeShiftDetailList.add(pair.second)
             }
+            tentativeShiftList.addAll(tempTentativeShiftList)
         }
+        tentativeShiftRepository.saveAll(tentativeShiftList)
+        tentativeShiftDetailRepository.saveAll(tentativeShiftDetailList)
     }
 
-    fun callCombination(employeeList: MutableList<Employee>, selected: Int): MutableList<MutableList<Employee>> {
-        val combinationList: MutableList<MutableList<Employee>> = mutableListOf()
-        employeeList.forEach {
-            combinationList.add(mutableListOf(it))
+    fun makeTentativeShiftPair(tentativeShiftData: TentativeShiftData): Pair<MutableList<TentativeShift>, TentativeShiftDetail> {
+        val saveSiftList: MutableList<TentativeShift> = mutableListOf()
+        tentativeShiftData.employeeIdList.forEach {
+            val saveShiftId = TentativeShiftId(tentativeShiftData.shiftDate, it)
+            val saveShift = TentativeShift(saveShiftId, roleRepository.getById(tentativeShiftData.roleId))
+            saveSiftList.add(saveShift)
         }
-        return combination(combinationList, selected)
+
+        val saveShiftDetailId = TentativeShiftDetailId(tentativeShiftData.shiftDate, tentativeShiftData.roleId)
+        val saveShiftDetail = TentativeShiftDetail(
+            saveShiftDetailId, tentativeShiftData.isLaborInsufficient, tentativeShiftData.isNumOfPeopleInsufficient
+        )
+        return saveSiftList to saveShiftDetail
     }
 
-    fun combination(
-        employeeList: MutableList<MutableList<Employee>>,
+    fun <T> callCombination(elementList: MutableList<T>, selected: Int): MutableList<MutableList<T>> {
+        val elementListList: MutableList<MutableList<T>> = mutableListOf()
+        elementList.forEach {
+            elementListList.add(mutableListOf(it))
+        }
+        return combination(elementListList, selected)
+    }
+
+    fun <T> combination(
+        elementListList: MutableList<MutableList<T>>,
         selected: Int
-    ): MutableList<MutableList<Employee>> {
-        val combinationList: MutableList<MutableList<Employee>> = mutableListOf()
+    ): MutableList<MutableList<T>> {
+        val combinationListList: MutableList<MutableList<T>> = mutableListOf()
         return when (1 < selected) {
             true -> {
-                employeeList.withIndex().forEach { employee ->
-                    combination(employeeList.subList(employee.index + 1, employeeList.size), selected - 1).forEach {
-                        combinationList.add((employee.value + it) as MutableList<Employee>)
+                elementListList.withIndex().forEach { elementList ->
+                    combination(
+                        elementListList.subList(elementList.index + 1, elementListList.size),
+                        selected - 1
+                    ).forEach {
+                        combinationListList.add((elementList.value + it) as MutableList<T>)
                     }
                 }
-                combinationList
+                combinationListList
             }
-            false -> employeeList
+            false -> elementListList
         }
     }
 }
