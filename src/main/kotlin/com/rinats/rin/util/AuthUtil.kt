@@ -27,7 +27,5 @@ class AuthUtil {
         fun getDigest(password: String, salt: String): String {
             return DigestUtils.sha512Hex(password + salt)
         }
-
-
     }
 }

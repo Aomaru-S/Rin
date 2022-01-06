@@ -10,7 +10,7 @@ import javax.persistence.Table
 @Table(name = "auth_info")
 data class AuthInfo(
     @Id
-    @Column(name = "employee_id")
+    @Column(name = "employee_id", nullable = false)
     val employeeId: String,
     var password: String,
     var salt: String,
