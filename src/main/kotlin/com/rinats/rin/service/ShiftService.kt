@@ -1,6 +1,9 @@
 package com.rinats.rin.service
 
+import com.rinats.rin.model.ForgetPasswordAccessToken
+import com.rinats.rin.model.response.Shift
 import com.rinats.rin.model.response.ShiftResponse
+import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.ShiftRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,11 +14,10 @@ import java.util.*
 class ShiftService(
     @Autowired
     val shiftRepository: ShiftRepository,
-    val employeeRepository: EmployeeRepository
+    val employeeRepository: EmployeeRepository,
+    val authInfoRepository: AuthInfoRepository
 ) {
-    fun getShift(year: Int?, month: Int?): ShiftResponse? {
-        year ?: return null
-        month ?: return null
+    fun getAllShift(year: Int, month: Int): ShiftResponse? {
         val shifts = shiftRepository.findAll()
         val days = ArrayList<ShiftDay>()
         shifts.forEach {
@@ -36,6 +38,22 @@ class ShiftService(
             }
         }
         return ShiftResponse(year, month, days)
+    }
+
+    fun getShift(year: Int, month: Int, token: String): Shift? {
+        val employeeId = authInfoRepository.findByAccessToken(token).get().employeeId
+        val shifts = shiftRepository.findByEmployeeId(employeeId)
+        val days = ArrayList<Int>()
+        shifts.forEach {
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = it.date.time
+            if (calendar.get(Calendar.YEAR) == year &&
+                calendar.get(Calendar.MONTH) + 1 == month
+            ) {
+                days.add(calendar.get(Calendar.DAY_OF_MONTH))
+            }
+        }
+        return Shift(year, month, days)
     }
 
     data class ShiftDay(
