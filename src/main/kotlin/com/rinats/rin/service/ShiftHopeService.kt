@@ -36,8 +36,9 @@ class ShiftHopeService(
     }
 
     fun submitShift(shiftHopeForm: ShiftHopeForm, employeeId: String): Boolean {
-        val year = shiftHopeForm.year
-        val month = shiftHopeForm.month
+        val year = shiftHopeForm.year ?: return false
+        val month = shiftHopeForm.month ?: return false
+        shiftHopeForm.days ?: return false
 
         shiftHopeForm.days.forEach { day ->
             val date = try {

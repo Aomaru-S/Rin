@@ -91,6 +91,7 @@ class AuthInterceptor(
             }
         }
 
+        println(accessToken)
         val employeeId = authInfoRepository.findByAccessToken(accessToken).get().employeeId
         val employee = employeeRepository.findById(employeeId).orElse(null)
         if (employee == null) {
