@@ -1,7 +1,7 @@
 package com.rinats.rin.controller
 
-import com.alias.kh.shiftgenerator.service.ShiftGeneratorService
 import com.rinats.rin.service.GetHolidaysJpApiService
+import com.rinats.rin.service.ShiftGeneratorService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
@@ -14,13 +14,13 @@ class ShiftGeneratorController(
     private val getHolidaysJpApiService: GetHolidaysJpApiService
 ) {
 
-    @GetMapping("/")
+    @GetMapping("/shift_generate")
     fun shiftGenerator(): String {
         shiftGeneratorService.shiftGenerator()
         return "executed!!!"
     }
 
-    @GetMapping("/test")
+    @GetMapping("/shift_generate_test")
     fun test(): Map<LocalDate, String>? {
         return getHolidaysJpApiService.getHolidaysJpApi(2021)
     }

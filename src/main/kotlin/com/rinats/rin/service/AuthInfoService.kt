@@ -39,12 +39,12 @@ class AuthInfoService(
         }
         val employee = employeeRepository.findById(employeeId).orElse(null) ?: return false
         val tmp = employeeRepository.findByMailAddress(mailAddress).orElse(null) ?: return false
-        val employeeId2 = tmp.employeeId
+        val employeeId2 = tmp.id
         val uuid = UUID.randomUUID().toString()
-        if (employee.employeeId != employeeId2) {
+        if (employee.id != employeeId2) {
             return false
         }
-        sendForgetPasswordMail(employee.mailAddress, uuid)
+        sendForgetPasswordMail(employee.mailAddress ?: return false, uuid)
 
         val forgetPasswordAccessToken = ForgetPasswordAccessToken(
             uuid,

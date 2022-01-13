@@ -24,7 +24,7 @@ class ShiftService(
                 calendar.get(Calendar.MONTH) + 1 == month
             ) {
                 val employee = employeeRepository.findById(it.employeeId).orElse(null) ?: return null
-                days.add(ShiftDay(calendar.get(Calendar.DAY_OF_MONTH), employee.firstName, employee.lastName))
+                days.add(ShiftDay(calendar.get(Calendar.DAY_OF_MONTH), employee.firstName ?: "", employee.lastName ?: ""))
             }
         }
         return ShiftResponse(year, month, days)

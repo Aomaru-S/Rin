@@ -1,8 +1,7 @@
 package com.rinats.rin.model
 
 import org.hibernate.Hibernate
-import org.mybatis.dynamic.sql.util.kotlin.elements.concatenate
-import java.util.*
+import java.time.LocalDate
 import javax.persistence.*
 import javax.persistence.Table
 
@@ -10,44 +9,49 @@ import javax.persistence.Table
 @Table(name = "employee")
 data class Employee(
     @Id
-    @Column(name = "employee_id")
-    val employeeId: String,
-    @Column(name = "first_name")
-    val firstName: String,
-    @Column(name = "last_name")
-    val lastName: String,
-    val gender: Boolean?,
-    val birthday: Date,
-    @Column(name = "hourly_wage")
-    var hourlyWage: Int,
-    @Column(name = "is_android_notification")
-    val isAndroid: Boolean,
-    var mailAddress: String,
-    @Column(name = "role_id")
-    val roleId: String,
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id")
-    var laborList: MutableList<Labor>
+    @Column(name = "employee_id", nullable = false, length = 6)
+    var id: String? = null,
+
+    @Column(name = "first_name", nullable = false, length = 32)
+    var firstName: String? = null,
+
+    @Column(name = "last_name", nullable = false, length = 32)
+    var lastName: String? = null,
+
+    @Column(name = "birthday", nullable = false)
+    var birthday: LocalDate? = null,
+
+    @Column(name = "hourly_wage", nullable = false)
+    var hourlyWage: Int? = null,
+
+    @Column(name = "is_android_notification", nullable = false)
+    var isAndroidNotification: Boolean? = false,
+
+    @Column(name = "mail_address", nullable = false, length = 319)
+    var mailAddress: String? = null,
+
+    @Column(name = "is_tentative")
+    var isTentative: Boolean? = null,
+
+    @Column(name = "is_taxiable_ok")
+    var isTaxableOk: Boolean? = null,
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "gender_id", nullable = false)
+    var gender: Gender? = null
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
         other as Employee
 
-        return employeeId == other.employeeId
+        return id != null && id == other.id
     }
 
     override fun hashCode(): Int = javaClass.hashCode()
-    override fun toString(): String {
-        return "Employee(employeeId='$employeeId', firstName='$firstName', lastName='$lastName', gender=$gender, birthday=$birthday, hourlyWage=$hourlyWage, isAndroid=$isAndroid, mailAddress='$mailAddress', laborList=$laborList)"
-    }
 
-    fun hasRole(_roleId: String): Boolean {
-        val roleIdList = mutableListOf<String>()
-        laborList.forEach {
-            val roleId = it.id?.roleId ?: return@forEach
-            roleIdList.add(roleId)
-        }
-        return roleIdList.contains(_roleId)
+    @Override
+    override fun toString(): String {
+        return this::class.simpleName + "(id = $id , firstName = $firstName , lastName = $lastName , birthday = $birthday , hourlyWage = $hourlyWage , isAndroidNotification = $isAndroidNotification , mailAddress = $mailAddress , isTentative = $isTentative , isTaxableOk = $isTaxableOk , gender = $gender )"
     }
 }

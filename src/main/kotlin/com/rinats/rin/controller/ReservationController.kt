@@ -1,11 +1,9 @@
 package com.rinats.rin.controller
 
-import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.Employee
 import com.rinats.rin.model.form.ReservationForm
 import com.rinats.rin.service.ReservationService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestAttribute
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import javax.servlet.http.HttpServletRequest
 
 @Controller
@@ -44,7 +41,7 @@ class ReservationController (
             reservationForm.courseId ?: "",
             reservationForm.dateTime ?: LocalDateTime.now(),
             reservationForm.numOfPeople ?: 0,
-            employee.employeeId,
+            employee.id ?: "",
             reservationForm.tableName ?: ""
             )
         ) {
@@ -125,7 +122,7 @@ class ReservationController (
                 reservationForm.courseId ?: "",
                 reservationForm.dateTime ?: LocalDateTime.now(),
                 reservationForm.numOfPeople ?: 0,
-                employee.employeeId,
+                employee.id ?: "",
                 reservationForm.tableName ?: ""
             )
         ) {
@@ -149,7 +146,7 @@ class ReservationController (
             reservationForm.courseId ?: "",
             reservationForm.dateTime ?: LocalDateTime.now(),
             reservationForm.numOfPeople ?: 0,
-            employee.employeeId,
+            employee.id ?: "",
             reservationForm.tableName ?: ""
         )
         return "redirect:/reservation_check"

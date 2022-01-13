@@ -2,14 +2,12 @@ package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.model.Employee
 import com.rinats.rin.model.form.ChangePasswordForm
-import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.service.AuthInfoService
 import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import javax.validation.constraints.NotBlank
 
 @RestController
 @RequestMapping("api/employee")
@@ -23,7 +21,7 @@ class EmployeeRestController(
         @RequestAttribute employee: Employee,
         mailAddress: String
     ): HashMap<String, Boolean> {
-        val result = employeeService.changeMailAddress(employee.employeeId, mailAddress)
+        val result = employeeService.changeMailAddress(employee.id ?: "", mailAddress)
         return hashMapOf("result" to result)
     }
 
@@ -38,7 +36,7 @@ class EmployeeRestController(
             return hashMapOf("result" to false)
         }
         val result = authInfoService.changePassword(
-            employee.employeeId,
+            employee.id ?: "",
             changePasswordForm.oldPassword,
             changePasswordForm.newPassword
         )

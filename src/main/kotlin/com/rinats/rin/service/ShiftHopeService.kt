@@ -1,6 +1,7 @@
 package com.rinats.rin.service
 
 import com.rinats.rin.model.ShiftHope
+import com.rinats.rin.model.compositeKey.ShiftHopeId
 import com.rinats.rin.model.form.ShiftHopeForm
 import com.rinats.rin.model.response.ShiftHopeResponse
 import com.rinats.rin.repository.ShiftHopeRepository
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.sql.Date
 import java.text.ParseException
+import java.time.ZoneId
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -18,11 +20,11 @@ class ShiftHopeService(
     val shiftHopeRepository: ShiftHopeRepository
 ) {
     fun getShiftHope(employeeId: String, year: Int, month: Int): ShiftHopeResponse {
-        val shiftHopes = shiftHopeRepository.findByEmployeeId(employeeId)
+        val shiftHopes = shiftHopeRepository.findById_EmployeeId(employeeId)
         val days = ArrayList<Int>()
         shiftHopes.forEach {
             val calendar = Calendar.getInstance()
-            calendar.timeInMillis = it.date.time
+            calendar.timeInMillis = Date.from(it.id?.shiftDate?.atStartOfDay(ZoneId.systemDefault())?.toInstant()).time
             val y = calendar.get(Calendar.YEAR)
             val m = calendar.get(Calendar.MONTH)
             if (year == y && month == m) {
@@ -44,16 +46,17 @@ class ShiftHopeService(
                 return false
             }
 
-            val shiftHope = ShiftHope(
-                Date(date.time),
-                employeeId
-            )
+            val shiftHopeId = ShiftHopeId()
+            shiftHopeId.shiftDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            shiftHopeId.employeeId = employeeId
+            val shiftHope = ShiftHope()
+            shiftHope.id = shiftHopeId
             shiftHopeRepository.save(shiftHope)
         }
         return true
     }
 
     fun deleteShiftHope(employeeId: String): Boolean {
-        return shiftHopeRepository.deleteByEmployeeId(employeeId)
+        return shiftHopeRepository.deleteById_EmployeeId(employeeId)
     }
 }

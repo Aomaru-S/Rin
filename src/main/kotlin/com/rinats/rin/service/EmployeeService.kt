@@ -3,19 +3,15 @@ package com.rinats.rin.service
 import com.rinats.rin.model.*
 import com.rinats.rin.model.compositeKey.LaborId
 import com.rinats.rin.model.form.AddEmployeeForm
-import com.rinats.rin.repository.AuthInfoRepository
-import com.rinats.rin.repository.EmployeeRepository
-import com.rinats.rin.repository.RetirementRepository
-import com.rinats.rin.repository.SequenceNumberRepository
+import com.rinats.rin.repository.*
 import com.rinats.rin.util.AuthUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
+import java.time.ZoneId
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 @Service
 class EmployeeService(
@@ -24,7 +20,10 @@ class EmployeeService(
     private val employeeRepository: EmployeeRepository,
     private val authInfoRepository: AuthInfoRepository,
     private val retirementRepository: RetirementRepository,
-    private val sender: MailSender
+    private val sender: MailSender,
+    private val employeeLaborRepository: EmployeeLaborRepository,
+    private val roleRepository: RoleRepository,
+    private val genderRepository: GenderRepository
 ) {
     //    従業員仮登録処理
     fun addTentativeEmployee(addEmployeeForm: AddEmployeeForm) {
@@ -37,18 +36,18 @@ class EmployeeService(
         labor.level = 2
         val laborList = arrayListOf<Labor>()
         laborList.add(labor)
-
+        val gender = genderRepository.findById(0).get()
         val employee = Employee(
             employeeId,
             addEmployeeForm.firstName ?: "",
             addEmployeeForm.lastName ?: "",
-            addEmployeeForm.gender,
-            birthday,
+            birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
             1000,
             false,
             addEmployeeForm.mailAddress ?: "",
-            "2",
-            laborList
+            false,
+            isTaxableOk = false,
+            gender
         )
 
         val date = Date().apply {
@@ -96,8 +95,10 @@ class EmployeeService(
     }
 
     fun retireEmployee(employeeId: String): Boolean {
-        val employee = employeeRepository.findById(employeeId).orElse(null) ?: return false
-        val retire = Retirement(employee)
+        val employee = employeeRepository.findById(employeeId).orElse(null)
+        val retire = Retirement()
+        retire.id = employeeId
+        retire.date = Date().toInstant()
         retirementRepository.save(retire)
         employeeRepository.deleteById(employeeId)
         return true
@@ -134,5 +135,12 @@ class EmployeeService(
                     "パスワード: $password"
         )
         sender.send(message)
+    }
+
+    fun getAuthority(
+        employeeId: String
+    ): Int {
+        val employeeLabor = employeeLaborRepository.findById_EmployeeId(employeeId)[0]
+        return roleRepository.findById(employeeLabor.id?.roleId ?: 2).get().authority?.id ?: 2
     }
 }

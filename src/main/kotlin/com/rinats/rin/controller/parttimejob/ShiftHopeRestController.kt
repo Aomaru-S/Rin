@@ -2,7 +2,6 @@ package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.model.Employee
 import com.rinats.rin.model.form.ShiftHopeForm
-import com.rinats.rin.model.response.ShiftHopeResponse
 import com.rinats.rin.service.ShiftHopeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult
@@ -38,7 +37,7 @@ class ShiftHopeRestController(
         if (bindingResult.hasErrors()) {
             return hashMapOf("result" to false)
         }
-        val result = shiftHopeService.submitShift(shiftHopeForm, employee.employeeId)
+        val result = shiftHopeService.submitShift(shiftHopeForm, employee.id ?: "")
         return hashMapOf("result" to result)
     }
 }

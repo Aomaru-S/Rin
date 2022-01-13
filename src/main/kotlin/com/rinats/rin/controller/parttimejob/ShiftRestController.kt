@@ -1,10 +1,8 @@
 package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.annotation.NonAuth
-import com.rinats.rin.model.Employee
 import com.rinats.rin.model.form.GetShiftsForm
 import com.rinats.rin.model.response.ShiftResponse
-import com.rinats.rin.service.ShiftHopeService
 import com.rinats.rin.service.ShiftService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult

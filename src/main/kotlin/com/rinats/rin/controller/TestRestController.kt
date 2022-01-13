@@ -104,6 +104,6 @@ class TestRestController(
     @NonAuth
     @GetMapping("/shift_generator")
     fun generateShift() {
-        shiftGeneratorService.shiftGenerator()
+//        shiftGeneratorService.shiftGenerator()
     }
 }

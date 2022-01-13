@@ -29,7 +29,7 @@ class AuthInfoRestController(
         if (bindingResult.hasErrors()) {
             return hashMapOf("result" to false)
         }
-        val result= authInfoService.changePassword(employee.employeeId, changePasswordForm.oldPassword, changePasswordForm.newPassword)
+        val result= authInfoService.changePassword(employee.id ?: "", changePasswordForm.oldPassword, changePasswordForm.newPassword)
         return hashMapOf("result" to result)
     }
 
