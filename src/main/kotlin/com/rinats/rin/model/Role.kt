@@ -4,7 +4,7 @@ import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
-@Table(name = "role2")
+@Table(name = "role")
 open class Role {
     @Id
     @Column(name = "role_id", nullable = false)
