@@ -14,14 +14,16 @@ class ShiftService(
     val shiftRepository: ShiftRepository,
     val employeeRepository: EmployeeRepository
 ) {
-    fun getShift(year: Int, month: Int): ShiftResponse? {
+    fun getShift(year: Int?, month: Int?): ShiftResponse? {
+        year ?: return null
+        month ?: return null
         val shifts = shiftRepository.findAll()
         val days = ArrayList<ShiftDay>()
         shifts.forEach {
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = it.date.time
             if (calendar.get(Calendar.YEAR) == year &&
-                calendar.get(Calendar.MONTH) + 1 == month
+                calendar.get(Calendar.MONTH).plus(1) == month
             ) {
                 val employee = employeeRepository.findById(it.employeeId).orElse(null) ?: return null
                 days.add(ShiftDay(calendar.get(Calendar.DAY_OF_MONTH), employee.firstName ?: "", employee.lastName ?: ""))

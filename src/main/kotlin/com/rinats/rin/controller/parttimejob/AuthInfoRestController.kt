@@ -7,12 +7,11 @@ import com.rinats.rin.model.form.ForgetPasswordForm
 import com.rinats.rin.repository.ForgetPasswordAccessTokenRepository
 import com.rinats.rin.service.AuthInfoService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
-@Controller
+@RestController
 @RequestMapping("api/auth_info")
 class AuthInfoRestController(
     @Autowired
@@ -21,15 +20,22 @@ class AuthInfoRestController(
 ) {
     @PostMapping("/password")
     fun changePassword(
-        @RequestAttribute employee: Employee,
+        @RequestAttribute
+        employee: Employee,
         @ModelAttribute @Validated
         changePasswordForm: ChangePasswordForm,
         bindingResult: BindingResult
     ): HashMap<String, Boolean> {
         if (bindingResult.hasErrors()) {
+            System.err.println("hasError")
+            System.err.println(changePasswordForm.oldPassword)
+            System.err.println(changePasswordForm.newPassword)
             return hashMapOf("result" to false)
         }
-        val result= authInfoService.changePassword(employee.id ?: "", changePasswordForm.oldPassword, changePasswordForm.newPassword)
+        val result = authInfoService.changePassword(
+            employee.id,
+            changePasswordForm
+        )
         return hashMapOf("result" to result)
     }
 

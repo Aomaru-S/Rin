@@ -1,7 +1,7 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.AuthInfo
 import com.rinats.rin.model.ForgetPasswordAccessToken
+import com.rinats.rin.model.form.ChangePasswordForm
 import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.ForgetPasswordAccessTokenRepository
@@ -11,7 +11,6 @@ import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.collections.HashMap
 
 @Service
 class AuthInfoService(
@@ -21,13 +20,20 @@ class AuthInfoService(
     private val forgetPasswordAccessTokenRepository: ForgetPasswordAccessTokenRepository,
     private val sender: MailSender
 ) {
-    fun changePassword(employeeId: String, oldPassword: String, newPassword: String): Boolean {
+    fun changePassword(employeeId: String?, changePasswordForm: ChangePasswordForm): Boolean {
+        employeeId ?: return false
+        changePasswordForm.oldPassword ?: return false
+        changePasswordForm.newPassword ?: return false
+        System.err.println(employeeId)
+        System.err.println(changePasswordForm.oldPassword)
+        System.err.println(changePasswordForm.newPassword)
+
         val authInfo = authInfoRepository.findById(employeeId).orElse(null) ?: return false
-        val oldDigest = AuthUtil.getDigest(oldPassword, authInfo.salt)
+        val oldDigest = AuthUtil.getDigest(changePasswordForm.oldPassword, authInfo.salt)
         if (authInfo.password != oldDigest) {
             return false
         }
-        val newDigest = AuthUtil.getDigest(newPassword, authInfo.salt)
+        val newDigest = AuthUtil.getDigest(changePasswordForm.newPassword, authInfo.salt)
         authInfo.password = newDigest
         authInfoRepository.save(authInfo)
         return true

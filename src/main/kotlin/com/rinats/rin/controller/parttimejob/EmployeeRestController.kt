@@ -24,22 +24,4 @@ class EmployeeRestController(
         val result = employeeService.changeMailAddress(employee.id ?: "", mailAddress)
         return hashMapOf("result" to result)
     }
-
-    @PostMapping("/change_password")
-    fun changePassword(
-        @RequestAttribute employee: Employee,
-        @Validated
-        changePasswordForm: ChangePasswordForm,
-        bindingResult: BindingResult
-    ): HashMap<String, Boolean> {
-        if (bindingResult.hasErrors()) {
-            return hashMapOf("result" to false)
-        }
-        val result = authInfoService.changePassword(
-            employee.id ?: "",
-            changePasswordForm.oldPassword,
-            changePasswordForm.newPassword
-        )
-        return hashMapOf("result" to result)
-    }
 }
