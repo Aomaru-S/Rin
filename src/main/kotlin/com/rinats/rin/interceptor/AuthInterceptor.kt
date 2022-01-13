@@ -89,7 +89,12 @@ class AuthInterceptor(
         }
 
         val employeeId = authInfoRepository.findByAccessToken(accessToken).get().employeeId
-        val employee = employeeRepository.findById(employeeId).get()
+        val employee = employeeRepository.findById(employeeId).orElse(null)
+        if (employee == null) {
+            System.err.println("employee is null")
+            response.sendRedirect("/login")
+            return false
+        }
 
         if (!checkAccessToken(accessToken)) {
             if (!isApi) {
