@@ -6,7 +6,6 @@ import com.rinats.rin.repository.ShiftRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.collections.ArrayList
 
 @Service
 class ShiftService(
@@ -26,7 +25,14 @@ class ShiftService(
                 calendar.get(Calendar.MONTH).plus(1) == month
             ) {
                 val employee = employeeRepository.findById(it.employeeId).orElse(null) ?: return null
-                days.add(ShiftDay(calendar.get(Calendar.DAY_OF_MONTH), employee.firstName ?: "", employee.lastName ?: ""))
+                days.add(
+                    ShiftDay(
+                        calendar.get(Calendar.DAY_OF_MONTH),
+                        employee.id ?: return null,
+                        employee.firstName ?: "",
+                        employee.lastName ?: ""
+                    )
+                )
             }
         }
         return ShiftResponse(year, month, days)
@@ -34,6 +40,7 @@ class ShiftService(
 
     data class ShiftDay(
         val day: Int,
+        val employeeId: String,
         val firstName: String,
         val lastName: String
     )
