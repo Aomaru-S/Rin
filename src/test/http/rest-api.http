@@ -1,0 +1,66 @@
+### Login
+POST http://localhost/api/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+employeeId=181032&password=password
+
+> {%
+ client.global.set("token", response.body.access_token)
+ %}
+
+### Logout
+POST http://localhost/api/auth/logout
+Authorization: {{token}}
+
+### Private
+GET http://localhost/api/private
+Authorization: {{token}}
+
+### Get shift hope
+GET http://localhost/api/shift_hope/shift_hope?year=2022&month=1
+Authorization: {{token}}
+
+<> 2022-01-13T115449.200.json
+<> 2022-01-13T115443.200.json
+<> 2022-01-13T115420.200.json
+<> 2022-01-13T115357.200.json
+
+### Submit shift hope
+POST http://localhost/api/shift_hope/shift_hope
+Content-Type: application/x-www-form-urlencoded
+Authorization: {{token}}
+
+year=2022&&month=1&days=1&days=2
+
+<> 2022-01-13T115408.200.json
+<> 2022-01-13T115228.200.json
+<> 2022-01-13T115102.200.json
+<> 2022-01-13T115000.200.json
+
+### Get shift
+GET http://localhost/api/shift/shift_table_check?year=2021&month=12
+Authorization: {{token}}
+
+<> 2022-01-13T134014.200.json
+<> 2022-01-13T120653.200.json
+<> 2022-01-13T120612.200.json
+<> 2022-01-13T120606.200.json
+<> 2022-01-13T120412.200.json
+<> 2022-01-13T120123.200.json
+<> 2022-01-13T120105.200.json
+
+### Change password
+POST http://localhost/api/auth_info/password
+Content-Type: application/x-www-form-urlencoded
+Authorization: {{token}}
+
+oldPassword=password2&newPassword=password
+
+<> 2022-01-13T133505.200.json
+<> 2022-01-13T133441.200.json
+<> 2022-01-13T133413.200.json
+<> 2022-01-13T133229.200.json
+<> 2022-01-13T133149.200.json
+<> 2022-01-13T133120.200.json
+<> 2022-01-13T133006.200.json
+<> 2022-01-13T123151.200.json
