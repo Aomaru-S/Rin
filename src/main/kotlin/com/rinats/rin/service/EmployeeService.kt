@@ -143,6 +143,6 @@ class EmployeeService(
         if (employeeLabor.isEmpty()) {
             return null
         }
-        return roleRepository.findById(employeeLabor[0].id?.roleId ?: return null).get().authority?.id
+        return roleRepository.findById(employeeLabor[0].id?.roleId ?: return null).orElse(null).authority?.id
     }
 }

@@ -38,7 +38,7 @@ year=2022&&month=1&days=1&days=2
 <> 2022-01-13T115000.200.json
 
 ### Get shift
-GET http://localhost/api/shift/shift_table_check?year=2021&month=12
+GET http://localhost/api/shift/shift_check?year=2021&month=12
 Authorization: {{token}}
 
 <> 2022-01-13T134014.200.json

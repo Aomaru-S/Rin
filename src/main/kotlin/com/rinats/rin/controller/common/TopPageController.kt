@@ -23,6 +23,7 @@ class TopPageController(
         return when (employeeService.getAuthority(employee.id ?: return "redirect:/login")) {
             0 -> "store_manager_top"
             1 -> "part_time_job_top"
+            2 -> "store_terminal_top"
             else -> "redirect:/login"
         }
     }
