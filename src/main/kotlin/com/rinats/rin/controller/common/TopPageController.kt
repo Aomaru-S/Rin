@@ -13,16 +13,16 @@ class TopPageController(
     @Autowired
     private val employeeService: EmployeeService
 ) {
-
     @GetMapping("/")
     fun forwardIndex(
         request: HttpServletRequest,
         @RequestAttribute
         employee: Employee
     ): String {
-        if (employeeService.getAuthority(employee.id ?: "") == 0) {
-            return "store_manager_top"
+        return when (employeeService.getAuthority(employee.id ?: return "redirect:/login")) {
+            0 -> "store_manager_top"
+            1 -> "part_time_job_top"
+            else -> "redirect:/login"
         }
-        return "part_time_job_top"
     }
 }

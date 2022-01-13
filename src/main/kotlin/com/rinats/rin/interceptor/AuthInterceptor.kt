@@ -50,7 +50,9 @@ class AuthInterceptor(
         val method = getMethod(handler, response)
         if (method == null) {
             System.err.println("method null ng")
+            response.sendRedirect("/login")
             return false
+//            return true
         }
 
         if (checkAuthResource(method)) {
@@ -65,6 +67,7 @@ class AuthInterceptor(
         when(isApi) {
             true -> {
                 accessToken = request.getHeader("Authorization")
+                println(accessToken)
                 if (accessToken == null) {
                     System.err.println("accessToken null ng1")
                     response.sendError(401)
@@ -140,11 +143,13 @@ class AuthInterceptor(
     }
 
     private fun checkAuthResource(method: Method): Boolean {
+        println("has NonAuth: ${AnnotationUtils.findAnnotation(method, NonAuth::class.java) != null}")
         return AnnotationUtils.findAnnotation(method, NonAuth::class.java) != null
     }
 
     private fun checkAccessToken(accessToken: String?): Boolean {
         accessToken ?: return false
+        println(accessToken)
         return authInfoRepository.existsByAccessToken(accessToken)
     }
 

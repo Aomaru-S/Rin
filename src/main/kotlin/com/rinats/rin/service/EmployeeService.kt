@@ -36,19 +36,18 @@ class EmployeeService(
         labor.level = 2
         val laborList = arrayListOf<Labor>()
         laborList.add(labor)
-        val gender = genderRepository.findById(0).get()
-        val employee = Employee(
-            employeeId,
-            addEmployeeForm.firstName ?: "",
-            addEmployeeForm.lastName ?: "",
-            birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-            1000,
-            false,
-            addEmployeeForm.mailAddress ?: "",
-            false,
-            isTaxableOk = false,
-            gender
-        )
+        val employee = Employee().also {
+            it.id = employeeId
+            it.firstName = addEmployeeForm.firstName
+            it.lastName = addEmployeeForm.lastName
+            it.birthday = birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            it.hourlyWage = 1000
+            it.isAndroidNotification = false
+            it.mailAddress = addEmployeeForm.mailAddress
+            it.isTentative = false
+            it.gender = genderRepository.findById(0).get()
+            it.isTaxableOk = false
+        }
 
         val date = Date().apply {
             time = 0
@@ -139,8 +138,11 @@ class EmployeeService(
 
     fun getAuthority(
         employeeId: String
-    ): Int {
-        val employeeLabor = employeeLaborRepository.findById_EmployeeId(employeeId)[0]
-        return roleRepository.findById(employeeLabor.id?.roleId ?: 2).get().authority?.id ?: 2
+    ): Int? {
+        val employeeLabor = employeeLaborRepository.findById_EmployeeId(employeeId)
+        if (employeeLabor.isEmpty()) {
+            return null
+        }
+        return roleRepository.findById(employeeLabor[0].id?.roleId ?: return null).get().authority?.id
     }
 }
