@@ -6,4 +6,9 @@ input[type="button"],button{
     background-color: #fff100;
     border-bottom: 5px solid #ccc100;
     font-size: 18px;
+    position: absolute;
+    top: 20%;
+    left: 53%;
+    transform: translateY(-50%) translateX(-50%);
+-webkit-transformtranslateY(-50%) translateX(-50%);
 }

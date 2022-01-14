@@ -8,5 +8,9 @@ input[type="submit"],button{
     color: #000;
     background-color: #fff100;
     border-bottom: 5px solid #ccc100;
-
+    position: absolute;
+    top: 17%;
+    left: 55%;
+    transform: translateY(-50%) translateX(-50%);
+-webkit-transformtranslateY(-50%) translateX(-50%);
 }
