@@ -9,7 +9,7 @@ import java.time.LocalDate
 @Repository
 interface ShiftHopeRepository : JpaRepository<ShiftHope, ShiftHopeId> {
     fun findById_EmployeeId(employeeId: String): List<ShiftHope>
-    fun deleteById_EmployeeId(employeeId: String): Boolean
+    fun deleteById_EmployeeId(employeeId: String)
     fun findById_ShiftDateBetween(start_shiftDate: LocalDate, last_shiftDate: LocalDate): List<ShiftHope>
     //@Query("SELECT * FROM shift_hope WHERE date >= %:start%")
     //fun findByDate(@Param("start") start: Date): List<ShiftHope>

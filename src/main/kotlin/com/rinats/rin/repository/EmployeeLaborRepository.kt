@@ -5,5 +5,5 @@ import com.rinats.rin.model.table.compositeId.EmployeeLaborId
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface EmployeeLaborRepository : JpaRepository<EmployeeLabor, EmployeeLaborId> {
-    fun findById_EmployeeId(employeeId: String): List<EmployeeLabor>
+    fun findByIdEmployeeId(employeeId: String): List<EmployeeLabor>
 }

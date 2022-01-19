@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("api/employee")
 class EmployeeRestController(
     @Autowired
-    private val employeeService: EmployeeService,
-    private val authInfoService: AuthInfoService
+    private val employeeService: EmployeeService
 ) {
     @PostMapping("/change_mailAddress")
     fun changeMailAddress(

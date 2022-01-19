@@ -56,8 +56,8 @@ class ShiftHopeRestController(
     fun deleteShiftHope(
         @RequestAttribute
         employee: Employee
-    ): HashMap<String, Boolean> {
-        val id = employee.id ?: return hashMapOf("result" to false)
-        return hashMapOf("result" to shiftHopeService.deleteShiftHope(id))
+    ) {
+        val id = employee.id ?: return
+        shiftHopeService.deleteShiftHope(id)
     }
 }

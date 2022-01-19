@@ -176,7 +176,7 @@ class EmployeeService(
     fun getAuthority(
         employeeId: String
     ): Int? {
-        val employeeLabor = employeeLaborRepository.findById_EmployeeId(employeeId)
+        val employeeLabor = employeeLaborRepository.findByIdEmployeeId(employeeId)
         if (employeeLabor.isEmpty()) {
             return null
         }
