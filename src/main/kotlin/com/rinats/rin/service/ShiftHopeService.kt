@@ -8,6 +8,7 @@ import com.rinats.rin.repository.ShiftHopeRepository
 import com.rinats.rin.util.DateUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.sql.Date
 import java.text.ParseException
 import java.time.ZoneId
@@ -57,6 +58,7 @@ class ShiftHopeService(
         return true
     }
 
+    @Transactional
     fun deleteShiftHope(employeeId: String) {
         shiftHopeRepository.deleteById_EmployeeId(employeeId)
     }
