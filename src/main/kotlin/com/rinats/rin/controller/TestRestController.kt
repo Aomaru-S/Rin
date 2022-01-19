@@ -23,17 +23,16 @@ class TestRestController(
 
     @CrossOrigin(methods = [RequestMethod.GET])
     @NonAuth
-    @GetMapping("/public")
+    @GetMapping("/api/public")
     fun getPublic(
-        a: String?,
+        msg: String?,
     ): String {
-        println(a)
 //        val list = arrayListOf("a", "b")
 //        println(list[-1])
-        return "get: $a"
+        return "get: $msg"
     }
 
-//    @CrossOrigin(methods = [RequestMethod.POST, RequestMethod.OPTIONS])
+    //    @CrossOrigin(methods = [RequestMethod.POST, RequestMethod.OPTIONS])
     @NonAuth
     @PostMapping("/public")
     fun public(
@@ -50,7 +49,7 @@ class TestRestController(
     }
 
     @NonAuth
-    @GetMapping("/api/public")
+    @GetMapping("/api/publi")
     fun apiPublic(): String {
         return "/api/public"
     }
@@ -64,8 +63,10 @@ class TestRestController(
     }
 
     @GetMapping("/api/private")
-    fun apiPrivate(): HashMap<String, String> {
-        return hashMapOf("result" to "private")
+    fun apiPrivate(
+        msg: String? = "non text"
+    ): HashMap<String, String?> {
+        return hashMapOf("result" to msg)
     }
 
 

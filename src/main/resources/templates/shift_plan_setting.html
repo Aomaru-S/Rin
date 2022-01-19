@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>シフト計画設定</title>
@@ -10,12 +10,12 @@
     <table border="0">
         <tr>
             <th>
-                <a href="Template.html">テンプレート確認</a>
+                <a th:href="@{/shift_template}">シフトテンプレート確認</a>
             </th>
         </tr>
         <tr>
             <th>
-                <a href="AdditionEdit.html">追加編集</a>
+                <a th:href="@{/add_edit_shift}">追加編集</a>
             </th>
         </tr>
     </table>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>追加編集</title>
@@ -7,7 +7,7 @@
 <body>
 <h1>追加編集画面</h1>
 <div align="center">
-    <form action="AdditionEditCheck.html" method="post">
+    <form action="#" th:action="@{/add_edit_shift_confirm}" method="post">
         <table border="0">
             <tr>
                 <th>月選択入力</th>

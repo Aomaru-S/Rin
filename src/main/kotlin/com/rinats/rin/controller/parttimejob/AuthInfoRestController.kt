@@ -40,7 +40,7 @@ class AuthInfoRestController(
     }
 
     @NonAuth
-    @PostMapping("/forget_password")
+    @PostMapping("/forgot_password")
     fun forgetPassword(
         @Validated
         @ModelAttribute
@@ -49,7 +49,6 @@ class AuthInfoRestController(
     ): HashMap<String, Boolean> {
         if (bindingResult.hasErrors()) {
             return hashMapOf("result" to false)
-
         }
         val result = authInfoService.forgetPasswordMail(forgetPasswordForm.employeeId, forgetPasswordForm.mailAddress)
         return hashMapOf("result" to result)

@@ -29,6 +29,12 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
+        val isCss = request.requestURI.startsWith("/css")
+        if (isCss) {
+            println("css ok")
+            return true
+        }
+
         println("Status: ${response.status}")
         if (HttpMethod.OPTIONS.matches(request.method)) {
             System.err.println("option ok")
