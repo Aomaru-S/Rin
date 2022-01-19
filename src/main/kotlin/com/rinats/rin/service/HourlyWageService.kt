@@ -1,6 +1,6 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.Employee
+import com.rinats.rin.model.table.Employee
 import com.rinats.rin.repository.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

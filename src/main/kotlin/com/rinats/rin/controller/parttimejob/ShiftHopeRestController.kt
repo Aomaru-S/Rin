@@ -1,6 +1,6 @@
 package com.rinats.rin.controller.parttimejob
 
-import com.rinats.rin.model.Employee
+import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.form.GetShiftHopeForm
 import com.rinats.rin.model.form.ShiftHopeForm
 import com.rinats.rin.model.response.ShiftHopeResponse

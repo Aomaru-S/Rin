@@ -1,6 +1,6 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.Setting
+import com.rinats.rin.model.table.Setting
 import com.rinats.rin.repository.SettingRepository
 import org.springframework.stereotype.Service
 

@@ -1,6 +1,6 @@
 package com.rinats.rin.repository
 
-import com.rinats.rin.model.TentativeShiftHistory
+import com.rinats.rin.model.table.TentativeShiftHistory
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

@@ -1,7 +1,7 @@
 package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.annotation.NonAuth
-import com.rinats.rin.model.Employee
+import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.form.ChangePasswordForm
 import com.rinats.rin.model.form.ForgetPasswordForm
 import com.rinats.rin.repository.ForgetPasswordAccessTokenRepository
@@ -29,7 +29,7 @@ class AuthInfoRestController(
         if (bindingResult.hasErrors()) {
             System.err.println("hasError")
             System.err.println(changePasswordForm.oldPassword)
-            System.err.println(changePasswordForm.newPassword)
+            System.err.println(changePasswordForm.newPassword1)
             return hashMapOf("result" to false)
         }
         val result = authInfoService.changePassword(

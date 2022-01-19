@@ -1,19 +1,16 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.Course
-import com.rinats.rin.model.Reservation
-import com.rinats.rin.model.Table
+import com.rinats.rin.model.table.Course
+import com.rinats.rin.model.table.Reservation
+import com.rinats.rin.model.table.Table
 import com.rinats.rin.repository.CourseRepository
 import com.rinats.rin.repository.ReservationRepository
 import com.rinats.rin.repository.TableRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort
-import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Service
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 @Service
 class ReservationService(

@@ -1,20 +1,20 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.Labor
-import com.rinats.rin.model.compositeKey.LaborId
+import com.rinats.rin.model.table.EmployeeLabor
+import com.rinats.rin.model.table.compositeId.EmployeeLaborId
+import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.repository.EmployeeRepository
-import com.rinats.rin.repository.LaborRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class LaborService(
     @Autowired
-    private val laborRepository: LaborRepository,
+    private val laborRepository: EmployeeLaborRepository,
     private val employeeRepository: EmployeeRepository
 ) {
 
-    fun getLabor(): MutableList<Labor> {
+    fun getLabor(): MutableList<EmployeeLabor> {
         return laborRepository.findAll()
     }
 
@@ -23,12 +23,14 @@ class LaborService(
         return employee.get().lastName + " " + employee.get().firstName
     }
 
-    fun levelUpdate(employeeId: String, roleId: String, level: Int) {
-        val laborId = LaborId(employeeId, roleId)
-        val employee = employeeRepository.findById(employeeId)
-        val labor = Labor()
-        labor.id = laborId
-        labor.level = level
-        laborRepository.save(labor)
+    fun levelUpdate(employeeId: String, roleId: String, labor: Int) {
+        val laborId = EmployeeLaborId().also {
+            it.employeeId = employeeId
+            it.roleId = roleId.toInt()
+        }
+        val employeeLabor = EmployeeLabor()
+        employeeLabor.id = laborId
+        employeeLabor.labor = 4
+        laborRepository.save(employeeLabor)
     }
 }

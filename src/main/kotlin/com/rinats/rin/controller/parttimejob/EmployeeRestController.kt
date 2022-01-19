@@ -1,12 +1,9 @@
 package com.rinats.rin.controller.parttimejob
 
-import com.rinats.rin.model.Employee
-import com.rinats.rin.model.form.ChangePasswordForm
+import com.rinats.rin.model.table.Employee
 import com.rinats.rin.service.AuthInfoService
 import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.validation.BindingResult
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController

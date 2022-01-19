@@ -4,8 +4,8 @@ import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.annotation.PartTimeJob
 import com.rinats.rin.annotation.StoreManager
 import com.rinats.rin.annotation.TentativeEmployee
-import com.rinats.rin.model.AuthInfo
-import com.rinats.rin.model.Employee
+import com.rinats.rin.model.table.AuthInfo
+import com.rinats.rin.model.table.Employee
 import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.service.EmployeeService
@@ -163,10 +163,10 @@ class AuthInterceptor(
         val hasPartTimeJob = AnnotationUtils.findAnnotation(method, PartTimeJob::class.java) != null
         val hasTentativeEmployee = AnnotationUtils.findAnnotation(method, TentativeEmployee::class.java) != null
 
-        if (hasStoreManager && employeeService.getAuthority(employee.id ?: "") == 1) {
+        if (hasStoreManager && employeeService.getAuthority(employee.id ?: "") == 0) {
             return true
         }
-        if (hasPartTimeJob && employeeService.getAuthority(employee.id ?: "") == 2) {
+        if (hasPartTimeJob && employeeService.getAuthority(employee.id ?: "") == 1) {
             return true
         }
 

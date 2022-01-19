@@ -1,7 +1,7 @@
 package com.rinats.rin.controller
 
 import com.rinats.rin.annotation.NonAuth
-import com.rinats.rin.model.Setting
+import com.rinats.rin.model.table.Setting
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.SettingRepository
 import com.rinats.rin.service.ShiftGeneratorService

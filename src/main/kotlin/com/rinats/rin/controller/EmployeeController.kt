@@ -1,6 +1,6 @@
 package com.rinats.rin.controller
 
-import com.rinats.rin.model.Employee
+import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.form.AddEmployeeForm
 import com.rinats.rin.model.form.GetEmployeeForm
 import com.rinats.rin.service.EmployeeService

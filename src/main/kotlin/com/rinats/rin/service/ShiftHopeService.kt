@@ -1,7 +1,7 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.ShiftHope
-import com.rinats.rin.model.compositeKey.ShiftHopeId
+import com.rinats.rin.model.table.ShiftHope
+import com.rinats.rin.model.table.compositeId.ShiftHopeId
 import com.rinats.rin.model.form.ShiftHopeForm
 import com.rinats.rin.model.response.ShiftHopeResponse
 import com.rinats.rin.repository.ShiftHopeRepository

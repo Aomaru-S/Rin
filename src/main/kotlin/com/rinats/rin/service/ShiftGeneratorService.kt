@@ -1,11 +1,11 @@
 package com.rinats.rin.service
 
 import com.alias.kh.shiftgenerator.model.compositeKey.TentativeShiftDetailId
-import com.rinats.rin.model.Employee
-import com.rinats.rin.model.TentativeShift
-import com.rinats.rin.model.TentativeShiftData
-import com.rinats.rin.model.TentativeShiftDetail
-import com.rinats.rin.model.compositeKey.TentativeShiftId
+import com.rinats.rin.model.table.Employee
+import com.rinats.rin.model.table.TentativeShift
+import com.rinats.rin.model.table.TentativeShiftData
+import com.rinats.rin.model.table.TentativeShiftDetail
+import com.rinats.rin.model.table.compositeId.TentativeShiftId
 import com.rinats.rin.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

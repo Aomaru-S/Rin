@@ -4,7 +4,9 @@ import javax.validation.constraints.NotBlank
 
 data class ChangePasswordForm(
     @field:NotBlank
-    val oldPassword: String?,
+    val oldPassword: String? = null,
     @field:NotBlank
-    val newPassword: String?,
+    val newPassword1: String? = null,
+    @field:NotBlank
+    val newPassword2: String? = null
 )

@@ -1,7 +1,7 @@
 package com.rinats.rin.repository
 
-import com.rinats.rin.model.ShiftHope
-import com.rinats.rin.model.compositeKey.ShiftHopeId
+import com.rinats.rin.model.table.ShiftHope
+import com.rinats.rin.model.table.compositeId.ShiftHopeId
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.time.LocalDate

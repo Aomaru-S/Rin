@@ -1,6 +1,6 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.Course
+import com.rinats.rin.model.table.Course
 import com.rinats.rin.repository.CourseRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

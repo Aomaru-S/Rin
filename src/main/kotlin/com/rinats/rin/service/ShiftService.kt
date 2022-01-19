@@ -1,6 +1,5 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.ForgetPasswordAccessToken
 import com.rinats.rin.model.response.Shift
 import com.rinats.rin.model.response.ShiftResponse
 import com.rinats.rin.repository.AuthInfoRepository

@@ -4,7 +4,7 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
 data class ChangeMailAddressForm(
-    @Email
-    @NotBlank
-    val mailAddress: String
+    @field:Email
+    @field:NotBlank
+    var mailAddress: String? = null
 )
