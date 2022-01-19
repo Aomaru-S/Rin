@@ -8,7 +8,7 @@ input[type="submit"],button{
     font-size: 18px;
     position: absolute;
     top: 16%;
-    left: 30%;
+    left: 52%;
     transform: translateY(-50%) translateX(-50%);
 -webkit-transformtranslateY(-50%) translateX(-50%);
 }

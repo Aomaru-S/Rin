@@ -6,4 +6,47 @@ input[type="button"],button{
     background-color: #fff100;
     border-bottom: 5px solid #ccc100;
     font-size: 18px;
+    position: absolute;
+    top: 19%;
+    left: 57%;
+    transform: translateY(-50%) translateX(-50%);
+-webkit-transformtranslateY(-50%) translateX(-50%);
+}
+h1 {border-collapse: collapse;
+    text-align: center;
+}
+input[type="email"],
+select,
+textarea,
+button {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+    border: none;
+}
+
+
+input[type="email"],
+textarea {
+    background: #f8f8f8;;
+    display: block;
+    font-size: 16px;
+    padding: 12px 10px;
+    width: 250px;
+    transition: 0.8s;
+    border-radius: 0;
+}
+
+input[type="email"]:focus,
+textarea:focus {
+    background: #e9f5fb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+textarea[name="mail"] {
+    display: inline-block;
+    width: 100%;
+    height: 200px;
 }
