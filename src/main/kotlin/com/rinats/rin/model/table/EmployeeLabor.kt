@@ -1,9 +1,7 @@
 package com.rinats.rin.model.table
 
 import com.rinats.rin.model.table.compositeId.EmployeeLaborId
-import javax.persistence.Column
-import javax.persistence.EmbeddedId
-import javax.persistence.Entity
+import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
