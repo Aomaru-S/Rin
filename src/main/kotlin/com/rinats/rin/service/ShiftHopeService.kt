@@ -27,7 +27,7 @@ class ShiftHopeService(
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = Date.from(it.id?.shiftDate?.atStartOfDay(ZoneId.systemDefault())?.toInstant()).time
             val y = calendar.get(Calendar.YEAR)
-            val m = calendar.get(Calendar.MONTH)
+            val m = calendar.get(Calendar.MONTH) + 1
             if (year == y && month == m) {
                 days.add(calendar.get(Calendar.DAY_OF_MONTH))
             }
