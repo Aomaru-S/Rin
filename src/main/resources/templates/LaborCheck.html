@@ -2,34 +2,45 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>労働力確認画面</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>労働力確認</title>
 </head>
 <body>
-<div align="center">
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
     <h1>労働力確認</h1>
-
-    <table border="1">
-        <tr>
-            <th>名前</th>
-            <th>労働力</th>
-        </tr>
-        <tr th:each="labor: ${laborList}">
-            <td>
-                <span th:text="${labor}"></span>
-                <span th:text="${labor.employee.firstName}"></span>
-            </td>
-            <td>
-                <span th:text="${labor.level}"></span>
-            </td>
-            <td>
-                <form action="#" th:action="@{labor_edit}" method="post">
-                    <input type="hidden" name="employeeId" th:value="${labor.employeeId}">
-                    <input type="hidden" name="level" th:value="${labor.level}">
-                    <input type="submit" value="編集">
-                </form>
-            </td>
-        </tr>
-    </table>
-</div>
+    <div class="container">
+        <table>
+            <tr>
+                <th>名前</th>
+                <th>労働力</th>
+            </tr>
+            <tr th:each="labor: ${laborList}">
+                <td>
+                    <span th:text="${labor}"></span>
+                    <span th:text="${labor.employee.firstName}"></span>
+                </td>
+                <td>
+                    <span th:text="${labor.level}"></span>
+                </td>
+                <td>
+                    <form action="#" th:action="@{labor_edit}" method="post">
+                        <input type="hidden" name="employeeId" th:value="${labor.employeeId}">
+                        <input type="hidden" name="level" th:value="${labor.level}">
+                        <input type="submit" value="編集">
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>

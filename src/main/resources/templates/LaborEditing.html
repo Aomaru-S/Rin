@@ -1,30 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>労働力編集画面</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>労働力編集</title>
 </head>
 <body>
-<div align="center">
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
     <h1>労働力編集</h1>
-    <table border="1">
-    <tr>
-        <th></th>
-        <th>シークバー</th>
-    </tr>
+    <div class="container">
+        <table>
         <tr>
-            <td>
-                <h2 th:text="${name}"></h2>
-            </td>
-            <td>
-                <form action="#" th:action="@{/labor_edit_check}" method="post">
-                    1<input type="range" name="level" th:value="${level}" min="1" max="5" step="1">5
-                    <input type="hidden" name="employeeId" th:value="${employeeId}">
-                    <input type="submit" value="確認">
-                </form>
-            </td>
+            <th></th>
+            <th>シークバー</th>
         </tr>
-    </table>
-</div>
+            <tr>
+                <td>
+                    <h2 th:text="${name}"></h2>
+                </td>
+                <td>
+                    <form action="#" th:action="@{/labor_edit_check}" method="post">
+                        1<input type="range" name="level" th:value="${level}" min="1" max="5" step="1">5
+                        <input type="hidden" name="employeeId" th:value="${employeeId}">
+                        <input type="submit" value="確認">
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>
