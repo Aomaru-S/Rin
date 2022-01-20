@@ -3,9 +3,12 @@ package com.rinats.rin.controller.storemanager
 import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.form.AddEmployeeForm
 import com.rinats.rin.model.form.GetEmployeeForm
+import com.rinats.rin.model.other.CompleteMessage
 import com.rinats.rin.service.EmployeeService
+import org.apache.ibatis.annotations.Delete
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -21,7 +24,35 @@ class EmployeeController(
         return "EmployeeInformationCheck"
     }
 
-    @PostMapping("/add_employee")
+    @GetMapping("/add")
+    fun addEmployeeForm(): String {
+        return "EmployeeRegistration"
+    }
+
+    @PostMapping("/add")
+    fun addEmployee(
+        model: Model
+    ): String {
+        val message = CompleteMessage("従業員登録完了: Rin", "従業員が登録されました。")
+        model.addAttribute("message", message)
+        return "complete"
+    }
+
+    @GetMapping("/retirement")
+    fun retireEmployeeForm(): String {
+        return "EmployeeRetirement"
+    }
+
+    @PostMapping("/retirement")
+    fun retireEmployee(
+        model: Model
+    ): String {
+        val message = CompleteMessage("従業員退職完了: Rin", "従業員の退職処理が完了しました。")
+        model.addAttribute("message", message)
+        return "complete"
+    }
+
+    @PostMapping("")
     fun addEmployee(
         @ModelAttribute @Validated
         addEmployeeForm: AddEmployeeForm,

@@ -7,22 +7,24 @@
 <body>
 <h1>従業員情報確認</h1>
 <div align="center">
-<form action="EmployeeEditing.html" method="post">
-    <table border="0">
-        <tr>
-            <th>検索</th>
-        <td><label>
-            <input type="text" name="search">
-        </label></td>
-        </tr>
-        <tr>
-            <th>
-            <input type="submit" value="編集">
-            </th>
-        </tr>
+    <form action="EmployeeEditing.html" method="post">
+        <table border="0">
+            <tr>
+                <th>検索</th>
+                <td><label>
+                    <input type="text" name="search">
+                </label></td>
+            </tr>
+            <tr>
+                <th>
+                    <input type="submit" value="編集">
+                </th>
+            </tr>
 
-    </table>
-</form>
+        </table>
+    </form>
+    <a th:href="@{/employee/add}">追加</a>
+    <a th:href="@{/employee/retirement}">退職</a>
 </div>
 </body>
 </html>

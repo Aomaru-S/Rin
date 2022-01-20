@@ -12,12 +12,8 @@ employeeId=181032&password=password
 POST http://localhost/api/auth/logout
 Authorization: {{token}}
 
-### Private
-GET http://localhost/api/private
-Authorization: {{token}}
-
 ### Get shift hope
-GET http://localhost/api/shift_hope/shift_hope?year=2022&month=1
+GET http://localhost/api/shift_hope/shift_hope?year=2022&month=2
 Authorization: {{token}}
 
 <> 2022-01-13T115449.200.json
