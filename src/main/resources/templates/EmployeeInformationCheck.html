@@ -6,15 +6,28 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
-    <title>従業員情報確認</title>
+    <title>従業員管理</title>
 </head>
 <body>
 <header>
     <a th:href="@{/}">Rin</a>
 </header>
 <main>
-    <h1>従業員情報確認</h1>
+    <h1>従業員管理</h1>
     <div class="container">
+        <table>
+            <tr>
+                <th>従業員ID</th>
+                <th>氏名</th>
+                <th>生年月日</th>
+                <th>時給</th>
+                <th>メールアドレス</th>
+                <th>性別</th>
+            </tr>
+            <tr th:each="employee : ${employeeList}">
+                <td></td>
+            </tr>
+        </table>
         <form action="EmployeeEditing.html" method="post">
             <label>
                 <input type="text" name="search">

@@ -20,7 +20,11 @@ class EmployeeController(
     val employeeService: EmployeeService
 ) {
     @GetMapping("")
-    fun index(): String {
+    fun index(
+        model: Model
+    ): String {
+        val employeeList = employeeService.getEmployeeList()
+        model.addAttribute("employeeList", employeeList)
         return "EmployeeInformationCheck"
     }
 
