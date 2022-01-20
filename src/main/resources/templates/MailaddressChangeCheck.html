@@ -1,15 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>メールアドレス変更確認画面</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>メールアドレス変更確認</title>
 </head>
 <body>
-<div align="center">
-<h1>メールアドレス変更確認</h1>
-<input type="button"
-       onclick="location.href='Configuration.html'"
-       value="確定">
-</div>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>メールアドレス変更確認</h1>
+    <div class="container">
+        <input type="button"
+               onclick="location.href='Configuration.html'"
+               value="確定">
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>

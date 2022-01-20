@@ -1,15 +1,32 @@
-<html>
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
     <title>パスワード更新</title>
 </head>
 <body>
-<h1>パスワード更新完了</h1>
-<hr>
-<div align="center">
-    <table broder="0">
-        <tr>
-            <th>
-                <a href="http://localhost:63342/untitled/login.html?_ijt=r62k2fkmiqerbed1sfj5tctlku">ログイン画面</a>
-            </td>
-        </tr>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>パスワード更新完了</h1>
+    <hr>
+    <div class="container">
+        <table>
+            <tr>
+                <th>
+                    <a href="http://localhost:63342/untitled/login.html?_ijt=r62k2fkmiqerbed1sfj5tctlku">ログイン画面</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
+</body>
+</html>

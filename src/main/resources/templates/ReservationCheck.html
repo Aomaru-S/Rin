@@ -1,49 +1,62 @@
+<!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
     <title>予約確認</title>
 </head>
 <body>
-<h1>予約確認</h1>
-<div style="align: center">
-    <table border="1">
-        <tr>
-            <th>氏名</th>
-            <th>コース名</th>
-            <th>日時</th>
-            <th>人数</th>
-            <th>座席</th>
-        </tr>
-        <tr th:inline="text" th:each="reservation, item: ${reservationList}">
-            <td th:text="${reservation.customerName}"></td>
-            <td th:text="${courseName[item.count -1]}"></td>
-            <td th:text="${#temporals.format(reservation.dateTime, 'yyyy/MM/dd HH:mm')}"></td>
-            <td th:text="${reservation.numOfPeople}"></td>
-            <td th:text="${reservation.tableName}"></td>
-            <td>
-                <form action="#" th:action="@{reservation_edit}" method="post">
-                    <input type="hidden" name="id" th:value="${reservation.id}">
-                    <input type="hidden" name="customerName" th:value="${reservation.customerName}">
-                    <input type="hidden" name="courseId" th:value="${reservation.courseId}">
-                    <input type="hidden" name="dateTime" th:value="${reservation.dateTime}">
-                    <input type="hidden" name="numOfPeople" th:value="${reservation.numOfPeople}">
-                    <input type="hidden" name="tableName" th:value="${reservation.tableName}">
-                    <input type="submit" value="編集">
-                </form>
-            </td>
-            <td>
-                <form action="#" th:action="@{reservation_delete}" method="post">
-                    <input type="hidden" name="id" th:value="${reservation.id}">
-                    <input type="hidden" name="customerName" th:value="${reservation.customerName}">
-                    <input type="hidden" name="courseId" th:value="${reservation.courseId}">
-                    <input type="hidden" name="dateTime" th:value="${reservation.dateTime}">
-                    <input type="hidden" name="numOfPeople" th:value="${reservation.numOfPeople}">
-                    <input type="hidden" name="tableName" th:value="${reservation.tableName}">
-                    <input type="submit" value="削除">
-                </form>
-            </td>
-        </tr>
-    </table>
-</div>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>予約確認</h1>
+    <div class="container">
+        <table>
+            <tr>
+                <th>氏名</th>
+                <th>コース名</th>
+                <th>日時</th>
+                <th>人数</th>
+                <th>座席</th>
+            </tr>
+            <tr th:inline="text" th:each="reservation, item: ${reservationList}">
+                <td th:text="${reservation.customerName}"></td>
+                <td th:text="${courseName[item.count -1]}"></td>
+                <td th:text="${#temporals.format(reservation.dateTime, 'yyyy/MM/dd HH:mm')}"></td>
+                <td th:text="${reservation.numOfPeople}"></td>
+                <td th:text="${reservation.tableName}"></td>
+                <td>
+                    <form action="#" th:action="@{reservation_edit}" method="post">
+                        <input type="hidden" name="id" th:value="${reservation.id}">
+                        <input type="hidden" name="customerName" th:value="${reservation.customerName}">
+                        <input type="hidden" name="courseId" th:value="${reservation.courseId}">
+                        <input type="hidden" name="dateTime" th:value="${reservation.dateTime}">
+                        <input type="hidden" name="numOfPeople" th:value="${reservation.numOfPeople}">
+                        <input type="hidden" name="tableName" th:value="${reservation.tableName}">
+                        <input type="submit" value="編集">
+                    </form>
+                </td>
+                <td>
+                    <form action="#" th:action="@{reservation_delete}" method="post">
+                        <input type="hidden" name="id" th:value="${reservation.id}">
+                        <input type="hidden" name="customerName" th:value="${reservation.customerName}">
+                        <input type="hidden" name="courseId" th:value="${reservation.courseId}">
+                        <input type="hidden" name="dateTime" th:value="${reservation.dateTime}">
+                        <input type="hidden" name="numOfPeople" th:value="${reservation.numOfPeople}">
+                        <input type="hidden" name="tableName" th:value="${reservation.tableName}">
+                        <input type="submit" value="削除">
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>
