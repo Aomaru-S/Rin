@@ -19,6 +19,14 @@ header, footer {
 header {
     font-size: 30px;
     font-weight: bold;
+    padding-left: 10px;
+}
+
+footer {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
 }
 
 main *{
