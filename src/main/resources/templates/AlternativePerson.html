@@ -1,42 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>代わりの人を提示する画面</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>代わりの人を提示</title>
 </head>
 <body>
-<h1>代わりの人を提示</h1>
-<div align="center">
-    <table border="0">
-        <tr>
-            <th>日付選択</th>
-            <td>
-                <label>
-                    <input type="date" name="date">
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <th>人数</th>
-            <td>
-                <label>
-                    <input type="number" name="human">
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <input type="button" value="提示">
-            </th>
-        </tr>
-        <tr>
-            <th>
-                <input type="button"
-                       onclick="location.href=''"
-                       value="編集">
-            </th>
-        </tr>
-    </table>
-</div>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>代わりの人を提示</h1>
+    <div class="container">
+        <table>
+            <tr>
+                <th>日付選択</th>
+                <td>
+                    <label>
+                        <input type="date" name="date">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th>人数</th>
+                <td>
+                    <label>
+                        <input type="number" name="human">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <input type="button" value="提示">
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="button"
+                           onclick="location.href=''"
+                           value="編集">
+                </th>
+            </tr>
+        </table>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>
