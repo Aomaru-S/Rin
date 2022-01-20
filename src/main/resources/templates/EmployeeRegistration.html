@@ -1,62 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>従業員登録画面</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>従業員登録</title>
 </head>
 <body>
-<h1>従業員登録</h1>
-<div align="center">
-    <form action="" method="post">
-        <table border="0">
-            <tr>
-                <th>氏名入力</th>
-                <td>
-                    <label>
-                        <input type="text" name="name">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <th>性別</th>
-                <td>
-                    <label>
-                        <input type="radio" name="gender" value="male">男性
-                        <input type="radio" name="gender" value="male">女性
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <th>生年月日</th>
-                <td>
-                    <label>
-                        <input type="date" name="birthday">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <th>メールアドレス</th>
-                <td>
-                    <label>
-                        <input type="email" name="mail">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <th>源泉徴収対象フラグ</th>
-                <td>
-                    <label>
-                        <input type="number" name="Tax withholding">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <input type="button" value="登録">
-                </th>
-            </tr>
-        </table>
-    </form>
-</div>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>従業員登録</h1>
+    <div class="container">
+        <form action="" method="post">
+            <table>
+                <tr>
+                    <th>氏名入力</th>
+                    <td>
+                        <label>
+                            <input type="text" name="name">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>性別</th>
+                    <td>
+                        <label>
+                            <input type="radio" name="gender" value="male">男性
+                            <input type="radio" name="gender" value="male">女性
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>生年月日</th>
+                    <td>
+                        <label>
+                            <input type="date" name="birthday">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>メールアドレス</th>
+                    <td>
+                        <label>
+                            <input type="email" name="mail">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>源泉徴収対象フラグ</th>
+                    <td>
+                        <label>
+                            <input type="number" name="Tax withholding">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <input type="button" value="登録">
+                    </th>
+                </tr>
+            </table>
+        </form>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>

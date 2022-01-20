@@ -1,37 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
     <title>仮シフト編集ボタン</title>
 </head>
 <body>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
 <h1>仮シフト編集ボタン</h1>
-<div align="center">
-    <table border="0">
-        <tr>
-            <th>日付入力</th>
-            <td>
-                <label>
-                <input type="date" name="example">
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <th>従業員指名入力</th>
-            <td>
-                <label>
-                <input type="text" name="example">
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <input type="button"
-                       onclick="location.href='TemporaryShiftEditCheck.html'"
-                       value="確認">
-            </th>
-        </tr>
-    </table>
-</div>
+    <div class="container">
+        <table>
+            <tr>
+                <th>日付入力</th>
+                <td>
+                    <label>
+                    <input type="date" name="example">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th>従業員指名入力</th>
+                <td>
+                    <label>
+                    <input type="text" name="example">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <input type="button"
+                           onclick="location.href='TemporaryShiftEditCheck.html'"
+                           value="確認">
+                </th>
+            </tr>
+        </table>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>
