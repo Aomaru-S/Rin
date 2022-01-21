@@ -21,12 +21,15 @@ class EmployeeController(
     ): String {
         val employeeList = employeeService.getEmployeeList()
         model.addAttribute("employeeList", employeeList)
-        return "EmployeeInformationCheck"
+        return "employee_list"
     }
 
     @GetMapping("/add")
-    fun addEmployeeForm(): String {
-        return "EmployeeRegistration"
+    fun addEmployeeForm(
+        model: Model
+    ): String {
+        val
+        return "add_employee"
     }
 
     @PostMapping("/add_confirm")

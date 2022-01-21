@@ -17,22 +17,34 @@
     <div class="container">
         <form action="#" th:action="@{/employee/add_confirm}" method="post">
             <label>
-                氏名入力
-                <input type="text" name="name">
+                姓
+                <input type="text" name="lastName">
             </label>
-            <label>性別
+            <label>
+                名
+                <input type="text" name="firstName">
+            </label><br>
+            <label>
+                生年月日
+                <input type="date" name="birthday">
+            </label><br>
+            <label>
+                時給
+                <input type="number" name="hourly_wage">
+            </label><br>
+            <label>
+                メールアドレス
+                <input type="email" name="mail">
+            </label><br>
+            <label>
+                性別
                 <input type="radio" name="gender" value="male">男性
                 <input type="radio" name="gender" value="male">女性
-            </label>
-            <label>生年月日
-                <input type="date" name="birthday">
-            </label>
-            <label>メールアドレス
-                <input type="email" name="mail">
-            </label>
-            <label>源泉徴収対象フラグ
-                <input type="number" name="Tax withholding">
-            </label>
+            </label><br>
+            <label>
+                源泉徴収対象
+                <input type="checkbox" name="is_taxable">
+            </label><br>
             <input type="submit" value="登録">
         </form>
     </div>
