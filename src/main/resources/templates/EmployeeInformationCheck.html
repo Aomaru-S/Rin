@@ -25,17 +25,17 @@
                 <th>性別</th>
             </tr>
             <tr th:each="employee : ${employeeList}">
-                <td></td>
+                <td th:text="${employee.id}"></td>
+                <td th:text="${employee.lastName} + ${employee.firstName}"></td>
+                <td th:text="${employee.birthday}"></td>
+                <td th:text="${employee.hourlyWage}"></td>
+                <td th:text="${employee.mailAddress}"></td>
+                <td th:text="${employee.gender.getGenderName()}"></td>
+                <td><a th:href="@{/employee/edit(employee_id=${employee.id})}">編集</a></td>
+                <td><a th:href="@{/employee/retirement(employee_id=${employee.id})}">退職</a></td>
             </tr>
         </table>
-        <form action="EmployeeEditing.html" method="post">
-            <label>
-                <input type="text" name="search">
-            </label>
-            <input type="submit" value="編集">
-        </form>
         <a th:href="@{/employee/add}">追加</a>
-        <a th:href="@{/employee/retirement}">退職</a>
     </div>
 </main>
 <footer>

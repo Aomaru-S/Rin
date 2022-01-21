@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 
 @Controller
-class AuthInfoController(
+class CommonAuthInfoController(
     @Autowired
     private val authInfoService: AuthInfoService,
     private val forgetPasswordAccessTokenRepository: ForgetPasswordAccessTokenRepository,

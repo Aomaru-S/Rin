@@ -12,33 +12,17 @@
 <header>
     <a th:href="@{/}">Rin</a>
 </header>
-<h1>出退勤編集</h1>
 <main>
+    <h1>出退勤編集</h1>
     <div class="container">
-        <form action="AdditionEditCheck.html" method="post">
-            <table>
-                <tr>
-                    <th>出退勤日時</th>
-                    <td>
-                        <label>
-                            <input type="time" name="date">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th>退勤日時</th>
-                    <td>
-                        <label>
-                            <input type="time" name="date">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <input type="button" value="確認">
-                    </th>
-                </tr>
-            </table>
+        <form action="#" th:action="@{/attendance_departure/edit_confirm}" method="post">
+            <label>出退勤日時
+                <input type="time" name="date">
+            </label>
+            <label>退勤日時
+                <input type="time" name="date">
+            </label>
+            <input type="submit" value="確認">
         </form>
     </div>
 </main>

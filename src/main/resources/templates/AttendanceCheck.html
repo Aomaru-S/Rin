@@ -12,28 +12,17 @@
 <header>
     <a th:href="@{/}">Rin</a>
 </header>
-<h1>出退勤確認</h1>
 <main>
+    <h1>出退勤確認</h1>
     <div class="container">
-        <table border="0">
-            <tr>
-               <th>
-                   <input type="button"
-                          onclick="location.href='AttendanceEditing.html'"
-                          value="日付選択">
-               </th>
-            </tr>
-            <tr>
-                <th>
-                    <input type="button" value="編集">
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    <input type="button" value="編集履歴">
-                </th>
-            </tr>
-        </table>
+        <form action="#" th:action="@{/attendance_departure}" method="get">
+            <input type="date">
+            <input type="submit" value="検索">
+        </form>
+        <form action="#" th:action="@{/attendance_departure/edit}" method="get">
+            <input type="submit" value="編集">
+        </form>
+        <a th:href="@{/attendance_departure/edit_history}">出退勤編集履歴</a>
     </div>
 </main>
 <footer>

@@ -15,51 +15,25 @@
 <main>
     <h1>従業員登録</h1>
     <div class="container">
-        <form action="" method="post">
-                    <th>氏名入力</th>
-                        <label>
-                            氏名入力
-                            <input type="text" name="name">
-                        </label>
-                <tr>
-                    <th>性別</th>
-                    <td>
-                        <label>
-                            <input type="radio" name="gender" value="male">男性
-                            <input type="radio" name="gender" value="male">女性
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th>生年月日</th>
-                    <td>
-                        <label>
-                            <input type="date" name="birthday">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th>メールアドレス</th>
-                    <td>
-                        <label>
-                            <input type="email" name="mail">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th>源泉徴収対象フラグ</th>
-                    <td>
-                        <label>
-                            <input type="number" name="Tax withholding">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <input type="button" value="登録">
-                    </th>
-                </tr>
-            </table>
+        <form action="#" th:action="@{/employee/add_confirm}" method="post">
+            <label>
+                氏名入力
+                <input type="text" name="name">
+            </label>
+            <label>性別
+                <input type="radio" name="gender" value="male">男性
+                <input type="radio" name="gender" value="male">女性
+            </label>
+            <label>生年月日
+                <input type="date" name="birthday">
+            </label>
+            <label>メールアドレス
+                <input type="email" name="mail">
+            </label>
+            <label>源泉徴収対象フラグ
+                <input type="number" name="Tax withholding">
+            </label>
+            <input type="submit" value="登録">
         </form>
     </div>
 </main>

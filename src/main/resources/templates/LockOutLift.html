@@ -15,11 +15,9 @@
 <main>
     <h1>ロックアウト解除</h1>
     <div class="container">
-        <table>
-            <tr>
-                 <input type="button" value="選択">
-            </tr>
-        </table>
+        <form action="#" th:action="@{/auth_info/lockout}" method="post">
+            <input type="submit" value="ロックアウト解除">
+        </form>
     </div>
 </main>
 <footer>

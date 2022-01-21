@@ -13,17 +13,14 @@
     <a th:href="@{/}">Rin</a>
 </header>
 <main>
-<h1>出退勤編集確認</h1>
+    <h1>出退勤編集確認</h1>
     <div class="container">
-        <table>
-            <tr>
-                <th>
-                    <input type="button"
-                           onclick="location.href='TopPage.html'"
-                           value="確定">
-                </th>
-            </tr>
-        </table>
+        <form action="#" th:action="@{/attendance_departure/edit}" method="post">
+            <input type="submit" value="確定">
+        </form>
+        <form action="#" th:action="@{/attendance_departure/edit}" method="get">
+            <input type="submit" value="修正">
+        </form>
     </div>
 </main>
 <footer>
