@@ -2,55 +2,69 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
     <title>TestForm</title>
 </head>
 <body>
-<form action="#" th:action="@{/public}" method="get">
-    <input type="submit" value="Public">
-</form>
-<form action="#" th:action="@{/private}" method="get">
-    <input type="submit" value="Private">
-</form>
-<form action="#" th:action="@{/api/v1/auth/login}" method="post" th:object="${authForm}">
-    <input type="text" th:field="*{employeeId}" placeholder="UserId">
-    <input type="text" th:field="*{password}" placeholder="Password">
-    <input type="submit" value="Login">
-</form>
-<form action="#" th:action="@{/api/v1/auth/check_access_token}" method="post">
-    <input type="submit" value="Check">
-</form>
-<form action="#" th:action="@{/add_employee}" method="post" th:object="${addEmployeeForm}">
-    <input type="text" th:field="*{firstName}" placeholder="FirstName">
-    <input type="text" th:field="*{lastName}" placeholder="LastName">
-    <input type="text" th:field="*{gender}" placeholder="Gender">
-    <input type="date" th:field="*{birthday}" placeholder="Birthday">
-    <input type="email" th:field="*{mailAddress}" placeholder="MailAddress">
-    <input type="text" name="access_token" placeholder="AccessToken">
-    <input type="submit" value="ShowEmployee">
-</form>
-<form action="#" th:action="@{/get_employee}" method="post">
-    <input type="text" name="employeeId" placeholder="EmployeeId">
-    <input type="text" name="access_token" placeholder="AccessToken">
-    <input type="submit" value="GetEmployee">
-</form>
-<form action="#" th:action="@{/get_employee_list}" method="post">
-    <input type="text" name="access_token" placeholder="AccessToken">
-    <input type="submit" value="GetEmployeeList">
-</form>
-<form action="#" th:action="@{/add_tentative_employee}" method="post">
-    <input type="text" name="firstName" placeholder="FirstName">
-    <input type="text" name="lastName" placeholder="lastName">
-    <input type="text" name="gender" placeholder="Gender">
-    <input type="date" name="birthday" placeholder="Birthday">
-    <input type="email" name="mailAddress" placeholder="MailAddress">
-    <input type="text" name="access_token" placeholder="AccessToken">
-    <input type="submit" value="Add">
-</form>
-<form action="#" th:action="@{/setting_test}" th:object="${setting}" method="get">
-    <input type="text" th:field="${setting.id.employeeId}" placeholder="EmployeeId">
-    <input type="text" th:field="${setting.id.settingKey}" placeholder="SettingKey">
-    <input type="text" th:field="${setting.settingValue}" placeholder="SettingValue">
-    <input type="submit" value="Setting">
-</form>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <div class="container">
+        <form action="#" th:action="@{/public}" method="get">
+            <input type="submit" value="Public">
+        </form>
+        <form action="#" th:action="@{/private}" method="get">
+            <input type="submit" value="Private">
+        </form>
+        <form action="#" th:action="@{/api/v1/auth/login}" method="post" th:object="${authForm}">
+            <input type="text" th:field="*{employeeId}" placeholder="UserId">
+            <input type="text" th:field="*{password}" placeholder="Password">
+            <input type="submit" value="Login">
+        </form>
+        <form action="#" th:action="@{/api/v1/auth/check_access_token}" method="post">
+            <input type="submit" value="Check">
+        </form>
+        <form action="#" th:action="@{/add_employee}" method="post" th:object="${addEmployeeForm}">
+            <input type="text" th:field="*{firstName}" placeholder="FirstName">
+            <input type="text" th:field="*{lastName}" placeholder="LastName">
+            <input type="text" th:field="*{gender}" placeholder="Gender">
+            <input type="date" th:field="*{birthday}" placeholder="Birthday">
+            <input type="email" th:field="*{mailAddress}" placeholder="MailAddress">
+            <input type="text" name="access_token" placeholder="AccessToken">
+            <input type="submit" value="ShowEmployee">
+        </form>
+        <form action="#" th:action="@{/get_employee}" method="post">
+            <input type="text" name="employeeId" placeholder="EmployeeId">
+            <input type="text" name="access_token" placeholder="AccessToken">
+            <input type="submit" value="GetEmployee">
+        </form>
+        <form action="#" th:action="@{/get_employee_list}" method="post">
+            <input type="text" name="access_token" placeholder="AccessToken">
+            <input type="submit" value="GetEmployeeList">
+        </form>
+        <form action="#" th:action="@{/add_tentative_employee}" method="post">
+            <input type="text" name="firstName" placeholder="FirstName">
+            <input type="text" name="lastName" placeholder="lastName">
+            <input type="text" name="gender" placeholder="Gender">
+            <input type="date" name="birthday" placeholder="Birthday">
+            <input type="email" name="mailAddress" placeholder="MailAddress">
+            <input type="text" name="access_token" placeholder="AccessToken">
+            <input type="submit" value="Add">
+        </form>
+        <form action="#" th:action="@{/setting_test}" th:object="${setting}" method="get">
+            <input type="text" th:field="${setting.id.employeeId}" placeholder="EmployeeId">
+            <input type="text" th:field="${setting.id.settingKey}" placeholder="SettingKey">
+            <input type="text" th:field="${setting.settingValue}" placeholder="SettingValue">
+            <input type="submit" value="Setting">
+        </form>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>

@@ -1,32 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>給与確認画面</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>給与確認</title>
 </head>
 <body>
-<h1>給与確認</h1>
-<div align="center">
-    <table border="0">
-        <tr>
-            <th>年月選択</th>
-        <td>
-        <label>
-            <input type="month" name="month">
-        </label>
-        </td>
-        </tr>
-        <tr>
-            <th>
-                <input type="button" value="従業員選択">
-            </th>
-        </tr>
-        <tr>
-            <th>
-                <input type="file" value="PDF出力" >
-            </th>
-        </tr>
-    </table>
-</div>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>給与確認</h1>
+    <div class="container">
+        <table>
+            <tr>
+                <th>年月選択</th>
+            <td>
+            <label>
+                <input type="month" name="month">
+            </label>
+            </td>
+            </tr>
+            <tr>
+                <th>
+                    <input type="button" value="従業員選択">
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="file" value="PDF出力" >
+                </th>
+            </tr>
+        </table>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>

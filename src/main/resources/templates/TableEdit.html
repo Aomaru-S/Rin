@@ -1,45 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>テーブル編集画面</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>テーブル編集</title>
 </head>
 <body>
-<h1>テーブル編集</h1>
-<div align="center">
-    <form action="TableEditCheck.html" method="post">
-    <table border="0">
-        <tr>
-            <th>テーブル選択</th>
-            <td>
-                <label>
-                    <input type="text" name="table">
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <th>テーブル名入力</th>
-            <td>
-                <label>
-                    <input type="text" name="table">
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <th>人数入力フォーム</th>
-            <td>
-                <label>
-                    <input type="number" name="human">
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <input type="button" value="確認">
-            </th>
-        </tr>
-    </table>
-    </form>
-</div>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>テーブル編集</h1>
+    <div class="container">
+        <form action="TableEditCheck.html" method="post">
+            <table>
+                <tr>
+                    <th>テーブル選択</th>
+                    <td>
+                        <label>
+                            <input type="text" name="table">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>テーブル名入力</th>
+                    <td>
+                        <label>
+                            <input type="text" name="table">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>人数入力フォーム</th>
+                    <td>
+                        <label>
+                            <input type="number" name="human">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <input type="button" value="確認">
+                    </th>
+                </tr>
+            </table>
+        </form>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>

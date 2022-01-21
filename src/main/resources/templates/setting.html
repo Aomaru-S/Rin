@@ -1,12 +1,28 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
     <title>設定</title>
 </head>
 <body>
-<h1>設定画面</h1>
-<a th:href="@{/change_password}">パスワード変更</a>
-<a th:href="@{/change_mail_address}">メールアドレス変更</a>
-<a th:href="ShiftSubmissionPeriod.html">シフト提出期間設定</a>
-<a th:href="@{/logout}">ログアウト</a>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>設定</h1>
+    <div class="container">
+        <a th:href="@{/change_password}">パスワード変更</a>
+        <a th:href="@{/change_mail_address}">メールアドレス変更</a>
+        <a th:href="ShiftSubmissionPeriod.html">シフト提出期間設定</a>
+        <a th:href="@{/logout}">ログアウト</a>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
+</body>
+</html>
