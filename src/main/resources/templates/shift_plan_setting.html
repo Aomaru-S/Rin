@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
     <title>シフト計画設定</title>
 </head>
 <body>
-<h1>シフト計画設定画面</h1>
-<div align="center">
-    <table border="0">
-        <tr>
-            <th>
-                <a th:href="@{/shift_template}">シフトテンプレート確認</a>
-            </th>
-        </tr>
-        <tr>
-            <th>
-                <a th:href="@{/add_edit_shift}">追加編集</a>
-            </th>
-        </tr>
-    </table>
-</div>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>シフト計画設定</h1>
+    <div class="container">
+        <table>
+            <tr>
+                <th>
+                    <a th:href="@{/shift_template}">シフトテンプレート確認</a>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <a th:href="@{/add_edit_shift}">追加編集</a>
+                </th>
+            </tr>
+        </table>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>

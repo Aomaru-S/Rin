@@ -1,28 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>店長アカウント登録内容確認画面</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>店長アカウント登録内容確認</title>
 </head>
 <body>
-<h1>店長アカウント登録内容</h1>
-<div align="center">
-    <table border="0">
-        <tr>
-            <th>
-               <input type="button"
-               onclick="location.href='TopPage.html'"
-               value="確定">
-            </th>
-        </tr>
-        <tr>
-            <th>
-                <input type="button"
-                       onclick="location.href='StoremanagerAccountRegistration.html'"
-                       value="修正">
-            </th>
-        </tr>
-    </table>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>店長アカウント登録内容確認</h1>
+    <div class="container">
+        <table>
+            <tr>
+                <th>
+                   <input type="button"
+                   onclick="location.href='TopPage.html'"
+                   value="確定">
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="button"
+                           onclick="location.href='StoremanagerAccountRegistration.html'"
+                           value="修正">
+                </th>
+            </tr>
+        </table>
     </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
 </body>
 </html>
