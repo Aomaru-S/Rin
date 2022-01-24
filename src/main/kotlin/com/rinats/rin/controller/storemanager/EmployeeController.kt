@@ -1,11 +1,15 @@
 package com.rinats.rin.controller.storemanager
 
+import com.rinats.rin.model.form.AddEmployeeForm
 import com.rinats.rin.model.other.CompleteMessage
 import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
@@ -28,18 +32,40 @@ class EmployeeController(
     fun addEmployeeForm(
         model: Model
     ): String {
+        model.addAttribute("addEmployeeForm", AddEmployeeForm())
         return "add_employee"
     }
 
     @PostMapping("/add_confirm")
-    fun addEmployeeConfirm(): String {
+    fun addEmployeeConfirm(
+        @Validated
+        @ModelAttribute
+        addEmployeeForm: AddEmployeeForm,
+        bindingResult: BindingResult,
+        model: Model
+    ): String {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/employee/add?validation_error"
+        }
+        model.addAttribute("addEmployeeForm", addEmployeeForm)
         return "add_employee_confirm"
     }
 
     @PostMapping("/add")
     fun addEmployee(
+        @Validated
+        @ModelAttribute
+        addEmployeeForm: AddEmployeeForm,
+        bindingResult: BindingResult,
         model: Model
     ): String {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/employee/add?validation_error"
+        }
+        val result = employeeService.addTentativeEmployee(addEmployeeForm)
+        if (!result) {
+            return "redirect:/employee/add?invalid_address"
+        }
         val message = CompleteMessage("従業員登録完了: Rin", "従業員が登録されました。")
         model.addAttribute("message", message)
         return "complete"

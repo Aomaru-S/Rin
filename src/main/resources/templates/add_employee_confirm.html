@@ -15,10 +15,25 @@
 <main>
     <h1>従業員内容確認</h1>
     <div class="container">
-        <form action="#" th:action="@{/employee/add}" method="post">
-            <input type="submit" value="追加">
-        </form>
+        <p th:text="${addEmployeeForm.lastName}"></p>
+        <p th:text="${addEmployeeForm.firstName}"></p>
+        <p th:text="${addEmployeeForm.birthday}"></p>
+        <p th:text="${addEmployeeForm.hourlyWage}"></p>
+        <p th:text="${addEmployeeForm.mailAddress}"></p>
+        <p th:text="${addEmployeeForm.genderId}"></p>
+        <p th:text="${addEmployeeForm.isTaxable}"></p>
+        <input type="submit" value="追加" form="form">
     </div>
+    <form id="form" action="#" th:action="@{/employee/add}" th:object="${addEmployeeForm}" method="post">
+        <input type="hidden" th:value="${addEmployeeForm.lastName}" th:field="*{lastName}">
+        <input type="hidden" th:value="${addEmployeeForm.firstName}" th:field="*{firstName}">
+        <input type="hidden" th:value="${addEmployeeForm.birthday}" th:field="*{birthday}">
+        <input type="hidden" th:value="${addEmployeeForm.hourlyWage}" th:field="*{hourlyWage}">
+        <input type="hidden" th:value="${addEmployeeForm.mailAddress}" th:field="*{mailAddress}">
+        <input type="hidden" th:value="${addEmployeeForm.genderId}" th:field="*{genderId}">
+        <input type="hidden" th:value="${addEmployeeForm.isTaxable()}" th:field="*{isTaxable}">
+        <input type="hidden">
+    </form>
 </main>
 <footer>
     © 2022 www.rin-ats.com

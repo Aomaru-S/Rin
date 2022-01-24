@@ -11,15 +11,19 @@ data class AddEmployeeForm(
     @field:NotBlank
     @field:Size(max = 32)
     val lastName: String? = null,
-    @field:NotBlank
+    @field:NotNull
     @field:Past
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @field:DateTimeFormat(pattern = "yyyy-MM-dd")
     val birthday: LocalDate? = null,
+    @field:NotNull
     @field:Min(800)
     val hourlyWage: Int? = null,
     @field:NotBlank
     @field:Email
     val mailAddress: String? = null,
     @field:Min(0)
-    val gender_id: Int? = null
+    @NotNull
+    val genderId: Int? = null,
+    @field:NotNull
+    val isTaxable: Boolean? = null
 )

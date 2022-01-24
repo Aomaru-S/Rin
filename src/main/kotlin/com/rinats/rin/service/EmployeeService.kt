@@ -6,6 +6,8 @@ import com.rinats.rin.model.table.compositeId.EmployeeLaborId
 import com.rinats.rin.repository.*
 import com.rinats.rin.util.AuthUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.mail.MailException
+import org.springframework.mail.MailSendException
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.stereotype.Service
@@ -28,7 +30,7 @@ class EmployeeService(
     private val mailAddressAuthRepository: MailAddressAuthRepository
 ) {
     //    従業員仮登録処理
-    fun addTentativeEmployee(addEmployeeForm: AddEmployeeForm) {
+    fun addTentativeEmployee(addEmployeeForm: AddEmployeeForm): Boolean {
         val employeeId = getAndUpdateSequence().toString()
 
         val labor = EmployeeLabor()
@@ -47,7 +49,7 @@ class EmployeeService(
             it.hourlyWage = 1000
             it.isAndroidNotification = false
             it.mailAddress = addEmployeeForm.mailAddress
-            it.isTentative = false
+            it.isTentative = true
             it.gender = genderRepository.findById(0).get()
             it.isTaxableOk = false
         }
@@ -66,11 +68,14 @@ class EmployeeService(
             "",
             date
         )
+        try {
+            sendMail(addEmployeeForm, employeeId, password)
+        } catch (e: MailException) {
+            return false
+        }
         employeeRepository.save(employee)
         authInfoRepository.save(authInfo)
-
-
-        sendMail(addEmployeeForm, employeeId, password)
+        return true
     }
 
     //    従業員本登録処理

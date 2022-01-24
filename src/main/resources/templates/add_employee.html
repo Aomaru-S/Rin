@@ -15,37 +15,30 @@
 <main>
     <h1>従業員登録</h1>
     <div class="container">
-        <form action="#" th:action="@{/employee/add_confirm}" method="post">
-            <label>
-                姓
-                <input type="text" name="lastName">
+        <form action="#" th:action="@{/employee/add_confirm}" th:object="${addEmployeeForm}" method="post">
+            <label>姓
+                <input type="text" th:field="*{lastName}">
             </label>
-            <label>
-                名
-                <input type="text" name="firstName">
+            <label>名
+                <input type="text" th:field="*{firstName}">
             </label><br>
-            <label>
-                生年月日
-                <input type="date" name="birthday">
+            <label>生年月日
+                <input type="date" th:field="*{birthday}">
             </label><br>
-            <label>
-                時給
-                <input type="number" name="hourly_wage">
+            <label>時給
+                <input type="number" th:field="*{hourlyWage}">
             </label><br>
-            <label>
-                メールアドレス
-                <input type="email" name="mail">
+            <label>メールアドレス
+                <input type="email" th:field="*{mailAddress}">
             </label><br>
-            <label>
-                性別
-                <input type="radio" name="gender" value="male">男性
-                <input type="radio" name="gender" value="male">女性
+            <label>性別
+                <input type="radio" th:field="*{genderId}" value="0">男性
+                <input type="radio" th:field="*{genderId}" value="1">女性
             </label><br>
-            <label>
-                源泉徴収対象
-                <input type="checkbox" name="is_taxable">
+            <label>源泉徴収対象
+                <input type="checkbox" th:field="*{isTaxable}">
             </label><br>
-            <input type="submit" value="登録">
+            <input type="submit" value="確認">
         </form>
     </div>
 </main>
