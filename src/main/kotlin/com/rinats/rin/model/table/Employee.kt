@@ -38,7 +38,4 @@ open class Employee {
 
     @Column(name = "is_taxable_ok")
     open var isTaxableOk: Boolean? = null
-
-    @Column(name = "role_id")
-    open var roleId: String? = null
 }

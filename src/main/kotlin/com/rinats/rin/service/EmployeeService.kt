@@ -30,8 +30,6 @@ class EmployeeService(
     //    従業員仮登録処理
     fun addTentativeEmployee(addEmployeeForm: AddEmployeeForm) {
         val employeeId = getAndUpdateSequence().toString()
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
-        val birthday = sdf.parse(addEmployeeForm.birthday)
 
         val labor = EmployeeLabor()
         val employeeLaborId = EmployeeLaborId()
@@ -45,7 +43,7 @@ class EmployeeService(
             it.id = employeeId
             it.firstName = addEmployeeForm.firstName
             it.lastName = addEmployeeForm.lastName
-            it.birthday = birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            it.birthday = addEmployeeForm.birthday
             it.hourlyWage = 1000
             it.isAndroidNotification = false
             it.mailAddress = addEmployeeForm.mailAddress
