@@ -32,10 +32,11 @@ class TableController(
     fun tableRegistrationComplete(
         @Validated
         @ModelAttribute
-        tableRegistrationForm: TableForm,
+        tableForm: TableForm,
         validationResult: BindingResult
-    ) {
-        tableService.tableRegistration(tableRegistrationForm.name ?: "", tableRegistrationForm.numOfPeople ?: 0)
+    ): String {
+        tableService.tableUpdate(tableForm.name ?: "", tableForm.numOfPeople ?: 0)
+        return "redirect:table_check"
     }
 
     @GetMapping("/table_check")
@@ -51,7 +52,6 @@ class TableController(
         return "TableEditPage"
     }
 
-    @NonAuth
     @PostMapping("/table_edit_conf")
     fun tableEditConf(model: Model, tableForm: TableForm): String {
         model.addAttribute("name", tableForm.name)
