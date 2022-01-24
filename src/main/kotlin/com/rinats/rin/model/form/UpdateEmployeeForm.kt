@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import javax.validation.constraints.*
 
-data class AddEmployeeForm(
+data class UpdateEmployeeForm(
     @field:NotBlank
     @field:Size(max = 32)
     val firstName: String? = null,
@@ -19,21 +19,27 @@ data class AddEmployeeForm(
     @field:NotNull
     @field:Min(800)
     val hourlyWage: Int? = null,
+    @field:NotNull
+    val isAndroidNotification: Boolean? = null,
     @field:NotBlank
     @field:Email
     val mailAddress: String? = null,
+    @field:NotNull
+    val isTentative: Boolean? = null,
     @field:Min(0)
     @NotNull
     val genderId: Int? = null,
     @field:NotNull
-    val isTaxable: Boolean? = null
+    val isTaxable: Boolean? = null,
 ) {
     constructor(employee: Employee) : this(
         firstName = employee.firstName,
         lastName = employee.lastName,
         birthday = employee.birthday,
         hourlyWage = employee.hourlyWage,
+        isAndroidNotification = employee.isAndroidNotification,
         mailAddress = employee.mailAddress,
+        isTentative = employee.isTentative,
         genderId = employee.gender?.id,
         isTaxable = employee.isTaxableOk
     )

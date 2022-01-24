@@ -31,7 +31,7 @@
                 <td th:text="${employee.hourlyWage}"></td>
                 <td th:text="${employee.mailAddress}"></td>
                 <td th:text="${employee.gender.getGenderName()}"></td>
-                <td><a th:href="@{/employee/edit(employee_id=${employee.id})}">編集</a></td>
+                <td><a th:href="@{/employee/update(employee_id=${employee.id})}">編集</a></td>
                 <td><a th:href="@{/employee/retirement(employee_id=${employee.id})}">退職</a></td>
             </tr>
         </table>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>従業員内容確認: Rin</title>
+</head>
+<body>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>従業員内容確認</h1>
+    <div class="container">
+        <p th:text="${employeeForm.lastName}"></p>
+        <p th:text="${employeeForm.firstName}"></p>
+        <p th:text="${employeeForm.birthday}"></p>
+        <p th:text="${employeeForm.hourlyWage}"></p>
+        <p th:text="${employeeForm.mailAddress}"></p>
+        <p th:text="${employeeForm.genderId}"></p>
+        <p th:text="${employeeForm.isTaxable}"></p>
+        <input type="submit" value="追加" form="form">
+    </div>
+    <form id="form" action="#" th:action="@{/employee/update}" th:object="${employeeForm}" method="post">
+        <input type="hidden" th:value="${employeeId}" name="employeeId">
+        <input type="hidden" th:value="${employeeForm.lastName}" th:field="*{lastName}">
+        <input type="hidden" th:value="${employeeForm.firstName}" th:field="*{firstName}">
+        <input type="hidden" th:value="${employeeForm.birthday}" th:field="*{birthday}">
+        <input type="hidden" th:value="${employeeForm.hourlyWage}" th:field="*{hourlyWage}">
+        <input type="hidden" th:value="${employeeForm.mailAddress}" th:field="*{mailAddress}">
+        <input type="hidden" th:value="${employeeForm.genderId}" th:field="*{genderId}">
+        <input type="hidden" th:value="${employeeForm.isTaxable()}" th:field="*{isTaxable}">
+        <input type="hidden">
+    </form>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
+</body>
+</html>

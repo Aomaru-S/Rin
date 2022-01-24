@@ -1,6 +1,7 @@
 package com.rinats.rin.controller.storemanager
 
 import com.rinats.rin.model.form.AddEmployeeForm
+import com.rinats.rin.model.form.UpdateEmployeeForm
 import com.rinats.rin.model.other.CompleteMessage
 import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,10 +9,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/employee")
@@ -32,7 +30,7 @@ class EmployeeController(
     fun addEmployeeForm(
         model: Model
     ): String {
-        model.addAttribute("addEmployeeForm", AddEmployeeForm())
+        model.addAttribute("employeeForm", AddEmployeeForm())
         return "add_employee"
     }
 
@@ -85,21 +83,54 @@ class EmployeeController(
         return "complete"
     }
 
-    @GetMapping("/edit")
-    fun editEmployeeForm(employeeId: String?): String {
-        return "EmployeeEditing"
-    }
-
-    @PostMapping("/edit_confirm")
-    fun editEmployeeConfirm(): String {
-        return "EmployeeInformationEditingCheck"
-    }
-
-    @PostMapping("/edit")
-    fun editEmployee(
+    @GetMapping("/update")
+    fun updateEmployeeForm(
+        @RequestParam("employee_id")
+        employeeId: String?,
         model: Model
     ): String {
-        val message = CompleteMessage("従業員情報編集完了: Rin", "従業員情報の編集が完了しました。")
+        val employee = employeeService.getEmployee(employeeId) ?: return "redirect:/employee"
+        model.addAttribute("employeeForm", AddEmployeeForm(employee))
+        model.addAttribute("employeeId", employeeId)
+        return "update_employee"
+    }
+
+    @PostMapping("/update_confirm")
+    fun updateEmployeeConfirm(
+        @Validated
+        @ModelAttribute
+        updateEmployeeForm: UpdateEmployeeForm,
+        bindingResult: BindingResult,
+        model: Model,
+        @RequestParam
+        employeeId: String?
+    ): String {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/employee/update?employee_id=${employeeId}&validation_error"
+        }
+        model.addAttribute("employeeForm", updateEmployeeForm)
+        model.addAttribute("employeeId", employeeId)
+        return "update_employee_confirm"
+    }
+
+    @PostMapping("/update")
+    fun updateEmployee(
+        @Validated
+        @ModelAttribute
+        updateEmployeeForm: UpdateEmployeeForm,
+        bindingResult: BindingResult,
+        model: Model,
+        @RequestParam
+        employeeId: String?
+    ): String {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/employee/update?employee_id=${employeeId}&validation_error"
+        }
+        val result = employeeService.updateEmployee(employeeId, updateEmployeeForm)
+        if (!result) {
+            return "redirect:/employee/update?invalid_address"
+        }
+        val message = CompleteMessage("従業員情報変更完了: Rin", "従業員情報が変更されました。")
         model.addAttribute("message", message)
         return "complete"
     }

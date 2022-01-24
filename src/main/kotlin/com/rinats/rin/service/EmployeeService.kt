@@ -1,19 +1,17 @@
 package com.rinats.rin.service
 
 import com.rinats.rin.model.form.AddEmployeeForm
+import com.rinats.rin.model.form.UpdateEmployeeForm
 import com.rinats.rin.model.table.*
 import com.rinats.rin.model.table.compositeId.EmployeeLaborId
 import com.rinats.rin.repository.*
 import com.rinats.rin.util.AuthUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.MailException
-import org.springframework.mail.MailSendException
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.stereotype.Service
-import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.ZoneId
 import java.util.*
 
 @Service
@@ -41,18 +39,7 @@ class EmployeeService(
         labor.labor = 2
         val laborList = arrayListOf<EmployeeLabor>()
         laborList.add(labor)
-        val employee = Employee().also {
-            it.id = employeeId
-            it.firstName = addEmployeeForm.firstName
-            it.lastName = addEmployeeForm.lastName
-            it.birthday = addEmployeeForm.birthday
-            it.hourlyWage = 1000
-            it.isAndroidNotification = false
-            it.mailAddress = addEmployeeForm.mailAddress
-            it.isTentative = true
-            it.gender = genderRepository.findById(0).get()
-            it.isTaxableOk = false
-        }
+        val employee = createEmployeeTableFromForm(employeeId, addEmployeeForm)
 
         val date = Date().apply {
             time = 0
@@ -73,7 +60,7 @@ class EmployeeService(
         } catch (e: MailException) {
             return false
         }
-        employeeRepository.save(employee)
+        employeeRepository.save(employee ?: return false)
         authInfoRepository.save(authInfo)
         return true
     }
@@ -92,8 +79,8 @@ class EmployeeService(
     }
 
     //    従業員情報取得処理
-    fun getEmployee(employeeId: String): Employee? {
-        return employeeRepository.findById(employeeId).orElse(null)
+    fun getEmployee(employeeId: String?): Employee? {
+        return employeeRepository.findById(employeeId ?: return null).orElse(null)
     }
 
     //    従業員一覧取得処理
@@ -173,7 +160,11 @@ class EmployeeService(
                     "従業員ID: $employeeId\n" +
                     "パスワード: $password"
         )
-        sender.send(message)
+        try {
+            sender.send(message)
+        } catch (e: MailException) {
+            throw e
+        }
     }
 
     fun getAuthority(
@@ -192,5 +183,43 @@ class EmployeeService(
             return null
         }
         return authMailAddressList[0]
+    }
+
+    fun updateEmployee(employeeId: String?, updateEmployeeForm: UpdateEmployeeForm): Boolean {
+        val isExists = employeeRepository.existsById(employeeId ?: return false)
+        if (!isExists) return false
+        val employee = createEmployeeTableFromForm(employeeId, updateEmployeeForm) ?: return false
+        employeeRepository.save(employee)
+        return true
+    }
+
+    private fun createEmployeeTableFromForm(employeeId: String?, addEmployeeForm: AddEmployeeForm): Employee? {
+        return Employee().also {
+            it.id = employeeId
+            it.firstName = addEmployeeForm.firstName
+            it.lastName = addEmployeeForm.lastName
+            it.birthday = addEmployeeForm.birthday
+            it.hourlyWage = addEmployeeForm.hourlyWage
+            it.isAndroidNotification = false
+            it.mailAddress = addEmployeeForm.mailAddress
+            it.isTentative = true
+            it.gender = genderRepository.findById(addEmployeeForm.genderId ?: return null).orElse(null) ?: return null
+            it.isTaxableOk = addEmployeeForm.isTaxable
+        }
+    }
+
+    private fun createEmployeeTableFromForm(employeeId: String?, updateEmployeeForm: UpdateEmployeeForm): Employee? {
+        return Employee().also {
+            it.id = employeeId
+            it.firstName = updateEmployeeForm.firstName
+            it.lastName = updateEmployeeForm.lastName
+            it.birthday = updateEmployeeForm.birthday
+            it.hourlyWage = updateEmployeeForm.hourlyWage
+            it.isAndroidNotification = updateEmployeeForm.isAndroidNotification
+            it.mailAddress = updateEmployeeForm.mailAddress
+            it.isTentative = updateEmployeeForm.isTentative
+            it.gender = genderRepository.findById(updateEmployeeForm.genderId ?: return null).orElse(null) ?: return null
+            it.isTaxableOk = updateEmployeeForm.isTaxable
+        }
     }
 }
