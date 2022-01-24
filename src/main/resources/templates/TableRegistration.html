@@ -15,29 +15,14 @@
 <main>
     <h1>テーブル登録</h1>
     <div class="container">
-        <table>
-            <tr>
-                <th>テーブル名入力</th>
-                <td>
-                    <label>
-                        <input type="text" name="table">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <th>人数入力</th>
-                <td>
-                    <label>
-                        <input type="text" name="number">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <input type="button" value="確認">
-                </th>
-            </tr>
-        </table>
+        <form action="#" th:action="@{/table_registration_complete}" method="post">
+            テーブル名
+            <input type="text" name="name">
+            人数
+            <input type="number" name="numOfPeople">
+            <br>
+            <input type="submit" value="確認">
+        </form>
     </div>
 </main>
 <footer>

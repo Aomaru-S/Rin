@@ -18,9 +18,18 @@ class TableController(
     val tableService: TableService
 ) {
 
-    @NonAuth
-    @PostMapping("/table_registration")
+    @GetMapping("table_registration")
     fun tableRegistration(
+        @Validated
+        @ModelAttribute
+        tableRegistrationForm: TableForm,
+        validationResult: BindingResult
+    ): String {
+        return "TableRegistration"
+    }
+
+    @PostMapping("/table_registration_complete")
+    fun tableRegistrationComplete(
         @Validated
         @ModelAttribute
         tableRegistrationForm: TableForm,
@@ -29,14 +38,12 @@ class TableController(
         tableService.tableRegistration(tableRegistrationForm.name ?: "", tableRegistrationForm.numOfPeople ?: 0)
     }
 
-    @NonAuth
     @GetMapping("/table_check")
     fun tableCheck(model: Model): String {
         model.addAttribute("tableList", tableService.getTable())
         return "TableCheckPage"
     }
 
-    @NonAuth
     @PostMapping("/table_edit")
     fun tableEdit(model: Model, tableForm: TableForm): String {
         model.addAttribute("name", tableForm.name)
@@ -52,7 +59,6 @@ class TableController(
         return "TableEditConfPage"
     }
 
-    @NonAuth
     @PostMapping("/table_edit_complete")
     fun tableEditComplete(tableForm: TableForm): String {
         tableService.tableUpdate(tableForm.name ?: "", tableForm.numOfPeople ?: 0)
