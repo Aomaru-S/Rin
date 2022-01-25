@@ -45,7 +45,7 @@ class AuthInterceptor(
         if (status == 404) {
             System.err.println("404 ng")
             response.sendError(404)
-            return false
+            return true
         }
         if (status / 100 == 4 || status / 100 == 5) {
             System.err.println("error ng")
