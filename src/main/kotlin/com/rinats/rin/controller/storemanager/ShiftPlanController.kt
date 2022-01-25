@@ -1,24 +1,45 @@
 package com.rinats.rin.controller.storemanager
 
+import com.rinats.rin.model.other.CompleteMessage
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
+@RequestMapping("/shift_plan")
 class ShiftPlanController {
 
-    @GetMapping("/shift_plan_setting")
-    fun shiftPlanSetting(): String {
+    @GetMapping("")
+    fun index(): String {
         return "shift_plan_setting"
     }
 
-    @GetMapping("/shift_template")
-    fun shiftTemplate(): String {
+    @GetMapping("/template")
+    fun getTemplate(
+        model: Model
+    ): String {
         return "shift_template"
     }
 
-    @GetMapping("/template_setting")
-    fun templateSetting(): String {
+    @GetMapping("/template/edit")
+    fun editShiftTemplateForm(): String {
         return "TemplateConfiguration"
+    }
+
+    @GetMapping("/template/edit_confirm")
+    fun editShiftTemplateConfirm(): String {
+        return "edit_template_confirm"
+    }
+
+    @PostMapping("/template/edit")
+    fun editShiftTemplate(
+        model: Model
+    ): String {
+        val message = CompleteMessage("テンプレート変更完了: Rin", "シフトテンプレートが編集されました")
+        model.addAttribute("message", message)
+        return "complete"
     }
 
     @GetMapping("/add_edit_shift")
