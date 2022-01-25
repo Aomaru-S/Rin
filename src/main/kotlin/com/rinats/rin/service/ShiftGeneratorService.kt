@@ -15,21 +15,27 @@ import java.util.*
 @Service
 class ShiftGeneratorService(
     @Autowired
+    //必要なデータ
     private val employeeRepository: EmployeeRepository,
     private val roleRepository: RoleRepository,
     private val employeeLaborRepository: EmployeeLaborRepository,
     private val shiftTemplateRepository: ShiftTemplateRepository,
     private val shiftHopeRepository: ShiftHopeRepository,
+    private val totalSalaryRepository: TotalSalaryRepository,
+    private val settingRepository: SettingRepository,
+
+    //出力先
     private val tentativeShiftRepository: TentativeShiftRepository,
     private val tentativeShiftDetailRepository: TentativeShiftDetailRepository,
-    private val totalSalaryRepository: TotalSalaryRepository,
+
+    //設定キーない場合
     private val setSettingValueInDBService: SetSettingValueInDBService,
-    private val settingRepository: SettingRepository,
+
+    //祝日Api
     private val getHolidaysJpApiService: GetHolidaysJpApiService
 ) {
     //1日の労働時間がいる
     //private val workingHours = 6
-
     //給与関係のテーブルがないので仮データ
     //private val taxable = 1000000 //100万円 課税対象額
 
@@ -278,7 +284,7 @@ class ShiftGeneratorService(
         return combination(elementListList, selected)
     }
 
-    fun <T> combination(
+    private fun <T> combination(
         elementListList: MutableList<MutableList<T>>,
         selected: Int
     ): MutableList<MutableList<T>> {
