@@ -17,11 +17,26 @@
     <div class="container">
         <table>
             <tr>
-                <th>
-                    <input type="button"
-                           onclick="location.href='TableEdit.html'"
-                           value="編集">
-                </th>
+                <th>名前</th>
+                <th>人数</th>
+            </tr>
+            <tr th:each="table: ${tableList}">
+                <td th:text="${table.name}"></td>
+                <td th:text="${table.numOfPeople}"></td>
+                <td>
+                    <form action="#" th:action="@{/table_edit}" method="post">
+                        <input type="submit" value="編集">
+                        <input type="hidden" name="name" th:value="${table.name}">
+                        <input type="hidden" name="numOfPeople" th:value="${table.numOfPeople}">
+                    </form>
+                </td>
+                <td>
+                    <form action="#" th:action="@{/table_delete}" method="post">
+                        <input type="submit" value="削除">
+                        <input type="hidden" name="name" th:value="${table.name}">
+                        <input type="hidden" name="numOfPeople" th:value="${table.numOfPeople}">
+                    </form>
+                </td>
             </tr>
         </table>
     </div>

@@ -16,4 +16,9 @@ class TableService(@Autowired private val tableRepository: TableRepository) {
         val table = Table(name, numOfPeople)
         tableRepository.save(table)
     }
+
+    fun tableDelete(name: String, numOfPeople: Int) {
+        val table = Table(name, numOfPeople)
+        tableRepository.delete(table)
+    }
 }

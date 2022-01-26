@@ -6,28 +6,29 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
-    <title>テーブル確認</title>
+    <title>時給設定</title>
 </head>
 <body>
 <header>
     <a th:href="@{/}">Rin</a>
 </header>
 <main>
-    <h1>テーブル確認</h1>
+    <h1></h1>
     <div class="container">
         <table>
             <tr>
                 <th>名前</th>
-                <th>人数</th>
+                <th>時給</th>
             </tr>
-            <tr th:each="table: ${tableList}">
-                <td th:text="${table.name}"></td>
-                <td th:text="${table.numOfPeople}"></td>
+            <tr th:each="hourlyWage: ${hourlyWageList}">
+                <td th:text="${hourlyWage.firstName} + ${hourlyWage.lastName}"></td>
+                <td th:text="${hourlyWage.hourlyWage}"></td>
                 <td>
-                    <form action="#" th:action="@{/table_edit}" method="post">
+                    <form action="#" th:action="@{/hourly_wage_edit}" method="post">
                         <input type="submit" value="編集">
-                        <input type="hidden" name="name" th:value="${table.name}">
-                        <input type="hidden" name="numOfPeople" th:value="${table.numOfPeople}">
+                        <input type="hidden" name="employeeId" th:value="${hourlyWage.id}">
+                        <input type="hidden" name="name" th:value="${hourlyWage.firstName} + ${hourlyWage.lastName}">
+                        <input type="hidden" name="hourlyWage" th:value="${hourlyWage.hourlyWage}">
                     </form>
                 </td>
             </tr>

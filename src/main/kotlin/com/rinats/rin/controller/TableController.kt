@@ -42,7 +42,7 @@ class TableController(
     @GetMapping("/table_check")
     fun tableCheck(model: Model): String {
         model.addAttribute("tableList", tableService.getTable())
-        return "TableCheckPage"
+        return "TableCheck"
     }
 
     @PostMapping("/table_edit")
@@ -63,6 +63,12 @@ class TableController(
     fun tableEditComplete(tableForm: TableForm): String {
         tableService.tableUpdate(tableForm.name ?: "", tableForm.numOfPeople ?: 0)
         return "TableEditCompletePage"
+    }
+
+    @PostMapping("/table_delete")
+    fun tableDelete(tableForm: TableForm): String {
+        tableService.tableDelete(tableForm.name ?: "", tableForm.numOfPeople ?: 0)
+        return "redirect:table_check"
     }
 
 }
