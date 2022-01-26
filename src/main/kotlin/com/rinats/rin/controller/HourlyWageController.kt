@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import javax.servlet.http.HttpServletRequest
 
 @Controller
 class HourlyWageController(
@@ -21,20 +22,21 @@ class HourlyWageController(
     }
 
     @PostMapping("/hourly_wage_edit")
-    fun hourlyWageEdit(model: Model, hourlyWageForm: HourlyWageForm): String {
+    fun hourlyWageEdit(model: Model, hourlyWageForm: HourlyWageForm, request: HttpServletRequest): String {
         model.apply {
             addAttribute("employeeId", hourlyWageForm.employeeId)
-            addAttribute("name", getAttribute("name"))
-            addAttribute("hourlyWageList", hourlyWageForm.hourlyWage)
+            addAttribute("name", request.getParameter("name"))
+            addAttribute("hourlyWage", hourlyWageForm.hourlyWage)
         }
         return "HourlyWageEdit"
     }
 
     @PostMapping("/hourly_wage_edit_conf")
-    fun hourlyWageEditConf(model: Model, hourlyWageForm: HourlyWageForm): String {
+    fun hourlyWageEditConf(model: Model, hourlyWageForm: HourlyWageForm, request: HttpServletRequest): String {
         model.apply {
             addAttribute("employeeId", hourlyWageForm.employeeId)
-            addAttribute("hourlyWageList", hourlyWageForm.hourlyWage)
+            addAttribute("name", request.getParameter("name"))
+            addAttribute("hourlyWage", hourlyWageForm.hourlyWage)
         }
         return "HourlyWageEditConf"
     }
@@ -42,6 +44,6 @@ class HourlyWageController(
     @PostMapping("/hourly_wage_complate")
     fun hourlyWageComplete(model: Model, hourlyWageForm: HourlyWageForm): String {
         hourlyWageService.hourlyWageUpdate(hourlyWageForm.employeeId ?: "", hourlyWageForm.hourlyWage ?: 800)
-        return "HourlyWageComplete"
+        return "redirect:hourly_wage_check"
     }
 }

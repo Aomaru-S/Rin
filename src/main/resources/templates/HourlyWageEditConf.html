@@ -6,38 +6,36 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
-    <title>テーブル編集</title>
+    <title>時給編集確認</title>
 </head>
 <body>
 <header>
     <a th:href="@{/}">Rin</a>
 </header>
 <main>
-    <h1>テーブル編集</h1>
+    <h1>時給編集確認</h1>
     <div class="container">
         <table>
             <tr>
                 <th>名前</th>
-                <th>人数</th>
+                <th>時給</th>
             </tr>
             <tr>
-                <form action="#" th:action="@{/table_edit_conf}" method="post">
-                    <td th:text="${name}"></td>
-                    <input type="hidden" name="name" th:value="${name}">
-                    <td><input type="text" name="numOfPeople" th:value="${numOfPeople}"></td>
-                    <td><input type="submit" value="変更"></td>
+                <td th:text="${name}"></td>
+                <td th:text="${hourlyWage}"></td>
+                <form action="#" th:action="@{/hourly_wage_complate}" method="post">
+                    <input type="hidden" name="name" th:value="name">
+                    <input type="hidden" name="employeeId" th:value="${employeeId}">
+                    <input type="hidden" name="hourlyWage" th:value="${hourlyWage}">
+                    <td><input type="submit" value="確定"></td>
                 </form>
             </tr>
         </table>
-        <form>
-            <input type="submit" value="削除">
-            <input type="hidden" name="name" th:value="${name}">
-        </form>
+
     </div>
 </main>
 <footer>
     © 2022 www.rin-ats.com
 </footer>
-</body>
 </body>
 </html>

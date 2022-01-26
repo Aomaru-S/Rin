@@ -1,6 +1,5 @@
 package com.rinats.rin.controller
 
-import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.form.TableForm
 import com.rinats.rin.service.TableService
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,20 +48,20 @@ class TableController(
     fun tableEdit(model: Model, tableForm: TableForm): String {
         model.addAttribute("name", tableForm.name)
         model.addAttribute("numOfPeople", tableForm.numOfPeople)
-        return "TableEditPage"
+        return "TableEdit"
     }
 
     @PostMapping("/table_edit_conf")
     fun tableEditConf(model: Model, tableForm: TableForm): String {
         model.addAttribute("name", tableForm.name)
         model.addAttribute("numOfPeople", tableForm.numOfPeople)
-        return "TableEditConfPage"
+        return "TableEditConf"
     }
 
     @PostMapping("/table_edit_complete")
     fun tableEditComplete(tableForm: TableForm): String {
         tableService.tableUpdate(tableForm.name ?: "", tableForm.numOfPeople ?: 0)
-        return "TableEditCompletePage"
+        return "TableEditComplete"
     }
 
     @PostMapping("/table_delete")

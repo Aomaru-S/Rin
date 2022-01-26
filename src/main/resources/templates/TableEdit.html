@@ -15,43 +15,29 @@
 <main>
     <h1>テーブル編集</h1>
     <div class="container">
-        <form action="TableEditCheck.html" method="post">
-            <table>
-                <tr>
-                    <th>テーブル選択</th>
-                    <td>
-                        <label>
-                            <input type="text" name="table">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th>テーブル名入力</th>
-                    <td>
-                        <label>
-                            <input type="text" name="table">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th>人数入力フォーム</th>
-                    <td>
-                        <label>
-                            <input type="number" name="human">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <input type="button" value="確認">
-                    </th>
-                </tr>
-            </table>
+        <table>
+            <tr>
+                <th>名前</th>
+                <th>人数</th>
+            </tr>
+            <tr>
+                <form action="#" th:action="@{/table_edit_conf}" method="post">
+                    <td th:text="${name}"></td>
+                    <input type="hidden" name="name" th:value="${name}">
+                    <td><input type="text" name="numOfPeople" th:value="${numOfPeople}"></td>
+                    <td><input type="submit" value="変更"></td>
+                </form>
+            </tr>
+        </table>
+        <form>
+            <input type="submit" value="削除">
+            <input type="hidden" name="name" th:value="${name}">
         </form>
     </div>
 </main>
 <footer>
     © 2022 www.rin-ats.com
 </footer>
+</body>
 </body>
 </html>

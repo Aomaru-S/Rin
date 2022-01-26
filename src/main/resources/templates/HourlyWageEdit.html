@@ -15,7 +15,21 @@
 <main>
   <h1>時給編集</h1>
   <div class="container">
-
+    <table>
+      <tr>
+        <th>名前</th>
+        <th>時給</th>
+      </tr>
+      <tr>
+        <td th:text="${name}"></td>
+        <form action="#" th:action="@{/hourly_wage_edit_conf}" method="post">
+          <td><Input type="text" name="hourlyWage" th:value="${hourlyWage}"></td>
+          <input type="hidden" name="name" th:value="${name}">
+          <input type="hidden" name="employeeId" th:value="${employeeId}">
+          <td><input type="submit" value="確認"></td>
+        </form>
+      </tr>
+    </table>
   </div>
 </main>
 <footer>
