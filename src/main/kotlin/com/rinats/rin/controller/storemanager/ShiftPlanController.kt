@@ -3,6 +3,9 @@ package com.rinats.rin.controller.storemanager
 import com.rinats.rin.model.form.ShiftTemplateForm
 import com.rinats.rin.model.form.ShiftTemplateFormList
 import com.rinats.rin.model.other.CompleteMessage
+import com.rinats.rin.repository.ShiftTemplateRepository
+import com.rinats.rin.service.ShiftTemplateService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -14,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/shift_plan")
-class ShiftPlanController {
+class ShiftPlanController(
+    @Autowired
+    private val shiftTemplateService: ShiftTemplateService
+) {
 
     @GetMapping("")
     fun index(): String {
@@ -68,7 +74,7 @@ class ShiftPlanController {
         bindingResult: BindingResult,
         model: Model
     ): String {
-
+        shiftTemplateService.saveShiftTemplate(shiftTemplateFormList)
         val message = CompleteMessage("テンプレート変更完了: Rin", "シフトテンプレートが編集されました")
         model.addAttribute("message", message)
         return "complete"

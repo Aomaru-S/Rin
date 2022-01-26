@@ -130,7 +130,7 @@ class ShiftGeneratorService(
             medianMap.forEach loop1@{ (roleId, median) ->
                 val template = templateList.filter { it.id?.roleId == roleId }
                 val people = when (holidaysJpMap.containsKey(calendarLocalDate)) {
-                    true -> template.single { it.weeksAndHolidayName == "HOLIDAY" }.numOfPeople
+                    true -> template.single { it.weeksHolidayName == "HOLIDAY" }.numOfPeople
                     false -> when (calendar.get(Calendar.DAY_OF_WEEK)) {
                         Calendar.SUNDAY -> template.single { it.id?.shiftTemplateId == Calendar.SUNDAY }.numOfPeople
                         Calendar.MONDAY -> template.single { it.id?.shiftTemplateId == Calendar.MONDAY }.numOfPeople
