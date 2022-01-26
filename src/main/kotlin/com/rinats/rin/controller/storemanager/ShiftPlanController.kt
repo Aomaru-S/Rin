@@ -56,7 +56,6 @@ class ShiftPlanController {
         if (bindingResult.hasErrors()) {
             return "redirect:/edit?validation_error"
         }
-        println("get_edit_confirm: $shiftTemplateFormList")
         model.addAttribute("shiftTemplateFormList", shiftTemplateFormList)
         return "edit_template_confirm"
     }
@@ -69,7 +68,7 @@ class ShiftPlanController {
         bindingResult: BindingResult,
         model: Model
     ): String {
-        println("post_edit: $shiftTemplateFormList")
+
         val message = CompleteMessage("テンプレート変更完了: Rin", "シフトテンプレートが編集されました")
         model.addAttribute("message", message)
         return "complete"
