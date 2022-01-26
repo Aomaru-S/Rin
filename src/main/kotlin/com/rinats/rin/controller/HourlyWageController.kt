@@ -16,31 +16,32 @@ class HourlyWageController(
 
     @GetMapping("/hourly_wage_check")
     fun hourlyWageCheck(model: Model): String {
-        model.addAttribute(hourlyWageService.getHourlyWage())
-        return "HourlyWageCheckPage"
+        model.addAttribute("hourlyWageList", hourlyWageService.getHourlyWage())
+        return "HourlyWageCheck"
     }
 
     @PostMapping("/hourly_wage_edit")
     fun hourlyWageEdit(model: Model, hourlyWageForm: HourlyWageForm): String {
         model.apply {
             addAttribute("employeeId", hourlyWageForm.employeeId)
-            addAttribute("hourlyWage", hourlyWageForm.hourlyWage)
+            addAttribute("name", getAttribute("name"))
+            addAttribute("hourlyWageList", hourlyWageForm.hourlyWage)
         }
-        return "HourlyWageEditPage"
+        return "HourlyWageEdit"
     }
 
-    @PostMapping("/hourly_wage_conf")
-    fun hourlyWageConf(model: Model, hourlyWageForm: HourlyWageForm): String {
+    @PostMapping("/hourly_wage_edit_conf")
+    fun hourlyWageEditConf(model: Model, hourlyWageForm: HourlyWageForm): String {
         model.apply {
             addAttribute("employeeId", hourlyWageForm.employeeId)
-            addAttribute("hourlyWage", hourlyWageForm.hourlyWage)
+            addAttribute("hourlyWageList", hourlyWageForm.hourlyWage)
         }
-        return "HourlyWageConfPage"
+        return "HourlyWageEditConf"
     }
 
     @PostMapping("/hourly_wage_complate")
     fun hourlyWageComplete(model: Model, hourlyWageForm: HourlyWageForm): String {
         hourlyWageService.hourlyWageUpdate(hourlyWageForm.employeeId ?: "", hourlyWageForm.hourlyWage ?: 800)
-        return "HourlyWageCompletePage"
+        return "HourlyWageComplete"
     }
 }

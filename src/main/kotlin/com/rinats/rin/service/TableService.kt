@@ -8,11 +8,6 @@ import org.springframework.stereotype.Service
 @Service
 class TableService(@Autowired private val tableRepository: TableRepository) {
 
-    fun tableRegistration(name: String, numOfPeople: Int){
-        val table = Table(name, numOfPeople)
-        tableRepository.save(table)
-    }
-
     fun getTable(): List<Table> {
         return tableRepository.findAll()
     }
@@ -20,5 +15,10 @@ class TableService(@Autowired private val tableRepository: TableRepository) {
     fun tableUpdate(name: String, numOfPeople: Int) {
         val table = Table(name, numOfPeople)
         tableRepository.save(table)
+    }
+
+    fun tableDelete(name: String, numOfPeople: Int) {
+        val table = Table(name, numOfPeople)
+        tableRepository.delete(table)
     }
 }
