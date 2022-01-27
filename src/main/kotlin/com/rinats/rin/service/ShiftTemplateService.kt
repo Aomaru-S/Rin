@@ -4,21 +4,21 @@ import com.rinats.rin.model.form.ShiftTemplateForm
 import com.rinats.rin.model.form.ShiftTemplateFormList
 import com.rinats.rin.model.table.ShiftTemplate
 import com.rinats.rin.model.table.compositeId.ShiftTemplateId
-import com.rinats.rin.repository.RoleRepository
 import com.rinats.rin.repository.ShiftTemplateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.annotation.Transactional
-import javax.persistence.EntityManager
+
 
 @Service
 class ShiftTemplateService(
     @Autowired
     private val templateRepository: ShiftTemplateRepository,
-    private val entityManager: EntityManager
+    private val transactionManager: PlatformTransactionManager
 ) {
-    @Transactional
-    fun saveShiftTemplate(shiftTemplateFormList: ShiftTemplateFormList): Boolean {
+
+    /*fun saveShiftTemplate(shiftTemplateFormList: ShiftTemplateFormList): Boolean {
         shiftTemplateFormList.shiftTemplateList.forEach { shiftTemplateForm ->
             val weeksHolidayList =
                 listOf("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "holiday")
@@ -27,9 +27,9 @@ class ShiftTemplateService(
             }
         }
         return true
-    }
+    }*/
 
-    private fun save(weeksHoliday: String, shiftTemplateForm: ShiftTemplateForm): Boolean {
+    /*fun save(weeksHoliday: String, shiftTemplateForm: ShiftTemplateForm): Boolean {
         var template =
             templateRepository.findById_RoleIdAndWeeksHolidayName(shiftTemplateForm.role ?: return false, weeksHoliday)
                 .orElse(null)
@@ -41,13 +41,46 @@ class ShiftTemplateService(
                 it.weeksHolidayName = weeksHoliday
                 it.numOfPeople = get(weeksHoliday, shiftTemplateForm)
             }
-            val a = templateRepository.saveAndFlush(template)
-            entityManager.refresh(a)
+            templateRepository.save(template)
         } else {
             template.numOfPeople = get(weeksHoliday, shiftTemplateForm)
-            val a = templateRepository.saveAndFlush(template)
-            entityManager.refresh(a)
+            templateRepository.save(template)
         }
+        return true
+    }*/
+
+    fun saveShiftTemplate2(shiftTemplateFormList: ShiftTemplateFormList): Boolean {
+        val weeksHolidayList =
+            listOf("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "holiday")
+        shiftTemplateFormList.shiftTemplateList.forEach {
+            save2(weeksHolidayList, it)
+        }
+        return true
+    }
+
+    @Transactional
+    fun save2(weeksHolidayList: List<String>, shiftTemplateForm: ShiftTemplateForm): Boolean {
+        val test: MutableList<ShiftTemplate> = mutableListOf()
+        val test2    = templateRepository.findAll()
+        weeksHolidayList.forEach { weeksHoliday ->
+//            var template2 = templateRepository.findById_RoleIdAndWeeksHolidayName(shiftTemplateForm.role!!, weeksHoliday).orElse(null)
+            var template2 = runCatching{ test2.single{ it.id?.roleId == shiftTemplateForm.role && it.id?.weeksHolidayName.equals(weeksHoliday) } }.getOrNull()
+
+            if (template2 == null) {
+                template2 = ShiftTemplate().also {
+                    it.id = ShiftTemplateId().apply {
+                        roleId = shiftTemplateForm.role
+                        weeksHolidayName = weeksHoliday
+                    }
+                    it.numOfPeople = get(weeksHoliday, shiftTemplateForm)
+                }
+                test.add(template2)
+            } else {
+                template2.numOfPeople = get(weeksHoliday, shiftTemplateForm)
+                test.add(template2)
+            }
+        }
+        templateRepository.saveAll(test)
         return true
     }
 

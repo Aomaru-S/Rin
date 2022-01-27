@@ -12,9 +12,6 @@ open class ShiftTemplate {
     @EmbeddedId
     open var id: ShiftTemplateId? = null
 
-    @Column(name = "weeks_holiday_name", nullable = false, length = 32)
-    open var weeksHolidayName: String? = null
-
-    @Column(name = "num_of_people", nullable = false)
+    @Column(name = "num_of_people")
     open var numOfPeople: Int? = null
 }

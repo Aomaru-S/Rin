@@ -74,7 +74,7 @@ class ShiftPlanController(
         bindingResult: BindingResult,
         model: Model
     ): String {
-        shiftTemplateService.saveShiftTemplate(shiftTemplateFormList)
+        shiftTemplateService.saveShiftTemplate2(shiftTemplateFormList)
         val message = CompleteMessage("テンプレート変更完了: Rin", "シフトテンプレートが編集されました")
         model.addAttribute("message", message)
         return "complete"

@@ -130,15 +130,15 @@ class ShiftGeneratorService(
             medianMap.forEach loop1@{ (roleId, median) ->
                 val template = templateList.filter { it.id?.roleId == roleId }
                 val people = when (holidaysJpMap.containsKey(calendarLocalDate)) {
-                    true -> template.single { it.weeksHolidayName == "HOLIDAY" }.numOfPeople
+                    true -> template.single { it.id?.weeksHolidayName == "HOLIDAY" }.numOfPeople
                     false -> when (calendar.get(Calendar.DAY_OF_WEEK)) {
-                        Calendar.SUNDAY -> template.single { it.id?.shiftTemplateId == Calendar.SUNDAY }.numOfPeople
-                        Calendar.MONDAY -> template.single { it.id?.shiftTemplateId == Calendar.MONDAY }.numOfPeople
-                        Calendar.TUESDAY -> template.single { it.id?.shiftTemplateId == Calendar.TUESDAY }.numOfPeople
-                        Calendar.WEDNESDAY -> template.single { it.id?.shiftTemplateId == Calendar.WEDNESDAY }.numOfPeople
-                        Calendar.THURSDAY -> template.single { it.id?.shiftTemplateId == Calendar.THURSDAY }.numOfPeople
-                        Calendar.FRIDAY -> template.single { it.id?.shiftTemplateId == Calendar.FRIDAY }.numOfPeople
-                        Calendar.SATURDAY -> template.single { it.id?.shiftTemplateId == Calendar.SATURDAY }.numOfPeople
+                        Calendar.SUNDAY -> template.single { it.id?.weeksHolidayName.equals("sunday") }.numOfPeople
+                        Calendar.MONDAY -> template.single { it.id?.weeksHolidayName.equals("monday") }.numOfPeople
+                        Calendar.TUESDAY -> template.single { it.id?.weeksHolidayName.equals("tuesday") }.numOfPeople
+                        Calendar.WEDNESDAY -> template.single { it.id?.weeksHolidayName.equals("wednesday") }.numOfPeople
+                        Calendar.THURSDAY -> template.single { it.id?.weeksHolidayName.equals("thursday") }.numOfPeople
+                        Calendar.FRIDAY -> template.single { it.id?.weeksHolidayName.equals("friday") }.numOfPeople
+                        Calendar.SATURDAY -> template.single { it.id?.weeksHolidayName.equals("saturday") }.numOfPeople
                         else -> throw IllegalArgumentException("unknown error!!!")
                     }
                 }!!
