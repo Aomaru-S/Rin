@@ -1,4 +1,4 @@
-package com.rinats.rin.controller
+package com.rinats.rin.controller.storemanager
 
 import com.rinats.rin.model.form.HourlyWageForm
 import com.rinats.rin.service.HourlyWageService

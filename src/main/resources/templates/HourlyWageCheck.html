@@ -19,16 +19,17 @@
             <tr>
                 <th>名前</th>
                 <th>時給</th>
+                <th></th>
             </tr>
             <tr th:each="hourlyWage: ${hourlyWageList}">
                 <td th:text="${hourlyWage.firstName} + ${hourlyWage.lastName}"></td>
                 <td th:text="${hourlyWage.hourlyWage}"></td>
                 <td>
                     <form action="#" th:action="@{/hourly_wage_edit}" method="post">
-                        <input type="submit" value="編集">
                         <input type="hidden" name="employeeId" th:value="${hourlyWage.id}">
                         <input type="hidden" name="name" th:value="${hourlyWage.firstName} + ${hourlyWage.lastName}">
                         <input type="hidden" name="hourlyWage" th:value="${hourlyWage.hourlyWage}">
+                        <input type="submit" value="編集">
                     </form>
                 </td>
             </tr>
