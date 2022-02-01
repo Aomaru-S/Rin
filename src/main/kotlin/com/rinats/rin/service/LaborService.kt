@@ -18,6 +18,10 @@ class LaborService(
         return laborRepository.findAll()
     }
 
+    fun getRoleLabor(roleId: Int): List<EmployeeLabor> {
+        return laborRepository.findById_RoleId(roleId)
+    }
+
     fun getByName(employeeId: String): String {
         val employee = employeeRepository.findById(employeeId)
         return employee.get().lastName + " " + employee.get().firstName
@@ -30,7 +34,7 @@ class LaborService(
         }
         val employeeLabor = EmployeeLabor()
         employeeLabor.id = laborId
-        employeeLabor.labor = 4
+        employeeLabor.labor = labor
         laborRepository.save(employeeLabor)
     }
 }
