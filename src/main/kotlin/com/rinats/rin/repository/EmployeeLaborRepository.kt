@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface EmployeeLaborRepository : JpaRepository<EmployeeLabor, EmployeeLaborId> {
     fun findById_EmployeeId(employeeId: String): List<EmployeeLabor>
+    fun findById_RoleId(roleId: Int): List<EmployeeLabor>
 }

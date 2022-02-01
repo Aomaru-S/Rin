@@ -17,21 +17,24 @@
     <div class="container">
         <table>
             <tr>
+                <th>ID</th>
                 <th>名前</th>
                 <th>労働力</th>
             </tr>
-            <tr th:each="labor: ${laborList}">
+            <tr th:each="employeeLaborMap: ${employeeLaborMap}">
                 <td>
-                    <span th:text="${labor}"></span>
-                    <span th:text="${labor.employee.firstName}"></span>
+                    <span th:text="${employeeLaborMap.key.id}"></span>
+                    <span th:text="${employeeLaborMap.key.lastName}"></span>
+                    <span th:text="${employeeLaborMap.key.firstName}"></span>
                 </td>
                 <td>
-                    <span th:text="${labor.level}"></span>
+                    <span th:text="${employeeLaborMap.value.labor}"></span>
                 </td>
                 <td>
                     <form action="#" th:action="@{labor_edit}" method="post">
-                        <input type="hidden" name="employeeId" th:value="${labor.employeeId}">
-                        <input type="hidden" name="level" th:value="${labor.level}">
+                        <input type="hidden" name="employeeId" th:value="${employeeLaborMap.key.id}">
+                        <input type="hidden" name="roleId" th:value="${employeeLaborMap.value.id.roleId}">
+                        <input type="hidden" name="level" th:value="${employeeLaborMap.value.labor}">
                         <input type="submit" value="編集">
                     </form>
                 </td>

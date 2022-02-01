@@ -1,4 +1,4 @@
-package com.rinats.rin.model.table
+package com.rinats.rin.model.other
 
 import java.time.LocalDate
 

@@ -4,7 +4,7 @@ import com.alias.kh.shiftgenerator.model.compositeKey.TentativeShiftDetailId
 import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.table.TentativeShift
-import com.rinats.rin.model.table.TentativeShiftData
+import com.rinats.rin.model.other.TentativeShiftData
 import com.rinats.rin.model.table.TentativeShiftDetail
 import com.rinats.rin.model.table.compositeId.TentativeShiftId
 import com.rinats.rin.repository.*
@@ -264,17 +264,18 @@ class ShiftGeneratorService(
 
     fun makeTentativeShiftPair(tentativeShiftData: TentativeShiftData): Pair<MutableList<TentativeShift>, TentativeShiftDetail> {
         val saveSiftList: MutableList<TentativeShift> = mutableListOf()
-        tentativeShiftData.employeeIdList.forEach {
-            val saveShiftId = TentativeShiftId(tentativeShiftData.shiftDate, it)
-            val saveShift = TentativeShift(saveShiftId, roleRepository.getById(tentativeShiftData.roleId))
-            saveSiftList.add(saveShift)
-        }
+        tentativeShiftData.apply {
+            tentativeShiftData.employeeIdList.forEach {
+                val saveShiftId = TentativeShiftId(shiftDate, it)
+                val saveShift = TentativeShift(saveShiftId, roleRepository.getById(roleId))
+                saveSiftList.add(saveShift)
+            }
 
-        val saveShiftDetailId = TentativeShiftDetailId(tentativeShiftData.shiftDate, tentativeShiftData.roleId)
-        val saveShiftDetail = TentativeShiftDetail(
-            saveShiftDetailId, tentativeShiftData.isLaborInsufficient, tentativeShiftData.isNumOfPeopleInsufficient
-        )
-        return saveSiftList to saveShiftDetail
+            val saveShiftDetailId = TentativeShiftDetailId(shiftDate, roleId)
+            val saveShiftDetail =
+                TentativeShiftDetail(saveShiftDetailId, isLaborInsufficient, isNumOfPeopleInsufficient)
+            return saveSiftList to saveShiftDetail
+        }
     }
 
     fun <T> callCombination(elementList: MutableList<T>, selected: Int): MutableList<MutableList<T>> {

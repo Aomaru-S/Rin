@@ -23,11 +23,13 @@
         </table>
         <form action="#" th:action="@{/labor_edit_complete}" method="post">
             <input type="hidden" name="employeeId" th:value="${employeeId}">
+            <input type="hidden" name="roleId" th:value="${roleId}">
             <input type="hidden" name="level" th:value="${level}">
             <input type="submit" value="確定">
         </form>
         <form action="#" th:action="@{/labor_edit}" method="post">
             <input type="hidden" name="employeeId" th:value="${employeeId}">
+            <input type="hidden" name="roleId" th:value="${roleId}">
             <input type="hidden" name="level" th:value="${level}">
             <input type="submit" value="修正">
         </form>
