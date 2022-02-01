@@ -20,43 +20,40 @@ class ReservationController (
     val reservationService: ReservationService
 ) {
 
-    @GetMapping("/reservation_entry")
-    fun reservationEntry(model: Model): String {
+    @GetMapping("/reservation_registration")
+    fun reservationRegistration(model: Model): String {
         model.addAttribute("courseList",  reservationService.getCourse())
         model.addAttribute("tableList",  reservationService.getTable())
-        return "ReservationEntry"
+        return "ReservationRegistration"
     }
 
-    @PostMapping("/reservation_registration")
-    fun reservationRegistration(
+    @PostMapping("/reservation_registration_complete")
+    fun reservationRegistrationComplete(
         @RequestAttribute employee: Employee,
         request: HttpServletRequest,
         @Validated
         reservationForm: ReservationForm,
         bindingResult: BindingResult
     ): String {
-        return when(
-            reservationService.reservationRegistration(
-            reservationForm.customerName ?: "",
-            reservationForm.courseId ?: "",
-            reservationForm.dateTime ?: LocalDateTime.now(),
-            reservationForm.numOfPeople ?: 0,
-            employee.id ?: "",
-            reservationForm.tableName ?: ""
-            )
-        ) {
-            true -> "top"
-            false -> "ReservationEntryError"
-        }
+        reservationService.reservationRegistration(
+        reservationForm.customerName ?: "",
+        reservationForm.courseId ?: "",
+        reservationForm.dateTime ?: LocalDateTime.now(),
+        reservationForm.numOfPeople ?: 0,
+        employee.id ?: "",
+        reservationForm.tableName ?: ""
+        )
+        return "redirect:reservation_check"
     }
 
     @PostMapping("/reservation_registration_continue")
     fun reservationRegistrationContinue(): String {
-        return "ReservationEntry"
+        return "ReservationRegistration"
     }
+
     @PostMapping("/reservation_cancel")
     fun reservationRegistrationCancel(): String {
-        return "top"
+        return "redirect:/reservation_check"
     }
 
     @GetMapping("/reservation_check")
@@ -85,12 +82,13 @@ class ReservationController (
             addAttribute("courseList",  reservationService.getCourse())
             addAttribute("tableList",  reservationService.getTable())
         }
-        return "ReservationEditing"
+        return "ReservationEdit"
     }
 
-    @PostMapping("/reservation_edit_check")
+    @PostMapping("/reservation_edit_conf")
     fun reservationEditCheck(
         model: Model,
+        request: HttpServletRequest,
         @Validated
         reservationForm: ReservationForm,
         bindingResult: BindingResult
@@ -100,16 +98,18 @@ class ReservationController (
             addAttribute("customerName", reservationForm.customerName)
             addAttribute("courseId", reservationForm.courseId)
             addAttribute("courseName", reservationService.getCourseName(reservationForm.courseId))
+            addAttribute("oldDateTime", request.getParameter("oldDateTime"))
             addAttribute("dateTime", reservationForm.dateTime)
             addAttribute("numOfPeople", reservationForm.numOfPeople)
             addAttribute("tableName", reservationForm.tableName)
         }
-        return "ReservationEditingCheck"
+        return "ReservationEditConf"
     }
 
     @PostMapping("reservation_edit_complete")
     fun reservationEditComplete(
-        @RequestAttribute employee: Employee,
+        @RequestAttribute
+        employee: Employee,
         request: HttpServletRequest,
         @Validated
         reservationForm: ReservationForm,
@@ -120,13 +120,14 @@ class ReservationController (
                 reservationForm.id ?: "",
                 reservationForm.customerName ?: "",
                 reservationForm.courseId ?: "",
+                request.getParameter("oldDateTime") ?: "",
                 reservationForm.dateTime ?: LocalDateTime.now(),
                 reservationForm.numOfPeople ?: 0,
                 employee.id ?: "",
                 reservationForm.tableName ?: ""
             )
         ) {
-            true -> "top"
+            true -> "redirect:/reservation_check"
             false -> "ReservationEditError"
         }
     }

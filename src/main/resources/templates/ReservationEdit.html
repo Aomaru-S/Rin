@@ -15,7 +15,7 @@
 <main>
     <h1>予約編集</h1>
     <div class="container">
-        <form action="#" th:action="@{reservation_edit_check}" method="post">
+        <form action="#" th:action="@{reservation_edit_conf}" method="post">
             氏名入力<input type="text" name="customerName" th:value="${customerName}" size="22"><br>
             コース名
             <label>
@@ -32,6 +32,7 @@
                 </select>
             </label><br>
             <input type="hidden" name="id" th:value="${id}">
+            <input type="hidden" name="oldDateTime" th:value="${dateTime}">
             <input type="submit" value="確認">
         </form>
     </div>
