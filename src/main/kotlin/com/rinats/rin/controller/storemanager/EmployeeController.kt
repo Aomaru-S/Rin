@@ -19,10 +19,17 @@ class EmployeeController(
 ) {
     @GetMapping("")
     fun index(
-        model: Model
+        model: Model,
+        @RequestParam(name = "is_retirement", required = false) _isRetirement: String? = "false",
+        @RequestParam(name = "is_tentative", required = false) _isTentative: String? = "false"
     ): String {
-        val employeeList = employeeService.getEmployeeList()
+        val isRetirement = _isRetirement?.toBooleanStrict() ?: false
+        val isTentative = _isTentative?.toBooleanStrict() ?: false
+
+        val employeeList = employeeService.getEmployeeList(isTentative, isRetirement)
         model.addAttribute("employeeList", employeeList)
+        model.addAttribute("isRetirement", isRetirement)
+        model.addAttribute("isTentative", isTentative)
         return "employee_list"
     }
 
@@ -70,14 +77,25 @@ class EmployeeController(
     }
 
     @GetMapping("/retirement")
-    fun retireEmployeeForm(): String {
+    fun retireEmployeeForm(
+        model: Model,
+        @RequestParam(name = "employee_id", required = false) employeeId: String?
+    ): String {
+        val employee = employeeService.getEmployee(employeeId, containRetirement = true)
+            ?: return "redirect:/employee?invalid_employee_id"
+        model.addAttribute("employee", employee)
         return "EmployeeRetirement"
     }
 
     @PostMapping("/retirement")
     fun retireEmployee(
-        model: Model
+        model: Model,
+        @RequestParam(name = "employee_id", required = false) employeeId: String?
     ): String {
+        val result = employeeService.retireEmployee(employeeId)
+        if (!result) {
+            return "redirect:/employee?invalid_employee_id"
+        }
         val message = CompleteMessage("従業員退職完了: Rin", "従業員の退職処理が完了しました。")
         model.addAttribute("message", message)
         return "complete"
@@ -131,6 +149,35 @@ class EmployeeController(
             return "redirect:/employee/update?invalid_address"
         }
         val message = CompleteMessage("従業員情報変更完了: Rin", "従業員情報が変更されました。")
+        model.addAttribute("message", message)
+        return "complete"
+    }
+
+    @GetMapping("/register")
+    fun registerEmployeeForm(
+        @RequestParam("employee_id")
+        employeeId: String?,
+        model: Model
+    ): String {
+        val employee = employeeService.getEmployee(
+            employeeId = employeeId,
+            containTentative = true
+        ) ?: return "redirect:/employee?error"
+        model.addAttribute("employee", employee)
+        return "register_employee"
+    }
+
+    @PostMapping("/register")
+    fun registerEmployee(
+        @RequestParam("employeeId")
+        employeeId: String?,
+        model: Model
+    ): String {
+        val result = employeeService.registerEmployee(employeeId)
+        if (!result) {
+            return "redirect:/employee/register?error"
+        }
+        val message = CompleteMessage("従業員本登録完了: Rin", "従業員が本登録されました。")
         model.addAttribute("message", message)
         return "complete"
     }

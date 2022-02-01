@@ -7,64 +7,35 @@ import com.rinats.rin.model.table.compositeId.ShiftTemplateId
 import com.rinats.rin.repository.ShiftTemplateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.annotation.Transactional
 
 
 @Service
 class ShiftTemplateService(
     @Autowired
-    private val templateRepository: ShiftTemplateRepository,
-    private val transactionManager: PlatformTransactionManager
+    private val templateRepository: ShiftTemplateRepository
 ) {
 
-    /*fun saveShiftTemplate(shiftTemplateFormList: ShiftTemplateFormList): Boolean {
-        shiftTemplateFormList.shiftTemplateList.forEach { shiftTemplateForm ->
-            val weeksHolidayList =
-                listOf("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "holiday")
-            weeksHolidayList.forEach {
-                save(it, shiftTemplateForm)
-            }
-        }
-        return true
-    }*/
-
-    /*fun save(weeksHoliday: String, shiftTemplateForm: ShiftTemplateForm): Boolean {
-        var template =
-            templateRepository.findById_RoleIdAndWeeksHolidayName(shiftTemplateForm.role ?: return false, weeksHoliday)
-                .orElse(null)
-        if (template == null) {
-            template = ShiftTemplate().also {
-                it.id = ShiftTemplateId().apply {
-                    roleId = shiftTemplateForm.role
-                }
-                it.weeksHolidayName = weeksHoliday
-                it.numOfPeople = get(weeksHoliday, shiftTemplateForm)
-            }
-            templateRepository.save(template)
-        } else {
-            template.numOfPeople = get(weeksHoliday, shiftTemplateForm)
-            templateRepository.save(template)
-        }
-        return true
-    }*/
-
-    fun saveShiftTemplate2(shiftTemplateFormList: ShiftTemplateFormList): Boolean {
+    fun saveShiftTemplate(shiftTemplateFormList: ShiftTemplateFormList): Boolean {
         val weeksHolidayList =
             listOf("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "holiday")
         shiftTemplateFormList.shiftTemplateList.forEach {
-            save2(weeksHolidayList, it)
+            save(weeksHolidayList, it)
         }
         return true
     }
 
     @Transactional
-    fun save2(weeksHolidayList: List<String>, shiftTemplateForm: ShiftTemplateForm): Boolean {
+    fun save(weeksHolidayList: List<String>, shiftTemplateForm: ShiftTemplateForm): Boolean {
         val test: MutableList<ShiftTemplate> = mutableListOf()
-        val test2    = templateRepository.findAll()
+        val test2 = templateRepository.findAll()
         weeksHolidayList.forEach { weeksHoliday ->
 //            var template2 = templateRepository.findById_RoleIdAndWeeksHolidayName(shiftTemplateForm.role!!, weeksHoliday).orElse(null)
-            var template2 = runCatching{ test2.single{ it.id?.roleId == shiftTemplateForm.role && it.id?.weeksHolidayName.equals(weeksHoliday) } }.getOrNull()
+            var template2 = runCatching {
+                test2.single {
+                    it.id?.roleId == shiftTemplateForm.role && it.id?.weeksHolidayName.equals(weeksHoliday)
+                }
+            }.getOrNull()
 
             if (template2 == null) {
                 template2 = ShiftTemplate().also {
@@ -96,5 +67,33 @@ class ShiftTemplateService(
             "holiday" -> shiftTemplateForm.holiday
             else -> return null
         }
+    }
+
+    fun getShiftTemplate(): List<ShiftTemplateForm>? {
+        val roleList = mutableSetOf<Int>()
+        templateRepository.findAll().forEach {
+            roleList.add(it.id?.roleId ?: throw IllegalArgumentException())
+        }
+        val shiftTemplateFormList = mutableListOf<ShiftTemplateForm>()
+        roleList.forEach { roleId ->
+            val shiftTemplateForm = ShiftTemplateForm().apply {
+                this.role = roleId
+            }
+            val tmp = templateRepository.findById_RoleId(roleId)
+            tmp.forEach {
+                when (it.id?.weeksHolidayName) {
+                    "sunday" -> shiftTemplateForm.sunday = it.numOfPeople ?: return null
+                    "monday" -> shiftTemplateForm.monday = it.numOfPeople ?: return null
+                    "tuesday" -> shiftTemplateForm.tuesday = it.numOfPeople ?: return null
+                    "wednesday" -> shiftTemplateForm.wednesday = it.numOfPeople ?: return null
+                    "thursday" -> shiftTemplateForm.thursday = it.numOfPeople ?: return null
+                    "friday" -> shiftTemplateForm.friday = it.numOfPeople ?: return null
+                    "saturday" -> shiftTemplateForm.saturday = it.numOfPeople ?: return null
+                    "holiday" -> shiftTemplateForm.holiday = it.numOfPeople ?: return null
+                }
+            }
+            shiftTemplateFormList.add(shiftTemplateForm)
+        }
+        return shiftTemplateFormList
     }
 }

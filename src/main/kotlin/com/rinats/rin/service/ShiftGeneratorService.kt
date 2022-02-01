@@ -1,6 +1,7 @@
 package com.rinats.rin.service
 
 import com.alias.kh.shiftgenerator.model.compositeKey.TentativeShiftDetailId
+import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.table.TentativeShift
 import com.rinats.rin.model.table.TentativeShiftData
@@ -22,7 +23,7 @@ class ShiftGeneratorService(
     private val shiftTemplateRepository: ShiftTemplateRepository,
     private val shiftHopeRepository: ShiftHopeRepository,
     private val totalSalaryRepository: TotalSalaryRepository,
-    private val settingRepository: SettingRepository,
+    private val settingsRepository: SettingsRepository,
 
     //出力先
     private val tentativeShiftRepository: TentativeShiftRepository,
@@ -38,7 +39,7 @@ class ShiftGeneratorService(
     //private val workingHours = 6
     //給与関係のテーブルがないので仮データ
     //private val taxable = 1000000 //100万円 課税対象額
-
+    @NonAuth
     fun shiftGenerator() {
         val calendar = Calendar.getInstance()
         calendar.timeZone = TimeZone.getTimeZone(ZoneId.systemDefault())
@@ -77,7 +78,7 @@ class ShiftGeneratorService(
 
         if (setSettingValueInDBService.isKeysNull()) setSettingValueInDBService.makeKeys()
 
-        val settingKeys = settingRepository.findAll()
+        val settingKeys = settingsRepository.findAll()
         val workingHours = Integer.parseInt(settingKeys.single { it.id == "working_hours" }.settingValue)
         val taxable = Integer.parseInt(settingKeys.single { it.id == "taxable" }.settingValue)
 

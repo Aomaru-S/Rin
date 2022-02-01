@@ -1,9 +1,7 @@
 package com.rinats.rin.controller.storemanager
 
-import com.rinats.rin.model.form.ShiftTemplateForm
 import com.rinats.rin.model.form.ShiftTemplateFormList
 import com.rinats.rin.model.other.CompleteMessage
-import com.rinats.rin.repository.ShiftTemplateRepository
 import com.rinats.rin.service.ShiftTemplateService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -31,6 +29,7 @@ class ShiftPlanController(
     fun getTemplate(
         model: Model
     ): String {
+        model.addAttribute("shiftTemplateFormList", shiftTemplateService.getShiftTemplate())
         return "shift_template"
     }
 
@@ -38,16 +37,9 @@ class ShiftPlanController(
     fun editShiftTemplateForm(
         model: Model
     ): String {
-        val shiftTemplateForm = ShiftTemplateForm(
-            1, 1, 1, 1, 1, 1, 1, 1, 1
-        )
-        val shiftTemplateForm2 = ShiftTemplateForm(
-            2, 2, 2, 2, 2, 2, 2, 2, 2
-        )
-        val list = listOf(shiftTemplateForm, shiftTemplateForm2)
-        val form = ShiftTemplateFormList()
-        form.shiftTemplateList = list
-        model.addAttribute("shiftTemplateFormList", form)
+        model.addAttribute("shiftTemplateFormList", ShiftTemplateFormList().also {
+            it.shiftTemplateList = shiftTemplateService.getShiftTemplate() ?: return "redirect:/template/edit?error"
+        })
         return "TemplateConfiguration"
     }
 
@@ -74,7 +66,7 @@ class ShiftPlanController(
         bindingResult: BindingResult,
         model: Model
     ): String {
-        shiftTemplateService.saveShiftTemplate2(shiftTemplateFormList)
+        shiftTemplateService.saveShiftTemplate(shiftTemplateFormList)
         val message = CompleteMessage("テンプレート変更完了: Rin", "シフトテンプレートが編集されました")
         model.addAttribute("message", message)
         return "complete"
