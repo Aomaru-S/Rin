@@ -1,6 +1,6 @@
 package com.rinats.rin.controller.storemanager
 
-import com.rinats.rin.model.form.AddEmployeeForm
+import com.rinats.rin.model.form.EmployeeForm
 import com.rinats.rin.model.form.UpdateEmployeeForm
 import com.rinats.rin.model.other.CompleteMessage
 import com.rinats.rin.service.EmployeeService
@@ -37,7 +37,8 @@ class EmployeeController(
     fun addEmployeeForm(
         model: Model
     ): String {
-        model.addAttribute("employeeForm", AddEmployeeForm())
+        model.addAttribute("addEmployeeForm", EmployeeForm())
+        model.addAttribute("roleList", employeeService.getRoleList())
         return "add_employee"
     }
 
@@ -45,13 +46,14 @@ class EmployeeController(
     fun addEmployeeConfirm(
         @Validated
         @ModelAttribute
-        addEmployeeForm: AddEmployeeForm,
+        addEmployeeForm: EmployeeForm,
         bindingResult: BindingResult,
         model: Model
     ): String {
         if (bindingResult.hasErrors()) {
             return "redirect:/employee/add?validation_error"
         }
+        println(addEmployeeForm)
         model.addAttribute("addEmployeeForm", addEmployeeForm)
         return "add_employee_confirm"
     }
@@ -60,7 +62,7 @@ class EmployeeController(
     fun addEmployee(
         @Validated
         @ModelAttribute
-        addEmployeeForm: AddEmployeeForm,
+        addEmployeeForm: EmployeeForm,
         bindingResult: BindingResult,
         model: Model
     ): String {
@@ -108,7 +110,7 @@ class EmployeeController(
         model: Model
     ): String {
         val employee = employeeService.getEmployee(employeeId) ?: return "redirect:/employee"
-        model.addAttribute("employeeForm", AddEmployeeForm(employee))
+        model.addAttribute("employeeForm", EmployeeForm(employee, employeeService.getEmployeeLaborList(employeeId)))
         model.addAttribute("employeeId", employeeId)
         return "update_employee"
     }

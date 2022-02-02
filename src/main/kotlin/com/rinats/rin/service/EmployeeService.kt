@@ -1,6 +1,6 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.form.AddEmployeeForm
+import com.rinats.rin.model.form.EmployeeForm
 import com.rinats.rin.model.form.UpdateEmployeeForm
 import com.rinats.rin.model.table.*
 import com.rinats.rin.model.table.compositeId.EmployeeLaborId
@@ -28,7 +28,7 @@ class EmployeeService(
     private val mailAddressAuthRepository: MailAddressAuthRepository
 ) {
     //    従業員仮登録処理
-    fun addTentativeEmployee(addEmployeeForm: AddEmployeeForm): Boolean {
+    fun addTentativeEmployee(addEmployeeForm: EmployeeForm): Boolean {
         val employeeId = getAndUpdateSequence().toString()
 
         val labor = EmployeeLabor()
@@ -145,7 +145,7 @@ class EmployeeService(
     }
 
     private fun sendMail(
-        addEmployeeForm: AddEmployeeForm,
+        addEmployeeForm: EmployeeForm,
         employeeId: String,
         password: String
     ) {
@@ -192,7 +192,7 @@ class EmployeeService(
         return true
     }
 
-    private fun createEmployeeTableFromForm(employeeId: String?, addEmployeeForm: AddEmployeeForm): Employee? {
+    private fun createEmployeeTableFromForm(employeeId: String?, addEmployeeForm: EmployeeForm): Employee? {
         return Employee().also {
             it.id = employeeId
             it.firstName = addEmployeeForm.firstName
@@ -228,5 +228,20 @@ class EmployeeService(
         employee.isTentative = false
         employeeRepository.save(employee)
         return true
+    }
+
+    fun getRoleList(containManager: Boolean = false): List<Role> {
+        return roleRepository.findAll().filter {
+            if (containManager) {
+                true
+            } else {
+                it.authority?.id == 1
+            }
+        }
+    }
+
+    fun getEmployeeLaborList(employeeId: String?): List<EmployeeLabor> {
+        employeeId ?: throw IllegalArgumentException("employeeId is null")
+        return employeeLaborRepository.findById_EmployeeId(employeeId)
     }
 }
