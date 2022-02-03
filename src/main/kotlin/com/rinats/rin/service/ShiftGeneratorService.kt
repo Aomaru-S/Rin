@@ -72,7 +72,8 @@ class ShiftGeneratorService(
             getHolidaysJpApiService.getHolidaysJpApi(calendar.get(Calendar.YEAR)) ?: throw NullPointerException("")
 
         //従業員と役職の連関エンティティ取得
-        val employeeLaborList = employeeLaborRepository.findAll()
+//        val employeeLaborList = employeeLaborRepository.findAll()
+        val employeeLaborList = employeeLaborRepository.findAll().filter { it.id?.roleId != 0 && it.id?.roleId != 2}
         val employeeList = employeeRepository.findAll()
         val templateList = shiftTemplateRepository.findAll()
 
@@ -131,7 +132,7 @@ class ShiftGeneratorService(
             medianMap.forEach loop1@{ (roleId, median) ->
                 val template = templateList.filter { it.id?.roleId == roleId }
                 val people = when (holidaysJpMap.containsKey(calendarLocalDate)) {
-                    true -> template.single { it.id?.weeksHolidayName == "HOLIDAY" }.numOfPeople
+                    true -> template.single { it.id?.weeksHolidayName == "holiday" }.numOfPeople
                     false -> when (calendar.get(Calendar.DAY_OF_WEEK)) {
                         Calendar.SUNDAY -> template.single { it.id?.weeksHolidayName.equals("sunday") }.numOfPeople
                         Calendar.MONDAY -> template.single { it.id?.weeksHolidayName.equals("monday") }.numOfPeople
