@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}">
     <title>労働力確認</title>
 </head>
 <body>
@@ -20,23 +21,21 @@
                 <th>名前</th>
                 <th>労働力</th>
             </tr>
-            <tr th:each="labor: ${laborList}">
-                <td>
-                    <span th:text="${labor}"></span>
-                    <span th:text="${labor.employee.firstName}"></span>
-                </td>
-                <td>
-                    <span th:text="${labor.level}"></span>
-                </td>
+            <tr th:each="labor, item: ${laborList}">
+                <td><span th:text="${name[item.count -1]}"></span></td>
+                <td><span th:text="${labor.labor}"></span></td>
                 <td>
                     <form action="#" th:action="@{labor_edit}" method="post">
-                        <input type="hidden" name="employeeId" th:value="${labor.employeeId}">
-                        <input type="hidden" name="level" th:value="${labor.level}">
+                        <input type="hidden" name="employeeId" th:value="${labor.id.employeeId}">
+                        <input type="hidden" name="roleId" th:value="${labor.id.roleId}">
+                        <input type="hidden" name="level" th:value="${labor.labor}">
                         <input type="submit" value="編集">
                     </form>
                 </td>
             </tr>
         </table>
+        <br>
+        <a th:href="@{/}">トップページに戻る</a>
     </div>
 </main>
 <footer>

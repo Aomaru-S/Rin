@@ -1,11 +1,13 @@
 package com.rinats.rin.service
 
+import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.table.EmployeeLabor
 import com.rinats.rin.model.table.compositeId.EmployeeLaborId
 import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.repository.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class LaborService(
@@ -18,8 +20,18 @@ class LaborService(
         return laborRepository.findAll()
     }
 
+    fun getName(laborList: List<EmployeeLabor>): MutableList<String>{
+        val employeeName: MutableList<String> = mutableListOf()
+        laborList.forEach() {
+            val employee = employeeRepository.findById(it.id?.employeeId ?: "")
+            employeeName.add(employee.get().lastName + " " + employee.get().firstName)
+        }
+        return employeeName
+    }
+
     fun getByName(employeeId: String): String {
         val employee = employeeRepository.findById(employeeId)
+        println(employee.get().lastName + " " + employee.get().firstName)
         return employee.get().lastName + " " + employee.get().firstName
     }
 
@@ -30,7 +42,7 @@ class LaborService(
         }
         val employeeLabor = EmployeeLabor()
         employeeLabor.id = laborId
-        employeeLabor.labor = 4
+        employeeLabor.labor = labor
         laborRepository.save(employeeLabor)
     }
 }
