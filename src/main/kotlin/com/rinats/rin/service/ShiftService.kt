@@ -6,6 +6,7 @@ import com.rinats.rin.repository.AuthInfoRepository
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.ShiftRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -17,7 +18,7 @@ class ShiftService(
     val authInfoRepository: AuthInfoRepository
 ) {
     fun getAllShift(year: Int, month: Int): ShiftResponse? {
-        val shifts = shiftRepository.findAll()
+        val shifts = shiftRepository.findAll(Sort.by(Sort.Direction.ASC, "date"))
         val days = ArrayList<ShiftDay>()
         shifts.forEach {
             val calendar = Calendar.getInstance()
