@@ -5,10 +5,9 @@ import com.rinats.rin.service.TentativeShiftService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import java.util.*
+import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/tentative_shift")
@@ -59,6 +58,21 @@ class TentativeShiftController(
         model.addAttribute("tentativeShiftList", tentativeShiftList)
         model.addAttribute("dayCount", dayCount)
         return "edit_tentative_shift"
+    }
+
+    @PostMapping("/edit")
+    fun editTentativeShiftConfirm(
+        model: Model,
+        request: HttpServletRequest
+    ): String {
+        val changes = request.parameterMap.filter {
+            it.key.contains("changeList")
+        }
+        val changeList = mutableListOf<String>()
+        changes.forEach {
+            val change = it.value
+        }
+        return "redirect:/tentative_shift"
     }
 
     @GetMapping("/submit")

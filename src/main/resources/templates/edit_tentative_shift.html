@@ -28,12 +28,14 @@
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
                     <td>
                         <input th:id="${shift.key} + '' + ${day}" type="checkbox" class="etsc">
-                        <label th:for="${shift.key} + '' + ${day}" onclick="change(this)" th:id="${shift.key} + '' + ${day} + 'label'"></label>
+                        <label th:for="${shift.key} + '' + ${day}" onclick="change(this)"
+                               th:id="${shift.key} + '' + ${day} + 'label'"></label>
                     </td>
                 </th:block>
             </tr>
             </tbody>
         </table>
+        <button onclick="submit()">変更確認</button>
     </div>
 </main>
 <footer>
@@ -41,9 +43,32 @@
 </footer>
 <script>
     const changeList = [];
+
     function change(e) {
         const forId = e.id;
-        alert(forId);
+        const id = forId.replace('label', '');
+        const checkbox = document.getElementById(id);
+        changeList.push(id + checkbox.checked);
+    }
+
+    function submit() {
+        const form = document.createElement('form');
+        document.querySelector('body').appendChild(form);
+        form.method = 'POST';
+        form.action = '/tentative_shift/edit';
+        let i = 0;
+        changeList.forEach(
+            (value) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'changeList[' + i + ']';
+                input.value = value;
+                form.appendChild(input);
+                console.log(input.name + ':' + input.value);
+                i++;
+            }
+        );
+        form.submit();
     }
 </script>
 </body>
