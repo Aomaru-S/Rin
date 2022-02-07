@@ -1,9 +1,10 @@
 package com.rinats.rin.service
 
-import com.alias.kh.shiftgenerator.model.compositeKey.TentativeShiftDetailId
+import com.rinats.rin.model.table.compositeId.TentativeShiftDetailId
+import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.table.TentativeShift
-import com.rinats.rin.model.table.TentativeShiftData
+import com.rinats.rin.model.other.TentativeShiftData
 import com.rinats.rin.model.table.TentativeShiftDetail
 import com.rinats.rin.model.table.compositeId.TentativeShiftId
 import com.rinats.rin.repository.*
@@ -22,7 +23,7 @@ class ShiftGeneratorService(
     private val shiftTemplateRepository: ShiftTemplateRepository,
     private val shiftHopeRepository: ShiftHopeRepository,
     private val totalSalaryRepository: TotalSalaryRepository,
-    private val settingRepository: SettingRepository,
+    private val settingsRepository: SettingsRepository,
 
     //出力先
     private val tentativeShiftRepository: TentativeShiftRepository,
@@ -38,7 +39,7 @@ class ShiftGeneratorService(
     //private val workingHours = 6
     //給与関係のテーブルがないので仮データ
     //private val taxable = 1000000 //100万円 課税対象額
-
+    @NonAuth
     fun shiftGenerator() {
         val calendar = Calendar.getInstance()
         calendar.timeZone = TimeZone.getTimeZone(ZoneId.systemDefault())
@@ -71,13 +72,14 @@ class ShiftGeneratorService(
             getHolidaysJpApiService.getHolidaysJpApi(calendar.get(Calendar.YEAR)) ?: throw NullPointerException("")
 
         //従業員と役職の連関エンティティ取得
-        val employeeLaborList = employeeLaborRepository.findAll()
+//        val employeeLaborList = employeeLaborRepository.findAll()
+        val employeeLaborList = employeeLaborRepository.findAll().filter { it.id?.roleId != 0 && it.id?.roleId != 2}
         val employeeList = employeeRepository.findAll()
         val templateList = shiftTemplateRepository.findAll()
 
         if (setSettingValueInDBService.isKeysNull()) setSettingValueInDBService.makeKeys()
 
-        val settingKeys = settingRepository.findAll()
+        val settingKeys = settingsRepository.findAll()
         val workingHours = Integer.parseInt(settingKeys.single { it.id == "working_hours" }.settingValue)
         val taxable = Integer.parseInt(settingKeys.single { it.id == "taxable" }.settingValue)
 
@@ -130,15 +132,15 @@ class ShiftGeneratorService(
             medianMap.forEach loop1@{ (roleId, median) ->
                 val template = templateList.filter { it.id?.roleId == roleId }
                 val people = when (holidaysJpMap.containsKey(calendarLocalDate)) {
-                    true -> template.single { it.weeksAndHolidayName == "HOLIDAY" }.numOfPeople
+                    true -> template.single { it.id?.weeksHolidayName == "holiday" }.numOfPeople
                     false -> when (calendar.get(Calendar.DAY_OF_WEEK)) {
-                        Calendar.SUNDAY -> template.single { it.id?.shiftTemplateId == Calendar.SUNDAY }.numOfPeople
-                        Calendar.MONDAY -> template.single { it.id?.shiftTemplateId == Calendar.MONDAY }.numOfPeople
-                        Calendar.TUESDAY -> template.single { it.id?.shiftTemplateId == Calendar.TUESDAY }.numOfPeople
-                        Calendar.WEDNESDAY -> template.single { it.id?.shiftTemplateId == Calendar.WEDNESDAY }.numOfPeople
-                        Calendar.THURSDAY -> template.single { it.id?.shiftTemplateId == Calendar.THURSDAY }.numOfPeople
-                        Calendar.FRIDAY -> template.single { it.id?.shiftTemplateId == Calendar.FRIDAY }.numOfPeople
-                        Calendar.SATURDAY -> template.single { it.id?.shiftTemplateId == Calendar.SATURDAY }.numOfPeople
+                        Calendar.SUNDAY -> template.single { it.id?.weeksHolidayName.equals("sunday") }.numOfPeople
+                        Calendar.MONDAY -> template.single { it.id?.weeksHolidayName.equals("monday") }.numOfPeople
+                        Calendar.TUESDAY -> template.single { it.id?.weeksHolidayName.equals("tuesday") }.numOfPeople
+                        Calendar.WEDNESDAY -> template.single { it.id?.weeksHolidayName.equals("wednesday") }.numOfPeople
+                        Calendar.THURSDAY -> template.single { it.id?.weeksHolidayName.equals("thursday") }.numOfPeople
+                        Calendar.FRIDAY -> template.single { it.id?.weeksHolidayName.equals("friday") }.numOfPeople
+                        Calendar.SATURDAY -> template.single { it.id?.weeksHolidayName.equals("saturday") }.numOfPeople
                         else -> throw IllegalArgumentException("unknown error!!!")
                     }
                 }!!
@@ -263,17 +265,18 @@ class ShiftGeneratorService(
 
     fun makeTentativeShiftPair(tentativeShiftData: TentativeShiftData): Pair<MutableList<TentativeShift>, TentativeShiftDetail> {
         val saveSiftList: MutableList<TentativeShift> = mutableListOf()
-        tentativeShiftData.employeeIdList.forEach {
-            val saveShiftId = TentativeShiftId(tentativeShiftData.shiftDate, it)
-            val saveShift = TentativeShift(saveShiftId, roleRepository.getById(tentativeShiftData.roleId))
-            saveSiftList.add(saveShift)
-        }
+        tentativeShiftData.apply {
+            tentativeShiftData.employeeIdList.forEach {
+                val saveShiftId = TentativeShiftId(shiftDate, it)
+                val saveShift = TentativeShift(saveShiftId, roleRepository.getById(roleId))
+                saveSiftList.add(saveShift)
+            }
 
-        val saveShiftDetailId = TentativeShiftDetailId(tentativeShiftData.shiftDate, tentativeShiftData.roleId)
-        val saveShiftDetail = TentativeShiftDetail(
-            saveShiftDetailId, tentativeShiftData.isLaborInsufficient, tentativeShiftData.isNumOfPeopleInsufficient
-        )
-        return saveSiftList to saveShiftDetail
+            val saveShiftDetailId = TentativeShiftDetailId(shiftDate, roleId)
+            val saveShiftDetail =
+                TentativeShiftDetail(saveShiftDetailId, isLaborInsufficient, isNumOfPeopleInsufficient)
+            return saveSiftList to saveShiftDetail
+        }
     }
 
     fun <T> callCombination(elementList: MutableList<T>, selected: Int): MutableList<MutableList<T>> {

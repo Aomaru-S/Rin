@@ -15,6 +15,30 @@
 <main>
     <h1>テンプレート確認</h1>
     <div class="container">
+        <table>
+            <tr>
+                <th>役割</th>
+                <th>日曜日</th>
+                <th>月曜日</th>
+                <th>火曜日</th>
+                <th>水曜日</th>
+                <th>木曜日</th>
+                <th>金曜日</th>
+                <th>土曜日</th>
+                <th>祝日前</th>
+            </tr>
+            <tr th:each="shiftTemplate : ${shiftTemplateFormList}">
+                <td th:text="${shiftTemplate.role}"></td>
+                <td th:text="${shiftTemplate.sunday}"></td>
+                <td th:text="${shiftTemplate.monday}"></td>
+                <td th:text="${shiftTemplate.tuesday}"></td>
+                <td th:text="${shiftTemplate.wednesday}"></td>
+                <td th:text="${shiftTemplate.thursday}"></td>
+                <td th:text="${shiftTemplate.friday}"></td>
+                <td th:text="${shiftTemplate.saturday}"></td>
+                <td th:text="${shiftTemplate.holiday}"></td>
+            </tr>
+        </table>
         <a th:href="@{/shift_plan/template/edit}">テンプレート設定</a>
     </div>
 </main>

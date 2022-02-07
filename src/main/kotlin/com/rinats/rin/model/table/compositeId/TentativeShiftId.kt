@@ -9,7 +9,7 @@ import javax.persistence.Embeddable
 
 @Embeddable
 open class TentativeShiftId(shiftDate: LocalDate, employeeId: String) : Serializable {
-    @Column(name = "shift_date", nullable = false)
+    @Column(name = "date", nullable = false)
     open var shiftDate: LocalDate? = shiftDate
 
     @Column(name = "employee_id", nullable = false, length = 6)

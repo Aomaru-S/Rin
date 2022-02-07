@@ -1,11 +1,12 @@
 package com.rinats.rin.model.form
 
 import com.rinats.rin.model.table.Employee
+import com.rinats.rin.model.table.EmployeeLabor
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import javax.validation.constraints.*
 
-data class AddEmployeeForm(
+data class EmployeeForm(
     @field:NotBlank
     @field:Size(max = 32)
     val firstName: String? = null,
@@ -26,15 +27,23 @@ data class AddEmployeeForm(
     @NotNull
     val genderId: Int? = null,
     @field:NotNull
-    val isTaxable: Boolean? = null
+    val isTaxable: Boolean? = null,
+    @field:NotNull
+    val responsiblePerson: MutableList<Int>? = mutableListOf(),
 ) {
-    constructor(employee: Employee) : this(
+    constructor(employee: Employee, laborList: List<EmployeeLabor>) : this(
         firstName = employee.firstName,
         lastName = employee.lastName,
         birthday = employee.birthday,
         hourlyWage = employee.hourlyWage,
         mailAddress = employee.mailAddress,
         genderId = employee.gender?.id,
-        isTaxable = employee.isTaxableOk
-    )
+        isTaxable = employee.isTaxableOk,
+    ) {
+        laborList.filter {
+            it.id?.employeeId == employee.id
+        }.forEach {
+            responsiblePerson?.add(it.id?.roleId ?: return)
+        }
+    }
 }

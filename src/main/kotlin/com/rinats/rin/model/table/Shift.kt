@@ -11,8 +11,8 @@ import javax.persistence.Table
 @IdClass(value = ShiftKey::class)
 data class Shift(
     @Id
-    val date: Date,
+    var date: Date,
     @Id
     @Column(name = "employee_id")
-    val employeeId: String
+    var employeeId: String
 ) : Serializable

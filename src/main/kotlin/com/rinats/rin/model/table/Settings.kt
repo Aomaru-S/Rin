@@ -6,15 +6,15 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "employee_setting")
-open class Setting(setting_key: String, setting_value: String, value_detail: String) {
+@Table(name = "settings")
+open class Settings {
     @Id
     @Column(name = "setting_key", nullable = false, length = 64)
-    open var id: String? = setting_key
+    open var id: String? = null
 
     @Column(name = "setting_value", nullable = false, length = 64)
-    open var settingValue: String? = setting_value
+    open var settingValue: String? = null
 
     @Column(name = "value_detail", nullable = false, length = 64)
-    open var valueDetail: String? = value_detail
+    open var valueDetail: String? = null
 }

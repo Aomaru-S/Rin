@@ -32,6 +32,9 @@ open class Employee {
     @Column(name = "is_tentative")
     open var isTentative: Boolean? = null
 
+    @Column(name = "is_retirement", nullable = false)
+    open var isRetirement: Boolean? = false
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "gender_id", nullable = false)
     open var gender: Gender? = null

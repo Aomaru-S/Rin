@@ -1,13 +1,11 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.table.EmployeeLabor
 import com.rinats.rin.model.table.compositeId.EmployeeLaborId
 import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.repository.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class LaborService(

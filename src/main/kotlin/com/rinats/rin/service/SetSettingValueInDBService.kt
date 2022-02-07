@@ -1,17 +1,27 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.table.Setting
-import com.rinats.rin.repository.SettingRepository
+import com.rinats.rin.model.table.Settings
+import com.rinats.rin.repository.SettingsRepository
 import org.springframework.stereotype.Service
 
 @Service
 class SetSettingValueInDBService(
-    private val settingRepository: SettingRepository
+    private val settingsRepository: SettingsRepository
 ) {
-    fun isKeysNull(): Boolean = settingRepository.findAll().isEmpty()
+    fun isKeysNull(): Boolean = settingsRepository.findAll().isEmpty()
 
     fun makeKeys() {
-        settingRepository.save(Setting("working_hours", "6", Int::class.java.name))
-        settingRepository.save(Setting("taxable", "1000000", Int::class.java.name))
+
+        settingsRepository.save(Settings().also {
+            it.id = "working_hours"
+            it.settingValue = "6"
+            it.valueDetail = Int::class.java.name
+        })
+
+        settingsRepository.save(Settings().also {
+            it.id = "taxable"
+            it.settingValue = "1000000"
+            it.valueDetail = Int::class.java.name
+        })
     }
 }

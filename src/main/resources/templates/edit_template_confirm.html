@@ -26,14 +26,16 @@
                 <p th:text="*{shiftTemplateList[__${st.index}__].thursday}"></p>
                 <p th:text="*{shiftTemplateList[__${st.index}__].friday}"></p>
                 <p th:text="*{shiftTemplateList[__${st.index}__].saturday}"></p>
+                <p th:text="*{shiftTemplateList[__${st.index}__].holiday}"></p>
                 <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].role}">
                 <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].sunday}">
-                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].monday}" >
-                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].tuesday}" >
-                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].wednesday}" >
-                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].thursday}" >
-                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].friday}" >
-                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].saturday}" >
+                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].monday}">
+                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].tuesday}">
+                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].wednesday}">
+                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].thursday}">
+                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].friday}">
+                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].saturday}">
+                <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].holiday}">
             </th:block>
             <input type="submit" value="確定">
         </form>

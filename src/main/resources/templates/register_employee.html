@@ -6,14 +6,14 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
-    <title>従業員退職</title>
+    <title>従業員本登録: Rin</title>
 </head>
 <body>
 <header>
     <a th:href="@{/}">Rin</a>
 </header>
 <main>
-    <h1>従業員退職</h1>
+    <h1>従業員本登録</h1>
     <div class="container">
         <p th:text="${employee.id}"></p>
         <p th:text="${employee.lastName} + ' ' + ${employee.firstName}"></p>
@@ -21,9 +21,9 @@
         <p th:text="${employee.hourlyWage}"></p>
         <p th:text="${employee.mailAddress}"></p>
         <p th:text="${employee.gender.getGenderName()}"></p>
-        <form action="#" th:action="@{/employee/retirement}" method="post">
-            <input type="hidden" th:value="${employee.id}" name="employee_id">
-            <input type="submit" value="退職">
+        <form action="#" th:action="@{/employee/register}" method="post">
+            <input type="hidden" th:value="${employee.id}" name="employeeId">
+            <input type="submit" value="本登録">
         </form>
     </div>
 </main>

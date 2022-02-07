@@ -1,4 +1,4 @@
-package com.alias.kh.shiftgenerator.model.compositeKey
+package com.rinats.rin.model.table.compositeId
 
 import org.hibernate.Hibernate
 import java.io.Serializable

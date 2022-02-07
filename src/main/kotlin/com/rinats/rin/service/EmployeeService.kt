@@ -1,6 +1,6 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.form.AddEmployeeForm
+import com.rinats.rin.model.form.EmployeeForm
 import com.rinats.rin.model.form.UpdateEmployeeForm
 import com.rinats.rin.model.table.*
 import com.rinats.rin.model.table.compositeId.EmployeeLaborId
@@ -28,7 +28,7 @@ class EmployeeService(
     private val mailAddressAuthRepository: MailAddressAuthRepository
 ) {
     //    従業員仮登録処理
-    fun addTentativeEmployee(addEmployeeForm: AddEmployeeForm): Boolean {
+    fun addTentativeEmployee(addEmployeeForm: EmployeeForm): Boolean {
         val employeeId = getAndUpdateSequence().toString()
 
         val labor = EmployeeLabor()
@@ -65,36 +65,35 @@ class EmployeeService(
         return true
     }
 
-    //    従業員本登録処理
-    fun definitiveRegistration(employeeId: String): Boolean {
-        /* val employee = employeeRepository.findById(employeeId).orElse(null) ?: return false
-         val roleList = arrayListOf<String>()
-         for (labor in employee.laborList) {
-             val roleId = labor.id?.roleId ?: continue
-             roleList.add(roleId)
-         }
-             employee.roleId = "2"
-             employeeRepository.save(employee)*/
-        return false
-    }
-
     //    従業員情報取得処理
-    fun getEmployee(employeeId: String?): Employee? {
-        return employeeRepository.findById(employeeId ?: return null).orElse(null)
+    fun getEmployee(
+        employeeId: String?,
+        containTentative: Boolean = false,
+        containRetirement: Boolean = false
+    ): Employee? {
+        val employee = employeeRepository.findById(employeeId ?: return null).orElse(null) ?: return null
+        if (!containTentative && employee.isTentative == true) return null
+        if (!containRetirement && employee.isRetirement == true) return null
+        return employee
     }
 
     //    従業員一覧取得処理
-    fun getEmployeeList(): List<Employee> {
-        return employeeRepository.findAll()
+    fun getEmployeeList(containTentative: Boolean? = false, containRetirement: Boolean? = false): List<Employee> {
+        return employeeRepository.findAll().filter {
+            if (containTentative == false && it.isTentative == true) return@filter false
+            if (containRetirement == false && it.isRetirement == true) return@filter false
+            true
+        }
     }
 
-    fun retireEmployee(employeeId: String): Boolean {
-        val employee = employeeRepository.findById(employeeId).orElse(null)
+    fun retireEmployee(employeeId: String?): Boolean {
+        val employee = employeeRepository.findById(employeeId ?: return false).orElse(null) ?: return false
         val retire = Retirement()
         retire.id = employeeId
         retire.date = Date().toInstant()
         retirementRepository.save(retire)
-        employeeRepository.deleteById(employeeId)
+        employee.isRetirement = true
+        employeeRepository.save(employee)
         return true
     }
 
@@ -146,7 +145,7 @@ class EmployeeService(
     }
 
     private fun sendMail(
-        addEmployeeForm: AddEmployeeForm,
+        addEmployeeForm: EmployeeForm,
         employeeId: String,
         password: String
     ) {
@@ -193,7 +192,7 @@ class EmployeeService(
         return true
     }
 
-    private fun createEmployeeTableFromForm(employeeId: String?, addEmployeeForm: AddEmployeeForm): Employee? {
+    private fun createEmployeeTableFromForm(employeeId: String?, addEmployeeForm: EmployeeForm): Employee? {
         return Employee().also {
             it.id = employeeId
             it.firstName = addEmployeeForm.firstName
@@ -218,8 +217,31 @@ class EmployeeService(
             it.isAndroidNotification = updateEmployeeForm.isAndroidNotification
             it.mailAddress = updateEmployeeForm.mailAddress
             it.isTentative = updateEmployeeForm.isTentative
-            it.gender = genderRepository.findById(updateEmployeeForm.genderId ?: return null).orElse(null) ?: return null
+            it.gender =
+                genderRepository.findById(updateEmployeeForm.genderId ?: return null).orElse(null) ?: return null
             it.isTaxableOk = updateEmployeeForm.isTaxable
         }
+    }
+
+    fun registerEmployee(employeeId: String?): Boolean {
+        val employee = getEmployee(employeeId, containTentative = true) ?: return false
+        employee.isTentative = false
+        employeeRepository.save(employee)
+        return true
+    }
+
+    fun getRoleList(containManager: Boolean = false): List<Role> {
+        return roleRepository.findAll().filter {
+            if (containManager) {
+                true
+            } else {
+                it.authority?.id == 1
+            }
+        }
+    }
+
+    fun getEmployeeLaborList(employeeId: String?): List<EmployeeLabor> {
+        employeeId ?: throw IllegalArgumentException("employeeId is null")
+        return employeeLaborRepository.findById_EmployeeId(employeeId)
     }
 }

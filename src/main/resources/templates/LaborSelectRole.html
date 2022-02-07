@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
+    <title>役職選択</title>
+</head>
+<body>
+<header>
+    <a th:href="@{/}">Rin</a>
+</header>
+<main>
+    <h1>役職選択</h1>
+    <div class="container">
+        <table>
+            <form action="#" th:action="@{labor_check}" method="post">
+<!--                <tr th:each="role: ${roleList}">-->
+                    <label>
+<!--                        <span th:text="${role.roleName}"></span>-->
+                        <span>hale</span>
+                        <input type="radio" name="role" value="1" checked>
+                    </label>
+<!--                </tr>-->
+                <input type="submit" value="編集">
+            </form>
+        </table>
+    </div>
+</main>
+<footer>
+    © 2022 www.rin-ats.com
+</footer>
+</body>
+</html>

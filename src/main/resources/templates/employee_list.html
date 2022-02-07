@@ -32,14 +32,28 @@
                 <td th:text="${employee.mailAddress}"></td>
                 <td th:text="${employee.gender.getGenderName()}"></td>
                 <td><a th:href="@{/employee/update(employee_id=${employee.id})}">編集</a></td>
-                <td><a th:href="@{/employee/retirement(employee_id=${employee.id})}">退職</a></td>
+                <td th:if="${!employee.isRetirement()}"><a th:href="@{/employee/retirement(employee_id=${employee.id})}">退職</a></td>
+                <td th:if="${employee.isTentative()}"><a th:href="@{/employee/register(employee_id=${employee.id})}">本登録</a></td>
             </tr>
         </table>
         <a th:href="@{/employee/add}">追加</a>
+        <div>
+            <label for="is_tentative" onclick="transitionScreen()">仮登録
+                <input type="checkbox" class="is_tentative" id="is_tentative" th:checked="${isTentative}"></label>
+            <label for="is_retirement" onclick="transitionScreen()">退職済み
+                <input type="checkbox" class="is_retirement" id="is_retirement" th:checked="${isRetirement}"></label>
+        </div>
     </div>
 </main>
 <footer>
     © 2022 www.rin-ats.com
 </footer>
+<script>
+    function transitionScreen() {
+        const isTentative = document.getElementById('is_tentative').checked;
+        const isRetirement = document.getElementById('is_retirement').checked;
+        location.href = '/employee?is_tentative=' + isTentative + '&is_retirement=' + isRetirement;
+    }
+</script>
 </body>
 </html>
