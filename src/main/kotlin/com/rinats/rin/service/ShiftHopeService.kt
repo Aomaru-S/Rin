@@ -1,9 +1,10 @@
 package com.rinats.rin.service
 
-import com.rinats.rin.model.table.ShiftHope
-import com.rinats.rin.model.table.compositeId.ShiftHopeId
 import com.rinats.rin.model.form.ShiftHopeForm
 import com.rinats.rin.model.response.ShiftHopeResponse
+import com.rinats.rin.model.table.ShiftHope
+import com.rinats.rin.model.table.compositeId.ShiftHopeId
+import com.rinats.rin.repository.EmployeeSer
 import com.rinats.rin.repository.ShiftHopeRepository
 import com.rinats.rin.util.DateUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,13 +14,20 @@ import java.sql.Date
 import java.text.ParseException
 import java.time.ZoneId
 import java.util.*
-import kotlin.collections.ArrayList
 
 @Service
 class ShiftHopeService(
     @Autowired
-    val shiftHopeRepository: ShiftHopeRepository
+    private val shiftHopeRepository: ShiftHopeRepository,
+    private val employeeRepository: EmployeeSer
 ) {
+    fun getAllShift(year: Int, month: Int): List<ShiftHope> {
+        return shiftHopeRepository.findAll().filter {
+            val shiftDat = it.id?.shiftDate ?: return@filter false
+            (shiftDat.year == year) && (shiftDat.monthValue == month)
+        }
+    }
+
     fun getShiftHope(employeeId: String, year: Int, month: Int): ShiftHopeResponse {
         val shiftHopes = shiftHopeRepository.findById_EmployeeId(employeeId)
         val days = ArrayList<Int>()
@@ -48,9 +56,10 @@ class ShiftHopeService(
                 return false
             }
 
+            val employee = employeeRepository.findById(employeeId).orElse(null) ?: throw IllegalStateException()
             val shiftHopeId = ShiftHopeId()
             shiftHopeId.shiftDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-            shiftHopeId.employeeId = employeeId
+            shiftHopeId.employee = employee
             val shiftHope = ShiftHope()
             shiftHope.id = shiftHopeId
             shiftHopeRepository.save(shiftHope)

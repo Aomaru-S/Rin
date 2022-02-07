@@ -6,44 +6,45 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
-    <title>仮シフト編集ボタン</title>
+    <title>仮シフト編集</title>
 </head>
 <body>
 <header>
     <a th:href="@{/}">Rin</a>
 </header>
 <main>
-<h1>仮シフト編集ボタン</h1>
+    <h1>仮シフト編集</h1>
     <div class="container">
-        <table>
+        <table th:if="${!tentativeShiftList.isEmpty()}">
+            <thead>
             <tr>
-                <th>日付入力</th>
-                <td>
-                    <label>
-                    <input type="date" name="example">
-                    </label>
-                </td>
+                <th>氏名</th>
+                <th th:each="day : ${#numbers.sequence(1, dayCount)}" th:text="${day}"></th>
             </tr>
-            <tr>
-                <th>従業員指名入力</th>
-                <td>
-                    <label>
-                    <input type="text" name="example">
-                    </label>
-                </td>
+            </thead>
+            <tbody>
+            <tr th:each="shift : ${tentativeShiftList}">
+                <td th:text="${shift.key}"></td>
+                <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
+                    <td>
+                        <input th:id="${shift.key} + '' + ${day}" type="checkbox" class="etsc">
+                        <label th:for="${shift.key} + '' + ${day}" onclick="change(this)" th:id="${shift.key} + '' + ${day} + 'label'"></label>
+                    </td>
+                </th:block>
             </tr>
-            <tr>
-                <th>
-                    <input type="button"
-                           onclick="location.href='TemporaryShiftEditCheck.html'"
-                           value="確認">
-                </th>
-            </tr>
+            </tbody>
         </table>
     </div>
 </main>
 <footer>
     © 2022 www.rin-ats.com
 </footer>
+<script>
+    const changeList = [];
+    function change(e) {
+        const forId = e.id;
+        alert(forId);
+    }
+</script>
 </body>
 </html>

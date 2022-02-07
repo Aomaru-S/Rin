@@ -3,7 +3,7 @@ package com.rinats.rin.service
 import com.rinats.rin.model.table.EmployeeLabor
 import com.rinats.rin.model.table.compositeId.EmployeeLaborId
 import com.rinats.rin.repository.EmployeeLaborRepository
-import com.rinats.rin.repository.EmployeeRepository
+import com.rinats.rin.repository.EmployeeSer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 class LaborService(
     @Autowired
     private val laborRepository: EmployeeLaborRepository,
-    private val employeeRepository: EmployeeRepository
+    private val employeeRepository: EmployeeSer
 ) {
 
     fun getLabor(): MutableList<EmployeeLabor> {

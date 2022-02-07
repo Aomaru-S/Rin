@@ -3,7 +3,7 @@ package com.rinats.rin.service
 import com.rinats.rin.model.response.Shift
 import com.rinats.rin.model.response.ShiftResponse
 import com.rinats.rin.repository.AuthInfoRepository
-import com.rinats.rin.repository.EmployeeRepository
+import com.rinats.rin.repository.EmployeeSer
 import com.rinats.rin.repository.ShiftRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -13,7 +13,7 @@ import java.util.*
 class ShiftService(
     @Autowired
     val shiftRepository: ShiftRepository,
-    val employeeRepository: EmployeeRepository,
+    val employeeRepository: EmployeeSer,
     val authInfoRepository: AuthInfoRepository
 ) {
     fun getAllShift(year: Int, month: Int): ShiftResponse? {

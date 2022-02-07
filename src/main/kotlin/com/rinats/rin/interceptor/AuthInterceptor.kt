@@ -7,7 +7,7 @@ import com.rinats.rin.annotation.TentativeEmployee
 import com.rinats.rin.model.table.AuthInfo
 import com.rinats.rin.model.table.Employee
 import com.rinats.rin.repository.AuthInfoRepository
-import com.rinats.rin.repository.EmployeeRepository
+import com.rinats.rin.repository.EmployeeSer
 import com.rinats.rin.service.EmployeeService
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.http.HttpMethod
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse
 
 class AuthInterceptor(
     private val authInfoRepository: AuthInfoRepository,
-    private val employeeRepository: EmployeeRepository,
+    private val employeeRepository: EmployeeSer,
     private val employeeService: EmployeeService
 ) : HandlerInterceptor {
 

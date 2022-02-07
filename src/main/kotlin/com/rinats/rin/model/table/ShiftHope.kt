@@ -1,13 +1,13 @@
 package com.rinats.rin.model.table
 
 import com.rinats.rin.model.table.compositeId.ShiftHopeId
-import javax.persistence.EmbeddedId
-import javax.persistence.Entity
+import java.io.Serializable
+import javax.persistence.*
 import javax.persistence.Table
 
 @Entity
 @Table(name = "shift_hope")
-open class ShiftHope {
+open class ShiftHope : Serializable {
     @EmbeddedId
     open var id: ShiftHopeId? = null
 }

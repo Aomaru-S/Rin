@@ -1,14 +1,14 @@
 package com.rinats.rin.service
 
 import com.rinats.rin.model.table.Employee
-import com.rinats.rin.repository.EmployeeRepository
+import com.rinats.rin.repository.EmployeeSer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class HourlyWageService(
     @Autowired
-    private val employeeRepository: EmployeeRepository
+    private val employeeRepository: EmployeeSer
 ) {
 
     fun getHourlyWage(): MutableList<Employee> {

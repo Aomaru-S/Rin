@@ -2,7 +2,7 @@ package com.rinats.rin
 
 import com.rinats.rin.interceptor.AuthInterceptor
 import com.rinats.rin.repository.AuthInfoRepository
-import com.rinats.rin.repository.EmployeeRepository
+import com.rinats.rin.repository.EmployeeSer
 import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class WebMvcConfig(
     @Autowired
     private val authInfoRepository: AuthInfoRepository,
-    private val employeeRepository: EmployeeRepository,
+    private val employeeRepository: EmployeeSer,
     private val employeeService: EmployeeService
 ) : WebMvcConfigurer{
     @Bean
