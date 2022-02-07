@@ -17,12 +17,13 @@
     <div class="container">
         <table>
             <form action="#" th:action="@{labor_check}" method="post">
-                <tr th:each="role: ${roleList}">
+<!--                <tr th:each="role: ${roleList}">-->
                     <label>
-                        <span th:text="${role.roleName}"></span>
-                        <input type="radio" name="role" th:value="${role.id}" checked>
+<!--                        <span th:text="${role.roleName}"></span>-->
+                        <span>hale</span>
+                        <input type="radio" name="role" value="1" checked>
                     </label>
-                </tr>
+<!--                </tr>-->
                 <input type="submit" value="編集">
             </form>
         </table>

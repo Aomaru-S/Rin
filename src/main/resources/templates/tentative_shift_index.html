@@ -15,12 +15,22 @@
 <main>
     <h1>仮シフト確認</h1>
     <div class="container">
+        <table>
+            <tr>
+                <th>日付</th>
+                <th>従業員ID</th>
+            </tr>
+            <tr th:block th:each="i : ${tentativeShiftList}">
+                <td th:text="${i.id.shiftDate}"></td>
+                <td th:text="${i.id.employeeId}"></td>
+            </tr>
+        </table>
         <input type="button"
                onclick="location.href='edit_tentative_shift.html'"
                value="仮シフト編集">
-        <input type="button"
-               onclick="location.href='TopPage.html'"
-               value="仮シフト確定">
+        <form action="#" th:action="@{/tentative_shift/submit}" method="post">
+            <input type="submit" value="仮シフト確定">
+        </form>
         <a th:href="@{/tentative_shift/edit}">仮シフト編集</a>
         <a th:href="@{/tentative_shift/submit}">シフト公開確認</a>
     </div>

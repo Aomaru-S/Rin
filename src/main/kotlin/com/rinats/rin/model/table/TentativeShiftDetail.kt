@@ -1,6 +1,6 @@
 package com.rinats.rin.model.table
 
-import com.alias.kh.shiftgenerator.model.compositeKey.TentativeShiftDetailId
+import com.rinats.rin.model.table.compositeId.TentativeShiftDetailId
 import javax.persistence.Column
 import javax.persistence.EmbeddedId
 import javax.persistence.Entity

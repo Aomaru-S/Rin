@@ -1,6 +1,6 @@
 package com.rinats.rin.service
 
-import com.alias.kh.shiftgenerator.model.compositeKey.TentativeShiftDetailId
+import com.rinats.rin.model.table.compositeId.TentativeShiftDetailId
 import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.table.Employee
 import com.rinats.rin.model.table.TentativeShift

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
@@ -20,7 +19,7 @@ class LaborController(
     private val roleService: RoleService,
     private val employeeService: EmployeeService
 ) {
-    @GetMapping("labor_select_role")
+    @GetMapping("labor_check")
     fun laborSelectRole(model: Model): String {
         model.addAttribute("roleList", roleService.getRoleList())
         return "LaborSelectRole"
@@ -66,11 +65,11 @@ class LaborController(
         employeeLevelForm.apply {
             return if (employeeId != null && roleId != null && level != null) {
                 laborService.levelUpdate(employeeId!!, roleId!!, level!!)
-                "top"
+                "store_manager_index"
             } else {
                 model.apply {
                     addAttribute("title", "parameter error")
-                    addAttribute("message","不正な入力値")
+                    addAttribute("message", "不正な入力値")
                 }
                 "error"
             }
