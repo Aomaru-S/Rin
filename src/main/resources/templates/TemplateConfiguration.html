@@ -48,25 +48,25 @@
             <th:block th:each="shiftTemplate, st : *{shiftTemplateList}">
                 <h2 th:text="${shiftTemplateFormList.shiftTemplateList[__${st.index}__].role}"></h2>
                 <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].role}">
-                <label>日
+                <label>日曜日
                     <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].sunday}">
                 </label><br>
-                <label>月
+                <label>月曜日
                     <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].monday}">
                 </label><br>
-                <label>火
+                <label>火曜日
                     <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].tuesday}">
                 </label><br>
-                <label>水
+                <label>水曜日
                     <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].wednesday}">
                 </label><br>
-                <label>木
+                <label>木曜日
                     <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].thursday}">
                 </label><br>
-                <label>金
+                <label>金曜日
                     <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].friday}">
                 </label><br>
-                <label>土
+                <label>土曜日
                     <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].saturday}">
                 </label><br>
                 <label>祝日前

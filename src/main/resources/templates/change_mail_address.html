@@ -18,10 +18,10 @@
         <form action="#" th:action="@{/auth_mail_address}" method="post" th:object="${changeMailAddressForm}">
             <label>新メールアドレス入力
                 <input type="email" th:field="*{mailAddress}" th:value="*{mailAddress}">
-            </label>
+            </label><br>
             <label>新メールアドレス確認
                 <input type="email">
-            </label>
+            </label><br>
             <input type="submit" value="確認メール送信">
         </form>
     </div>
