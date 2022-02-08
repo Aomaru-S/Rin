@@ -24,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="shift : ${shiftHopeList}">
+            <tr th:each="shift, item : ${shiftHopeList}">
                 <td th:text="${shift.key}"></td>
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
                     <td th:if="${shift.value.contains(day)}">〇</td>

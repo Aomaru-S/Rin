@@ -36,6 +36,7 @@ class ShiftController(
 
         val shiftResponse = shiftService.getAllShift(year, month)
         val map = mutableMapOf<String, MutableList<Int>>()
+        val name = mutableListOf<String>()
         shiftResponse?.days?.forEach {
             if (map.containsKey(it.employeeId)) {
                 map[it.employeeId]?.add(
@@ -44,6 +45,7 @@ class ShiftController(
             } else {
                 map[it.employeeId] = mutableListOf(it.day)
             }
+            name.add(it.firstName + it.lastName)
         }
 
         val prevNextYearMonth = PrevNextYearMonth(
@@ -58,6 +60,7 @@ class ShiftController(
         model.addAttribute("year", year)
         model.addAttribute("month", month)
         model.addAttribute("dayCount", dayCount)
+        model.addAttribute("name", name)
         return "ThisMonthShiftCheck"
     }
 }

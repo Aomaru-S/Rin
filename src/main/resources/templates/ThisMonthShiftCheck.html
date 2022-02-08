@@ -19,18 +19,14 @@
         <table th:if="${!map.isEmpty()}">
             <thead>
             <tr>
-                <th>日付</th>
-                <th>名前</th>
+                <th>従業員ID</th>
                 <th>氏名</th>
                 <th th:each="day : ${#numbers.sequence(1, dayCount)}" th:text="${day}"></th>
             </tr>
-            <tr th:block th:each="i : ${shifts.days}">
-                <td th:text="${i.day}"></td>
-                <td th:text="${i.lastName} + ${i.firstName}"></td>
-            </thead>
             <tbody>
-            <tr th:each="shift : ${map}">
+            <tr th:each="shift, item : ${map}">
                 <td th:text="${shift.key}"></td>
+                <td th:text="${name[item.count - 1]}"></td>
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
                     <td th:if="${shift.value.contains(day)}">〇</td>
                     <td th:if="!${shift.value.contains(day)}"></td>
