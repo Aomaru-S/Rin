@@ -3,7 +3,7 @@ package com.rinats.rin.service
 import com.rinats.rin.model.form.ChangePasswordForm
 import com.rinats.rin.model.table.ForgetPasswordAccessToken
 import com.rinats.rin.repository.AuthInfoRepository
-import com.rinats.rin.repository.EmployeeRepository
+import com.rinats.rin.repository.EmployeeSer
 import com.rinats.rin.repository.ForgetPasswordAccessTokenRepository
 import com.rinats.rin.util.AuthUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +16,7 @@ import java.util.*
 class AuthInfoService(
     @Autowired
     private val authInfoRepository: AuthInfoRepository,
-    private val employeeRepository: EmployeeRepository,
+    private val employeeRepository: EmployeeSer,
     private val forgetPasswordAccessTokenRepository: ForgetPasswordAccessTokenRepository,
     private val sender: MailSender
 ) {

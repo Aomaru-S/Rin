@@ -5,8 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://kit.fontawesome.com/11968b33ea.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}">
     <title>当月本シフト確認</title>
 </head>
 <body>
@@ -14,27 +14,40 @@
     <a th:href="@{/}">Rin</a>
 </header>
 <main>
-    <h1>当月本シフト確認</h1>
+    <h1 th:text="'シフト確認: ' + ${year} + '年' + ${month} + '月'"></h1>
     <div class="container">
-        <form action="#" th:action="@{/shift}" method="get">
-            <label>年
-                <input type="number" name="year">
-            </label>
-            <label>月
-                <input type="number" name="month">
-            </label>
-            <input type="submit" value="検索">
-        </form>
-        <table>
+        <table th:if="${!map.isEmpty()}">
+            <thead>
             <tr>
                 <th>日付</th>
                 <th>名前</th>
+                <th>氏名</th>
+                <th th:each="day : ${#numbers.sequence(1, dayCount)}" th:text="${day}"></th>
             </tr>
             <tr th:block th:each="i : ${shifts.days}">
                 <td th:text="${i.day}"></td>
                 <td th:text="${i.lastName} + ${i.firstName}"></td>
+            </thead>
+            <tbody>
+            <tr th:each="shift : ${map}">
+                <td th:text="${shift.key}"></td>
+                <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
+                    <td th:if="${shift.value.contains(day)}">〇</td>
+                    <td th:if="!${shift.value.contains(day)}"></td>
+                </th:block>
             </tr>
+            </tbody>
         </table>
+        <p th:if="${map.isEmpty()}">シフトが確定していません。</p>
+        <div class="prev-next">
+            <a th:href="@{/shift(year=${prevNext.prevYear}, month=${prevNext.prevMonth})}"><i
+                    class="fas fa-angle-left"></i>
+                <span th:text="${prevNext.prevMonth} + '月'"></span>
+            </a>
+            <a th:href="@{/shift(year=${prevNext.nextYear}, month=${prevNext.nextMonth})}">
+                <span th:text="${prevNext.nextMonth} + '月'"></span>
+                <i class="fas fa-angle-right"></i></a>
+        </div>
     </div>
 </main>
 <footer>

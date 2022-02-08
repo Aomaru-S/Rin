@@ -6,7 +6,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}">
     <title>仮シフト確認</title>
 </head>
 <body>
@@ -16,24 +15,32 @@
 <main>
     <h1>仮シフト確認</h1>
     <div class="container">
-        <table border="1">
+        <table th:if="${!tentativeShiftList.isEmpty()}">
+            <thead>
             <tr>
-                <th>日付</th>
-                <th>従業員ID</th>
+                <th>氏名</th>
+                <th th:each="day : ${#numbers.sequence(1, dayCount)}" th:text="${day}"></th>
             </tr>
-            <tr th:block th:each="i : ${tentativeShiftList}">
-                <td th:text="${i.id.shiftDate}"></td>
-                <td th:text="${i.id.employeeId}"></td>
+            </thead>
+            <tbody>
+            <tr th:each="shift : ${tentativeShiftList}">
+                <td th:text="${shift.key}"></td>
+                <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
+                    <td th:if="${shift.value.contains(day)}">〇</td>
+                    <td th:if="!${shift.value.contains(day)}"></td>
+                </th:block>
             </tr>
+            </tbody>
         </table>
-        <input type="button"
-               onclick="location.href='edit_tentative_shift.html'"
-               value="仮シフト編集">
-        <form action="#" th:action="@{/tentative_shift/submit}" method="post">
-            <input type="submit" value="仮シフト確定">
+        <p th:if="${tentativeShiftList.isEmpty()}">仮シフトがありません。</p>
+        <a th:href="@{/tentative_shift/edit}" th:if="${!tentativeShiftList.isEmpty()}">仮シフト編集</a>
+        <form action="#" th:action="@{/shift_generate}" method="post">
+            <input type="submit" value="シフト生成" th:if="${tentativeShiftList.isEmpty()}">
+            <input type="submit" value="シフト再生成" th:if="${!tentativeShiftList.isEmpty()}">
         </form>
-        <a th:href="@{/tentative_shift/edit}">仮シフト編集</a>
-        <a th:href="@{/tentative_shift/submit}">シフト公開確認</a>
+        <form action="#" th:action="@{/tentative_shift/submit}" method="post" th:if="${!tentativeShiftList.isEmpty()}">
+            <input type="submit" value="公開確認">
+        </form>
     </div>
 </main>
 <footer>

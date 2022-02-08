@@ -5,10 +5,9 @@ import com.rinats.rin.service.TentativeShiftService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import java.util.*
+import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/tentative_shift")
@@ -20,27 +19,60 @@ class TentativeShiftController(
     fun index(
         model: Model
     ): String {
-        val tentativeShiftList = tentativeShiftService.getTentativeShiftList()
-        val year = tentativeShiftList[0].id?.shiftDate?.year
-        val month = tentativeShiftList[0].id?.shiftDate?.month?.value
         val calendar = Calendar.getInstance()
-        calendar.isLenient = false
-        if (year != null && month != null) {
-            calendar.set(year, month - 1, 1)
+        val dayCount = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val tentativeShiftList = mutableMapOf<String, MutableList<Int>>()
+        tentativeShiftService.getTentativeShiftList().forEach {
+            if (tentativeShiftList.containsKey(it.id?.employee?.id ?: throw IllegalStateException())) {
+                tentativeShiftList[it.id?.employee?.id ?: throw IllegalStateException()]?.add(
+                    it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException()
+                )
+            } else {
+                tentativeShiftList[it.id?.employee?.id ?: throw IllegalStateException()] =
+                    mutableListOf(it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException())
+            }
         }
-        val beforeBlank = 7 - calendar.get(Calendar.DAY_OF_WEEK)
-        model.addAttribute("beforeBlank", beforeBlank)
-        val lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        calendar.set(Calendar.DAY_OF_MONTH, lastDay)
-        val afterBlank = 7 - calendar.get(Calendar.DAY_OF_WEEK)
-        model.addAttribute("afterBlank", afterBlank)
         model.addAttribute("tentativeShiftList", tentativeShiftList)
+        model.addAttribute("dayCount", dayCount)
         return "tentative_shift_index"
     }
 
     @GetMapping("/edit")
-    fun editTentativeShift(): String {
+    fun editTentativeShift(model: Model): String {
+        val calendar = Calendar.getInstance()
+        val dayCount = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val tentativeShiftList = mutableMapOf<String, MutableList<Int>>()
+        tentativeShiftService.getTentativeShiftList().forEach {
+            if (tentativeShiftList.containsKey(it.id?.employee?.id ?: throw IllegalStateException())) {
+                tentativeShiftList[it.id?.employee?.id ?: throw IllegalStateException()]?.add(
+                    it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException()
+                )
+            } else {
+                tentativeShiftList[it.id?.employee?.id ?: throw IllegalStateException()] =
+                    mutableListOf(it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException())
+            }
+        }
+        if (tentativeShiftList.isEmpty()) {
+            return "redirect:/tentative_shift"
+        }
+        model.addAttribute("tentativeShiftList", tentativeShiftList)
+        model.addAttribute("dayCount", dayCount)
         return "edit_tentative_shift"
+    }
+
+    @PostMapping("/edit")
+    fun editTentativeShiftConfirm(
+        model: Model,
+        request: HttpServletRequest
+    ): String {
+        val changes = request.parameterMap.filter {
+            it.key.contains("changeList")
+        }
+        val changeList = mutableListOf<String>()
+        changes.forEach {
+            val change = it.value
+        }
+        return "redirect:/tentative_shift"
     }
 
     @GetMapping("/submit")

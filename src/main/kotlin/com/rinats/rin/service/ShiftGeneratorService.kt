@@ -17,7 +17,7 @@ import java.util.*
 class ShiftGeneratorService(
     @Autowired
     //必要なデータ
-    private val employeeRepository: EmployeeRepository,
+    private val employeeService: EmployeeService,
     private val roleRepository: RoleRepository,
     private val employeeLaborRepository: EmployeeLaborRepository,
     private val shiftTemplateRepository: ShiftTemplateRepository,
@@ -74,7 +74,7 @@ class ShiftGeneratorService(
         //従業員と役職の連関エンティティ取得
 //        val employeeLaborList = employeeLaborRepository.findAll()
         val employeeLaborList = employeeLaborRepository.findAll().filter { it.id?.roleId != 0 && it.id?.roleId != 2}
-        val employeeList = employeeRepository.findAll()
+        val employeeList = employeeService.getEmployeeList()
         val templateList = shiftTemplateRepository.findAll()
 
         if (setSettingValueInDBService.isKeysNull()) setSettingValueInDBService.makeKeys()
@@ -114,7 +114,7 @@ class ShiftGeneratorService(
         }
 
         //シフト希望を日付ごとに
-        val shiftHopeMap = shiftHopeList.groupBy({ it.id?.shiftDate!! }, { it.id?.employeeId }).toSortedMap()
+        val shiftHopeMap = shiftHopeList.groupBy({ it.id?.shiftDate!! }, { it.id?.employee?.id }).toSortedMap()
 
         //仮シフト作成
         val employeeToSalaryMap: MutableMap<Employee, Int> = mutableMapOf()
@@ -222,7 +222,7 @@ class ShiftGeneratorService(
                 val fixedCombination: MutableList<String> = mutableListOf()
                 run run1@{
                     upTotalLaborList.forEach { combination ->
-                        if (combination.intersect(tempTentativeShiftList.groupBy { it.id?.employeeId }.keys)
+                        if (combination.intersect(tempTentativeShiftList.groupBy { it.id?.employee?.id }.keys)
                                 .isEmpty()
                         ) {
                             fixedCombination.addAll(combination)
@@ -267,7 +267,8 @@ class ShiftGeneratorService(
         val saveSiftList: MutableList<TentativeShift> = mutableListOf()
         tentativeShiftData.apply {
             tentativeShiftData.employeeIdList.forEach {
-                val saveShiftId = TentativeShiftId(shiftDate, it)
+                val employee = employeeService.getEmployee(it) ?: throw IllegalStateException("employee is null")
+                val saveShiftId = TentativeShiftId(shiftDate, employee)
                 val saveShift = TentativeShift(saveShiftId, roleRepository.getById(roleId))
                 saveSiftList.add(saveShift)
             }
