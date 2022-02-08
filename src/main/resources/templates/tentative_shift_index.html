@@ -34,7 +34,7 @@
         </table>
         <p th:if="${tentativeShiftList.isEmpty()}">仮シフトがありません。</p>
         <a th:href="@{/tentative_shift/edit}" th:if="${!tentativeShiftList.isEmpty()}">仮シフト編集</a>
-        <form action="#" th:action="@{/shift_generate}" method="post">
+        <form action="#" th:action="@{/tentative_shift/kari}" method="get">
             <input type="submit" value="シフト生成" th:if="${tentativeShiftList.isEmpty()}">
             <input type="submit" value="シフト再生成" th:if="${!tentativeShiftList.isEmpty()}">
         </form>

@@ -74,7 +74,7 @@ class ShiftGeneratorService(
         //従業員と役職の連関エンティティ取得
 //        val employeeLaborList = employeeLaborRepository.findAll()
         val employeeLaborList = employeeLaborRepository.findAll().filter { it.id?.roleId != 0 && it.id?.roleId != 2}
-        val employeeList = employeeService.getEmployeeList()
+        val employeeList = employeeService.getEmployeeList(containerManager = false)
         val templateList = shiftTemplateRepository.findAll()
 
         if (setSettingValueInDBService.isKeysNull()) setSettingValueInDBService.makeKeys()

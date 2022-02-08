@@ -5,7 +5,9 @@ import com.rinats.rin.service.TentativeShiftService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 
@@ -17,6 +19,18 @@ class TentativeShiftController(
 ) {
     @GetMapping("")
     fun index(
+        model: Model
+    ): String {
+        val calendar = Calendar.getInstance()
+        val dayCount = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val tentativeShiftList = mutableMapOf<String, MutableList<Int>>()
+        model.addAttribute("tentativeShiftList", tentativeShiftList)
+        model.addAttribute("dayCount", dayCount)
+        return "tentative_shift_index"
+    }
+
+    @GetMapping("/kari")
+    fun test(
         model: Model
     ): String {
         val calendar = Calendar.getInstance()

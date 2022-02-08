@@ -78,10 +78,19 @@ class EmployeeService(
     }
 
     //    従業員一覧取得処理
-    fun getEmployeeList(containTentative: Boolean? = false, containRetirement: Boolean? = false): List<Employee> {
+    fun getEmployeeList(
+        containTentative: Boolean? = false,
+        containRetirement: Boolean? = false,
+        containerManager: Boolean? = true
+    ): List<Employee> {
         return employeeRepository.findAll().filter {
             if (containTentative == false && it.isTentative == true) return@filter false
             if (containRetirement == false && it.isRetirement == true) return@filter false
+            val laborList = employeeLaborRepository.findAll().filter { employeeLabor ->
+                it.id == employeeLabor.id?.employeeId && (employeeLabor.id?.roleId == 0 || employeeLabor.id?.roleId == 2)
+            }
+            if (containerManager == true) return@filter true
+            if (containerManager == false && laborList.isNotEmpty()) return@filter false
             true
         }
     }
