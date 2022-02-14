@@ -18,7 +18,7 @@ import java.util.*
 class EmployeeService(
     @Autowired
     private val sequenceNumberRepository: SequenceNumberRepository,
-    private val employeeRepository: EmployeeSer,
+    private val employeeRepository: EmployeeRepository,
     private val authInfoRepository: AuthInfoRepository,
     private val retirementRepository: RetirementRepository,
     private val sender: MailSender,

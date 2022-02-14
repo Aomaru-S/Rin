@@ -15,7 +15,7 @@ class ShiftGeneratorController(
 
     @PostMapping("/shift_generate")
     fun shiftGenerator(): String {
-//        shiftGeneratorService.shiftGenerator()
+        shiftGeneratorService.shiftGenerator()
         return "redirect:/tentative_shift"
     }
 

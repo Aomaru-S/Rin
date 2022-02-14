@@ -1,6 +1,7 @@
 package com.rinats.rin.controller.storemanager
 
 import com.rinats.rin.model.other.CompleteMessage
+import com.rinats.rin.service.ShiftGeneratorService
 import com.rinats.rin.service.TentativeShiftService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -15,7 +16,8 @@ import javax.servlet.http.HttpServletRequest
 @RequestMapping("/tentative_shift")
 class TentativeShiftController(
     @Autowired
-    private val tentativeShiftService: TentativeShiftService
+    private val tentativeShiftService: TentativeShiftService,
+    private val shiftGeneratorService: ShiftGeneratorService
 ) {
     @GetMapping("")
     fun index(
