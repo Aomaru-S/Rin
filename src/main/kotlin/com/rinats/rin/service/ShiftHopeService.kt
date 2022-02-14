@@ -4,7 +4,7 @@ import com.rinats.rin.model.form.ShiftHopeForm
 import com.rinats.rin.model.response.ShiftHopeResponse
 import com.rinats.rin.model.table.ShiftHope
 import com.rinats.rin.model.table.compositeId.ShiftHopeId
-import com.rinats.rin.repository.EmployeeSer
+import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.ShiftHopeRepository
 import com.rinats.rin.util.DateUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +19,7 @@ import java.util.*
 class ShiftHopeService(
     @Autowired
     private val shiftHopeRepository: ShiftHopeRepository,
-    private val employeeRepository: EmployeeSer
+    private val employeeRepository: EmployeeRepository
 ) {
     fun getAllShift(year: Int, month: Int): List<ShiftHope> {
         return shiftHopeRepository.findAll().filter {

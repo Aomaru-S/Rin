@@ -1,6 +1,7 @@
 package com.rinats.rin.controller.storemanager
 
 import com.rinats.rin.model.other.PrevNextYearMonth
+import com.rinats.rin.model.table.Employee
 import com.rinats.rin.service.ShiftHopeService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -34,14 +35,14 @@ class ShiftHopeController(
         }
         val dayCount = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        val shiftHopeList = mutableMapOf<String, MutableList<Int>>()
+        val shiftHopeMap = mutableMapOf<Employee, MutableList<Int>>()
         shiftHopeService.getAllShift(year, month).forEach {
-            if (shiftHopeList.containsKey(it.id?.employee?.id ?: throw IllegalStateException())) {
-                shiftHopeList[it.id?.employee?.id ?: throw IllegalStateException()]?.add(
+            if (shiftHopeMap.containsKey(it.id?.employee ?: throw IllegalStateException())) {
+                shiftHopeMap[it.id?.employee ?: throw IllegalStateException()]?.add(
                     it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException()
                 )
             } else {
-                shiftHopeList[it.id?.employee?.id ?: throw IllegalStateException()] =
+                shiftHopeMap[it.id?.employee ?: throw IllegalStateException()] =
                     mutableListOf(it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException())
             }
         }
@@ -54,7 +55,7 @@ class ShiftHopeController(
         )
 
         model.addAttribute("prevNext", prevNextYearMonth)
-        model.addAttribute("shiftHopeList", shiftHopeList)
+        model.addAttribute("shiftHopeList", shiftHopeMap)
         model.addAttribute("year", year)
         model.addAttribute("month", month)
         model.addAttribute("dayCount", dayCount)

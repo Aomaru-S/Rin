@@ -74,7 +74,7 @@ class ShiftGeneratorService(
         //従業員と役職の連関エンティティ取得
 //        val employeeLaborList = employeeLaborRepository.findAll()
         val employeeLaborList = employeeLaborRepository.findAll().filter { it.id?.roleId != 0 && it.id?.roleId != 2}
-        val employeeList = employeeService.getEmployeeList()
+        val employeeList = employeeService.getEmployeeList(containerManager = false)
         val templateList = shiftTemplateRepository.findAll()
 
         if (setSettingValueInDBService.isKeysNull()) setSettingValueInDBService.makeKeys()
@@ -180,8 +180,11 @@ class ShiftGeneratorService(
                 combinationList.forEach loop2@{ combination ->
                     var labor = 0
                     combination.forEach loop3@{ employeeId ->
-                        val employee = employeeList.single { it.id == employeeId }
-                        if (employee.isTaxableOk!!) {
+//                        val employee = employeeList.single { it.id == employeeId }
+//                        val employee = employeeList.singleOrNull { it.id == employeeId }
+                        val employee = employeeList.singleOrNull { it.id == employeeId } ?: return@loop3
+//                        if (employee.isTaxableOk!!) {
+                        if (employee.isTaxableOk == true) {
                             labor += roleIdToEmployeeLaborListMap.getValue(roleId)
                                 .single { employeeId == it.id?.employeeId }.labor!!
                             return@loop3
@@ -267,7 +270,8 @@ class ShiftGeneratorService(
         val saveSiftList: MutableList<TentativeShift> = mutableListOf()
         tentativeShiftData.apply {
             tentativeShiftData.employeeIdList.forEach {
-                val employee = employeeService.getEmployee(it) ?: throw IllegalStateException("employee is null")
+//                val employee = employeeService.getEmployee(it) ?: throw IllegalStateException("employee is null")
+                val employee = employeeService.getEmployee(it) ?: return@forEach
                 val saveShiftId = TentativeShiftId(shiftDate, employee)
                 val saveShift = TentativeShift(saveShiftId, roleRepository.getById(roleId))
                 saveSiftList.add(saveShift)

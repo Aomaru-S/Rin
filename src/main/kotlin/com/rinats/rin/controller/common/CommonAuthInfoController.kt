@@ -2,7 +2,7 @@ package com.rinats.rin.controller.common
 
 import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.form.ForgetPasswordForm
-import com.rinats.rin.repository.EmployeeSer
+import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.repository.ForgetPasswordAccessTokenRepository
 import com.rinats.rin.service.AuthInfoService
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +22,7 @@ class CommonAuthInfoController(
     @Autowired
     private val authInfoService: AuthInfoService,
     private val forgetPasswordAccessTokenRepository: ForgetPasswordAccessTokenRepository,
-    private val employeeRepository: EmployeeSer
+    private val employeeRepository: EmployeeRepository
 ) {
     @NonAuth
     @GetMapping("/forget_password")
