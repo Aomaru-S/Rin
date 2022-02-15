@@ -15,7 +15,7 @@
 <main>
     <h1>従業員登録</h1>
     <div class="container">
-        <form action="#" th:action="@{/employee/add_confirm}" th:object="${addEmployeeForm}" method="get">
+        <form action="#" th:action="@{/employee/add_confirm}" th:object="${addEmployeeForm}" method="post">
             <label>姓
                 <input type="text" th:field="*{lastName}">
             </label>

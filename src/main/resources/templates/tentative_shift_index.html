@@ -24,7 +24,7 @@
             </thead>
             <tbody>
             <tr th:each="shift : ${tentativeShiftList}">
-                <td th:text="${shift.key}"></td>
+                <td th:text="${shift.key.lastName} + ${shift.key.firstName}"></td>
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
                     <td th:if="${shift.value.contains(day)}">〇</td>
                     <td th:if="!${shift.value.contains(day)}"></td>

@@ -1,6 +1,8 @@
 package com.rinats.rin.controller.storemanager
 
 import com.rinats.rin.model.other.CompleteMessage
+import com.rinats.rin.model.table.Employee
+import com.rinats.rin.service.EmployeeService
 import com.rinats.rin.service.ShiftGeneratorService
 import com.rinats.rin.service.TentativeShiftService
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,30 +27,15 @@ class TentativeShiftController(
     ): String {
         val calendar = Calendar.getInstance()
         val dayCount = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        val tentativeShiftList = mutableMapOf<String, MutableList<Int>>()
-        model.addAttribute("tentativeShiftList", tentativeShiftList)
-        model.addAttribute("dayCount", dayCount)
-        return "tentative_shift_index"
-    }
-
-    @GetMapping("/kari")
-    fun test(
-        model: Model
-    ): String {
-        val calendar = Calendar.getInstance()
-        val dayCount = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        val tentativeShiftList = mutableMapOf<String, MutableList<Int>>()
+        val tentativeShiftMap = mutableMapOf<Employee, MutableList<Int>>()
         tentativeShiftService.getTentativeShiftList().forEach {
-            if (tentativeShiftList.containsKey(it.id?.employee?.id ?: throw IllegalStateException())) {
-                tentativeShiftList[it.id?.employee?.id ?: throw IllegalStateException()]?.add(
-                    it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException()
-                )
+            if (tentativeShiftMap.containsKey(it.id?.employee)) {
+                tentativeShiftMap[it.id?.employee]?.add(it.id?.shiftDate!!.dayOfMonth)
             } else {
-                tentativeShiftList[it.id?.employee?.id ?: throw IllegalStateException()] =
-                    mutableListOf(it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException())
+                tentativeShiftMap[it.id?.employee!!] = mutableListOf(it.id?.shiftDate!!.dayOfMonth)
             }
         }
-        model.addAttribute("tentativeShiftList", tentativeShiftList)
+        model.addAttribute("tentativeShiftList", tentativeShiftMap)
         model.addAttribute("dayCount", dayCount)
         return "tentative_shift_index"
     }

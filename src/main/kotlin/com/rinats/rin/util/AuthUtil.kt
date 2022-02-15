@@ -17,7 +17,9 @@ class AuthUtil {
 
         fun generatePassword(): String {
             val generator = PasswordGenerator()
-            return generator.generatePassword(8, rules)
+            val password = generator.generatePassword(8, rules)
+            println(password)
+            return password
         }
 
         fun generateSalt(): String {
