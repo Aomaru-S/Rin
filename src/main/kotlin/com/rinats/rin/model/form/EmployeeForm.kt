@@ -29,7 +29,7 @@ data class EmployeeForm(
     @field:NotNull
     val isTaxable: Boolean? = null,
     @field:NotNull
-    val responsiblePerson: MutableList<Int>? = mutableListOf(),
+    val responsiblePerson: MutableList<Int>? = mutableListOf()
 ) {
     constructor(employee: Employee, laborList: List<EmployeeLabor>) : this(
         firstName = employee.firstName,

@@ -15,7 +15,7 @@
 <main>
     <h1>従業員登録</h1>
     <div class="container">
-        <form action="#" th:action="@{/employee/add_confirm}" th:object="${addEmployeeForm}" method="post">
+        <form action="#" th:action="@{/employee/add_confirm}" th:object="${addEmployeeForm}" method="get">
             <label>姓
                 <input type="text" th:field="*{lastName}">
             </label>
@@ -32,14 +32,14 @@
                 <input type="email" th:field="*{mailAddress}">
             </label><br>
             <label>性別
-                <input type="radio" th:field="*{genderId}" value="0">男性
+                <input type="radio" th:field="*{genderId}" value="0" checked>男性
                 <input type="radio" th:field="*{genderId}" value="1">女性
             </label><br>
             <label>源泉徴収対象
                 <input type="checkbox" th:field="*{isTaxable}">
             </label><br>
             <label th:each="role, st : ${roleList}">
-                [[${role.getRoleName()}]]
+                <span th:text="${role.getRoleName()}"></span>
                 <input type="checkbox" th:value="${role.id}"><br>
             </label>
             <input type="submit" value="確認">

@@ -19,7 +19,6 @@ class TopPageController(
         @RequestAttribute
         employee: Employee
     ): String {
-        println("forwardIndex")
         return when (employeeService.getAuthority(employee.id ?: return "redirect:/login")) {
             0 -> "store_manager_index"
             1 -> "part_time_job_index"
