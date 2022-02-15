@@ -38,10 +38,6 @@
             <label>源泉徴収対象
                 <input type="checkbox" th:field="*{isTaxable}">
             </label><br>
-            <label th:each="role, st : ${roleList}">
-                <span th:text="${role.getRoleName()}"></span>
-                <input type="checkbox" th:value="${role.id}"><br>
-            </label>
             <input type="submit" value="確認">
         </form>
     </div>
