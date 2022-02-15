@@ -66,7 +66,11 @@ class ShiftGeneratorService(
         calendar.set(Calendar.DATE, --date)
         val lastDate = calendar.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 
-        val shiftHopeList = shiftHopeRepository.findById_ShiftDateBetween(startDate, lastDate)
+        val shiftHopeList = shiftHopeRepository.findById_ShiftDateBetween(startDate, lastDate).filter {
+            if (it.id?.employee?.isTentative == true) return@filter false
+            if (it.id?.employee?.isRetirement == true) return@filter false
+            true
+        }
         val totalSalaryList = totalSalaryRepository.findAll().filter { calendar.get(Calendar.YEAR) == it.id?.year }
         val holidaysJpMap =
             getHolidaysJpApiService.getHolidaysJpApi(calendar.get(Calendar.YEAR)) ?: throw NullPointerException("")

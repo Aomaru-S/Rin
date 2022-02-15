@@ -4,6 +4,7 @@ import com.rinats.rin.model.form.EmployeeForm
 import com.rinats.rin.model.form.UpdateEmployeeForm
 import com.rinats.rin.model.table.*
 import com.rinats.rin.model.table.compositeId.EmployeeLaborId
+import com.rinats.rin.model.table.compositeId.TotalSalaryId
 import com.rinats.rin.repository.*
 import com.rinats.rin.util.AuthUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +12,9 @@ import org.springframework.mail.MailException
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.time.LocalDate
 import java.util.*
 
 @Service
@@ -25,21 +28,23 @@ class EmployeeService(
     private val employeeLaborRepository: EmployeeLaborRepository,
     private val roleRepository: RoleRepository,
     private val genderRepository: GenderRepository,
-    private val mailAddressAuthRepository: MailAddressAuthRepository
+    private val mailAddressAuthRepository: MailAddressAuthRepository,
+    private val totalSalaryRepository: TotalSalaryRepository
 ) {
     //    従業員仮登録処理
+    @Transactional
     fun addTentativeEmployee(addEmployeeForm: EmployeeForm): Boolean {
         val employeeId = getAndUpdateSequence().toString()
 
         val labor = EmployeeLabor()
         val employeeLaborId = EmployeeLaborId()
         employeeLaborId.employeeId = employeeId
-        employeeLaborId.roleId = 2
+        employeeLaborId.roleId = 1
         labor.id = employeeLaborId
-        labor.labor = 2
+        labor.labor = 1
         val laborList = arrayListOf<EmployeeLabor>()
         laborList.add(labor)
-        val employee = createEmployeeTableFromForm(employeeId, addEmployeeForm)
+        val employee = createEmployeeTableFromForm(employeeId, addEmployeeForm) ?: return false
 
         val date = Date().apply {
             time = 0
@@ -61,7 +66,17 @@ class EmployeeService(
             return false
         }
         employeeRepository.save(employee ?: return false)
+        employeeLaborRepository.saveAll(laborList)
         authInfoRepository.save(authInfo)
+        totalSalaryRepository.save(TotalSalary().also {
+//            it.id?.employeeId = employeeId
+//            it.id?.year = LocalDate.now().year
+            it.id = TotalSalaryId().also { id ->
+                id.employeeId = employeeId
+                id.year = LocalDate.now().year
+            }
+            it.salary = 0
+        })
         return true
     }
 

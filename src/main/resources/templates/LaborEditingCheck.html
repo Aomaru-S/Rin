@@ -11,6 +11,84 @@
 <body>
 <header>
     <a th:href="@{/}">Rin</a>
+
+    <nav>
+        <details>
+            <summary>従業員</summary>
+            <div class="links-container">
+                <div class="links">
+                    <a th:href="@{/employee}">
+                        従業員一覧
+                    </a>
+                    <a th:href="@{/labor_check}">
+                        労働力確認/編集
+                    </a>
+                    <a th:href="@{/hourly_wage_check}">
+                        時給設定
+                    </a>
+                </div>
+            </div>
+        </details>
+        <details>
+            <summary>予約</summary>
+            <div class="links-container">
+                <div class="links">
+                    <a th:href="@{/reservation_registration}">
+                        予約登録
+                    </a>
+                    <a th:href="@{/reservation_check}">
+                        予約確認/編集
+                    </a>
+                </div>
+            </div>
+        </details>
+        <details>
+            <summary>テーブル</summary>
+            <div class="links-container">
+                <div class="links">
+                    <a th:href="@{/table_registration}">
+                        テーブル登録
+                    </a>
+                    <a th:href="@{/table_check}">
+                        テーブル確認/編集
+                    </a>
+                </div>
+            </div>
+        </details>
+        <details>
+            <summary>コース</summary>
+            <div class="links-container">
+                <div class="links">
+                    <a th:href="@{/course_registration}">
+                        コース登録
+                    </a>
+                    <a th:href="@{/course_check}">
+                        コース確認/編集
+                    </a>
+                </div>
+            </div>
+        </details>
+        <details>
+            <summary>シフト</summary>
+            <div class="links-container">
+                <div class="links">
+                    <a th:href="@{/shift_hope}">
+                        提出済みシフト確認
+                    </a>
+                    <a th:href="@{/tentative_shift}">
+                        仮シフト
+                    </a>
+                    <a th:href="@{/shift}">
+                        当月本シフト確認
+                    </a>
+                    <a th:href="@{/shift_plan}">
+                        シフト計画設定
+                    </a>
+                </div>
+            </div>
+        </details>
+        <a th:href="@{/setting}">設定</a>
+    </nav>
 </header>
 <main>
     <h1>労働力編集確認</h1>

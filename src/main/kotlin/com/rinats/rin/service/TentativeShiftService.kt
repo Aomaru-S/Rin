@@ -29,4 +29,8 @@ class TentativeShiftService(
             shiftRepository.save(shift)
         }
     }
+
+    fun deleteAll() {
+        tentativeShiftRepository.deleteAll()
+    }
 }
