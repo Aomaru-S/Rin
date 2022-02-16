@@ -91,13 +91,16 @@
     </nav>
 </header>
 <main>
-    <h1>仮シフト確認</h1>
+    <h1>仮シフト確認 [[${year}]] [[${month}]]月</h1>
     <div class="container">
         <table th:if="${!tentativeShiftList.isEmpty()}">
             <thead>
             <tr>
                 <th>氏名</th>
-                <th th:each="day : ${#numbers.sequence(1, dayCount)}" th:text="${day}"></th>
+                <th th:each="day : ${#numbers.sequence(1, dayCount)}">
+                    [[${day}]]<br>
+                    ([[${dayOfWeekMap[day % 7 + 1]}]])
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -111,7 +114,6 @@
             </tbody>
         </table>
         <p th:if="${tentativeShiftList.isEmpty()}">仮シフトがありません。</p>
-<!--        <a th:href="@{/tentative_shift/edit}" th:if="${!tentativeShiftList.isEmpty()}">仮シフト編集</a>-->
         <form action="#" th:action="@{/shift_generate}" method="post">
             <input type="submit" value="シフト生成" th:if="${tentativeShiftList.isEmpty()}">
         </form>
