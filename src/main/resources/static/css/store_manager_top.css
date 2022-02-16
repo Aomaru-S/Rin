@@ -1,7 +1,15 @@
-input[type=checkbox]:checked ~ div {
-    background-color: red;
+input[type=radio]:checked + .category {
+    display: block;
 }
 
 .category {
-    background-color: blue;
+    display: none;
+}
+
+.container > input[type=radio] {
+    display: none;
+}
+
+.category-selected {
+    background-color: #27282c;
 }
