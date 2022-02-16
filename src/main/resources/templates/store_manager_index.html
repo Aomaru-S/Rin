@@ -132,24 +132,33 @@
     © 2022 www.rin-ats.com
 </footer>
 <script>
-const employeeLabel = document.querySelector('#employee_label');
-const reservationLabel = document.querySelector('#reservation_label');
-const tableLabel = document.querySelector('#table_label');
-const courseLabel = document.querySelector('#course_label');
-const shiftLabel = document.querySelector('#shift_label');
+    const employeeLabel = document.querySelector('#employee_label');
+    const reservationLabel = document.querySelector('#reservation_label');
+    const tableLabel = document.querySelector('#table_label');
+    const courseLabel = document.querySelector('#course_label');
+    const shiftLabel = document.querySelector('#shift_label');
 
-employeeLabel.addEventListener('click', () => {
-    clear()
+    employeeLabel.addEventListener('click', {id: 'employee_label', handleEvent: select});
+    reservationLabel.addEventListener('click', {id: 'reservation_label', handleEvent: select});
+    tableLabel.addEventListener('click', {id: 'table_label', handleEvent: select});
+    courseLabel.addEventListener('click', {id: 'course_label', handleEvent: select});
+    shiftLabel.addEventListener('click', {id: 'shift_label', handleEvent: select});
 
-});
+    employeeLabel.classList.add('category-selected');
 
-function clear() {
-    employeeLabel.classList.remove('category-selected');
-    reservationLabel.classList.remove('category-selected');
-    tableLabel.classList.remove('category-selected');
-    courseLabel.classList.remove('category-selected');
-    shiftLabel.classList.remove('category-selected');
-}
+    function select() {
+        clear();
+        const label = document.querySelector('#' + this.id);
+        label.classList.add('category-selected');
+    }
+
+    function clear() {
+        employeeLabel.classList.remove('category-selected');
+        reservationLabel.classList.remove('category-selected');
+        tableLabel.classList.remove('category-selected');
+        courseLabel.classList.remove('category-selected');
+        shiftLabel.classList.remove('category-selected');
+    }
 </script>
 </body>
 </html>

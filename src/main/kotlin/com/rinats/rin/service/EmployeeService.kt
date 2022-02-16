@@ -218,7 +218,17 @@ class EmployeeService(
     fun updateEmployee(employeeId: String?, updateEmployeeForm: UpdateEmployeeForm): Boolean {
         val isExists = employeeRepository.existsById(employeeId ?: return false)
         if (!isExists) return false
-        val employee = createEmployeeTableFromForm(employeeId, updateEmployeeForm) ?: return false
+        val employee = getEmployee(employeeId, containTentative = true, containRetirement = true) ?: return false
+        updateEmployeeForm.apply {
+            employee.firstName = firstName
+            employee.lastName = lastName
+            employee.birthday = birthday
+            employee.hourlyWage = hourlyWage
+            employee.isAndroidNotification = isAndroidNotification
+            employee.mailAddress = mailAddress
+            employee.gender = genderRepository.findById(genderId ?: return false).orElse(null) ?: return false
+            employee.isTaxableOk = isTaxable
+        }
         employeeRepository.save(employee)
         return true
     }
@@ -247,7 +257,6 @@ class EmployeeService(
             it.hourlyWage = updateEmployeeForm.hourlyWage
             it.isAndroidNotification = updateEmployeeForm.isAndroidNotification
             it.mailAddress = updateEmployeeForm.mailAddress
-            it.isTentative = updateEmployeeForm.isTentative
             it.gender =
                 genderRepository.findById(updateEmployeeForm.genderId ?: return null).orElse(null) ?: return null
             it.isTaxableOk = updateEmployeeForm.isTaxable

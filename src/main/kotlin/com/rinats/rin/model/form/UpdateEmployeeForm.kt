@@ -20,12 +20,10 @@ data class UpdateEmployeeForm(
     @field:Min(800)
     val hourlyWage: Int? = null,
     @field:NotNull
-    val isAndroidNotification: Boolean? = null,
+    val isAndroidNotification: Boolean? = false,
     @field:NotBlank
     @field:Email
     val mailAddress: String? = null,
-    @field:NotNull
-    val isTentative: Boolean? = null,
     @field:Min(0)
     @NotNull
     val genderId: Int? = null,
@@ -39,7 +37,6 @@ data class UpdateEmployeeForm(
         hourlyWage = employee.hourlyWage,
         isAndroidNotification = employee.isAndroidNotification,
         mailAddress = employee.mailAddress,
-        isTentative = employee.isTentative,
         genderId = employee.gender?.id,
         isTaxable = employee.isTaxableOk
     )
