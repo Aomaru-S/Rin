@@ -60,3 +60,7 @@ oldPassword=password2&newPassword=password
 <> 2022-01-13T133120.200.json
 <> 2022-01-13T133006.200.json
 <> 2022-01-13T123151.200.json
+
+### Get Employee
+POST http://localhost/api/employee/get_employee?employeeId=200001
+Authorization: {{token}}

@@ -85,27 +85,6 @@ class ReservationController (
         return "ReservationEdit"
     }
 
-    @PostMapping("/reservation_edit_conf")
-    fun reservationEditCheck(
-        model: Model,
-        request: HttpServletRequest,
-        @Validated
-        reservationForm: ReservationForm,
-        bindingResult: BindingResult
-    ): String {
-        model.apply {
-            addAttribute("id", reservationForm.id)
-            addAttribute("customerName", reservationForm.customerName)
-            addAttribute("courseId", reservationForm.courseId)
-            addAttribute("courseName", reservationService.getCourseName(reservationForm.courseId))
-            addAttribute("oldDateTime", request.getParameter("oldDateTime"))
-            addAttribute("dateTime", reservationForm.dateTime)
-            addAttribute("numOfPeople", reservationForm.numOfPeople)
-            addAttribute("tableName", reservationForm.tableName)
-        }
-        return "ReservationEditConf"
-    }
-
     @PostMapping("reservation_edit_complete")
     fun reservationEditComplete(
         @RequestAttribute
