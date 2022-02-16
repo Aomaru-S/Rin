@@ -61,7 +61,7 @@ class TableController(
     @PostMapping("/table_edit_complete")
     fun tableEditComplete(tableForm: TableForm): String {
         tableService.tableUpdate(tableForm.name ?: "", tableForm.numOfPeople ?: 0)
-        return "TableEditComplete"
+        return "redirect:table_check"
     }
 
     @PostMapping("/table_delete")

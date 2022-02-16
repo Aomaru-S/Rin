@@ -6,7 +6,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}">
     <title>テーブル編集確認</title>
 </head>
 <body>
@@ -96,14 +95,14 @@
     <div class="container">
         <table>
             <tr>
-                <td>名前</td>
-                <td>人数</td>
+                <th>名前</th>
+                <th>人数</th>
             </tr>
             <tr>
+                <td th:text="${name}"></td>
+                <td th:text="${numOfPeople}"></td>
                 <form action="#" th:action="@{/table_edit_complete}" method="post">
-                    <td th:text="${name}"></td>
                     <input type="hidden" name="name" th:value="${name}">
-                    <td th:text="${numOfPeople}"></td>
                     <input type="hidden" name="numOfPeople" th:value="${numOfPeople}">
                     <td><input type="submit" value="確定"></td>
                 </form>
