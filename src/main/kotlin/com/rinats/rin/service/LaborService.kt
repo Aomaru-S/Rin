@@ -6,23 +6,28 @@ import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.repository.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.lang.IllegalStateException
 
 @Service
 class LaborService(
     @Autowired
     private val laborRepository: EmployeeLaborRepository,
-    private val employeeRepository: EmployeeRepository
+    private val employeeRepository: EmployeeRepository,
+    private val employeeService: EmployeeService
 ) {
 
-    fun getLabor(): MutableList<EmployeeLabor> {
-        return laborRepository.findAll()
+    fun getLabor(): List<EmployeeLabor> {
+        return laborRepository.findAll().filter {
+            it.id?.roleId != 0 && it.id?.roleId != 3
+        }
     }
 
-    fun getName(laborList: List<EmployeeLabor>): MutableList<String>{
+    fun getName(laborList: List<EmployeeLabor>): MutableList<String> {
         val employeeName: MutableList<String> = mutableListOf()
-        laborList.forEach() {
-            val employee = employeeRepository.findById(it.id?.employeeId ?: "")
-            employeeName.add(employee.get().lastName + " " + employee.get().firstName)
+        laborList.forEach {
+            val employee = employeeService.getEmployee(it.id?.employeeId, containerManager = false)
+                ?: throw IllegalArgumentException("Can't not find employee from employeeId")
+            employeeName.add(employee.lastName + " " + employee.firstName)
         }
         return employeeName
     }

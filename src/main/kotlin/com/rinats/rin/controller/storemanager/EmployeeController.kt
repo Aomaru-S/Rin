@@ -109,7 +109,7 @@ class EmployeeController(
         employeeId: String?,
         model: Model
     ): String {
-        val employee = employeeService.getEmployee(employeeId) ?: return "redirect:/employee"
+        val employee = employeeService.getEmployee(employeeId, containTentative = true, containRetirement = true) ?: return "redirect:/employee"
         model.addAttribute("employeeForm", EmployeeForm(employee, employeeService.getEmployeeLaborList(employeeId)))
         model.addAttribute("employeeId", employeeId)
         return "update_employee"

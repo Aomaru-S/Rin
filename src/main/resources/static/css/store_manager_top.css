@@ -1,0 +1,7 @@
+input[type=checkbox]:checked ~ div {
+    background-color: red;
+}
+
+.category {
+    background-color: blue;
+}

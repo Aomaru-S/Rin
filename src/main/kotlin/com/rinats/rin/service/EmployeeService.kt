@@ -55,7 +55,7 @@ class EmployeeService(
         val authInfo = AuthInfo(
             employeeId,
             AuthUtil.getDigest(password, salt),
-            AuthUtil.generateSalt(),
+            salt,
             false,
             "",
             date
@@ -63,9 +63,10 @@ class EmployeeService(
         try {
             sendMail(addEmployeeForm, employeeId, password)
         } catch (e: MailException) {
-            return false
+//            return false
+            println(e.stackTrace)
         }
-        employeeRepository.save(employee ?: return false)
+        employeeRepository.save(employee)
         employeeLaborRepository.saveAll(laborList)
         authInfoRepository.save(authInfo)
         totalSalaryRepository.save(TotalSalary().also {
@@ -84,11 +85,17 @@ class EmployeeService(
     fun getEmployee(
         employeeId: String?,
         containTentative: Boolean = false,
-        containRetirement: Boolean = false
+        containRetirement: Boolean = false,
+        containerManager: Boolean? = true
+
     ): Employee? {
         val employee = employeeRepository.findById(employeeId ?: return null).orElse(null) ?: return null
         if (!containTentative && employee.isTentative == true) return null
         if (!containRetirement && employee.isRetirement == true) return null
+        val laborList = employeeLaborRepository.findAll().filter { employeeLabor ->
+            employee.id == employeeLabor.id?.employeeId && (employeeLabor.id?.roleId == 0 || employeeLabor.id?.roleId == 2)
+        }
+        if (containerManager == false && laborList.isNotEmpty()) return null
         return employee
     }
 
@@ -186,7 +193,7 @@ class EmployeeService(
         try {
             sender.send(message)
         } catch (e: MailException) {
-            throw e
+            println(e.stackTrace)
         }
     }
 
