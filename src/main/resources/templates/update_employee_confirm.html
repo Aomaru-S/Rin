@@ -98,8 +98,12 @@
         <p th:text="${employeeForm.birthday}"></p>
         <p th:text="${employeeForm.hourlyWage}"></p>
         <p th:text="${employeeForm.mailAddress}"></p>
-        <p th:text="${employeeForm.genderId}"></p>
-        <p th:text="${employeeForm.isTaxable}"></p>
+        <p th:if="${employeeForm.genderId == 0}">男</p>
+        <p th:if="${employeeForm.genderId == 1}">女</p>
+        <p>源泉徴収：
+            <span th:if="${employeeForm.isTaxable}">対象</span>
+            <span th:if="${!employeeForm.isTaxable}">対象外</span>
+        </p>
         <input type="submit" value="追加" form="form">
     </div>
     <form id="form" action="#" th:action="@{/employee/update}" th:object="${employeeForm}" method="post">
