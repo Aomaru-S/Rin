@@ -11,7 +11,6 @@
 <body>
 <header>
     <a th:href="@{/}">Rin</a>
-
     <nav>
         <details>
             <summary>従業員</summary>
@@ -123,7 +122,7 @@
 <!--                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].holiday}">-->
 <!--                </label><br>-->
 <!--            </th:block>-->
-            <th:block th:each="shiftTemplate, st : *{shiftTemplateList}">
+            <th:block th:each="shiftTemplate, st : *{shiftTemplateList}" th:if="${st.index == 0}">
                 <h2 th:text="${shiftTemplateFormList.shiftTemplateList[__${st.index}__].role}"></h2>
                 <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].role}">
                 <label>日曜日

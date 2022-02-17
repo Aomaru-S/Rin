@@ -11,7 +11,6 @@
 <body>
 <header>
     <a th:href="@{/}">Rin</a>
-
     <nav>
         <details>
             <summary>従業員</summary>
@@ -91,63 +90,43 @@
     </nav>
 </header>
 <main>
-    <h1>仮シフト編集</h1>
+    <h1>仮シフト確認 [[${year}]] [[${month}]]月</h1>
     <div class="container">
         <table th:if="${!tentativeShiftList.isEmpty()}">
             <thead>
             <tr>
                 <th>氏名</th>
-                <th th:each="day : ${#numbers.sequence(1, dayCount)}" th:text="${day}"></th>
+                <th th:each="day : ${#numbers.sequence(1, dayCount)}">
+                    [[${day}]]<br>
+                    ([[${dayOfWeekMap[day % 7 + 1]}]])
+                </th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="shift : ${tentativeShiftList}">
-                <td th:text="${shift.key}"></td>
+                <td th:text="${shift.key.lastName} + ${shift.key.firstName}"></td>
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
-                    <td>
-                        <input th:id="${shift.key} + '' + ${day}" type="checkbox" class="etsc">
-                        <label th:for="${shift.key} + '' + ${day}" onclick="change(this)"
-                               th:id="${shift.key} + '' + ${day} + 'label'"></label>
-                    </td>
+                    <td th:if="${shift.value.contains(day)}" th:onclick="|remove(__${year}__)|">〇</td>
+                    <td th:if="!${shift.value.contains(day)}" onclick="add()"></td>
                 </th:block>
             </tr>
             </tbody>
         </table>
-        <button onclick="submit()">変更確認</button>
     </div>
 </main>
+<script>
+    function add() {
+        alert('add');
+    }
+    function remove(test) {
+        alert(test);
+    }
+</script>
 <footer>
     © 2022 www.rin-ats.com
 </footer>
 <script>
-    const changeList = [];
 
-    function change(e) {
-        const forId = e.id;
-        const id = forId.replace('label', '');
-        const checkbox = document.getElementById(id);
-        changeList.push(id + checkbox.checked);
-    }
-
-    function submit() {
-        const form = document.createElement('form');
-        document.querySelector('body').appendChild(form);
-        form.method = 'POST';
-        form.action = '/tentative_shift/edit';
-        let i = 0;
-        changeList.forEach(
-            (value) => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'changeList[' + i + ']';
-                input.value = value;
-                form.appendChild(input);
-                console.log(input.name + ':' + input.value);
-                i++;
-            }
-        );
-        form.submit();
-    }
 </script>
 </body>
 </html>

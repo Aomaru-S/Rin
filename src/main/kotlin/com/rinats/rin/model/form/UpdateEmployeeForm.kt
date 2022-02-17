@@ -29,15 +29,4 @@ data class UpdateEmployeeForm(
     val genderId: Int? = null,
     @field:NotNull
     val isTaxable: Boolean? = null,
-) {
-    constructor(employee: Employee) : this(
-        firstName = employee.firstName,
-        lastName = employee.lastName,
-        birthday = employee.birthday,
-        hourlyWage = employee.hourlyWage,
-        isAndroidNotification = employee.isAndroidNotification,
-        mailAddress = employee.mailAddress,
-        genderId = employee.gender?.id,
-        isTaxable = employee.isTaxableOk
-    )
-}
+)
