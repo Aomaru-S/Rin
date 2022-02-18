@@ -26,4 +26,9 @@ class CourseService(@Autowired private val courseRepository: CourseRepository) {
         val course = Course(id, name)
         courseRepository.save(course)
     }
+
+    fun courseDelete(id: String, name: String) {
+        val course = Course(id, name)
+        courseRepository.delete(course)
+    }
 }

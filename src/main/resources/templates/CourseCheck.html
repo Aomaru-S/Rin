@@ -108,6 +108,13 @@
                         <input type="submit" th:value="編集">
                     </form>
                 </td>
+                <td>
+                    <form action="#" th:action="@{/course_delete}" method="post">
+                        <input type="hidden" name="id" th:value="${course.id}">
+                        <input type="hidden" name="name" th:value="${course.name}">
+                        <input type="submit" th:value="削除">
+                    </form>
+                </td>
             </tr>
         </table>
         <br>

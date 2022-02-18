@@ -61,4 +61,10 @@ class CourseController(
         courseService.courseUpdate(courseForm.id?.toString() ?: "0", courseForm.name ?: "")
         return "redirect:course_check"
     }
+
+    @PostMapping("course_delete")
+    fun courseDelete(model: Model, courseForm: CourseForm): String {
+        courseService.courseDelete(courseForm.id?.toString() ?: "0", courseForm.name ?: "")
+        return "redirect:course_check"
+    }
 }
