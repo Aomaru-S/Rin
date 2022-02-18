@@ -102,7 +102,7 @@
                 <form action="#" th:action="@{/table_edit_conf}" method="post">
                     <td th:text="${name}"></td>
                     <input type="hidden" name="name" th:value="${name}">
-                    <td><input type="number" name="numOfPeople" th:value="${numOfPeople}"></td>
+                    <td><input type="number" name="numOfPeople" th:value="${numOfPeople}" autofocus required></td>
                     <td><input type="submit" value="変更"></td>
                 </form>
             </tr>

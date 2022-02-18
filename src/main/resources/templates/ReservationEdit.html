@@ -94,15 +94,17 @@
     <h1>予約編集</h1>
     <div class="container">
         <form action="#" th:action="@{reservation_edit_conf}" method="post">
-            氏名入力<input type="text" name="customerName" th:value="${customerName}" size="22"><br>
+            氏名入力
+            <input type="text" name="customerName" th:value="${customerName}" size="22" autofocus required>
+            <br>
             コース名
             <label>
                 <select name="courseId" required>
                     <option th:each="course: ${courseList}" th:value="${course.id}" th:selected="${course.id == courseId}" th:inline="text">[[${course.name}]]</option>
                 </select>
             </label><br>
-            日時<input type="datetime-local" name="dateTime" th:value="${dateTime}"><br>
-            人数<input type="number" name="numOfPeople" th:value="${numOfPeople}"><br>
+            日時<input type="datetime-local" name="dateTime" th:value="${dateTime}" required><br>
+            人数<input type="number" name="numOfPeople" th:value="${numOfPeople}" required><br>
             座席
             <label>
                 <select name="tableName" required>

@@ -95,10 +95,10 @@
     <div class="container">
         <form action="#" th:action="@{/login}" th:object="${authForm}" method="post">
             <label>
-                <input type="text" th:field="${authForm.employeeId}" placeholder="従業員ID">
+                <input type="text" th:field="${authForm.employeeId}" placeholder="従業員ID" autofocus required>
             </label><br>
             <label>
-                <input type="password" th:field="${authForm.password}" placeholder="パスワード">
+                <input type="password" th:field="${authForm.password}" placeholder="パスワード" required>
             </label><br>
             <input type="submit" value="ログイン">
         </form>
