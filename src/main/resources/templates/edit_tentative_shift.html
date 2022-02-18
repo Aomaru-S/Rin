@@ -108,8 +108,8 @@
             <tr th:each="shift : ${tentativeShiftList}">
                 <td th:text="${shift.key.lastName} + ${shift.key.firstName}"></td>
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
-                    <td th:if="${shift.value.contains(day)}" th:onclick="|remove(__${shift.key.id}__, __${day}__)|">〇
-                    </td>
+                    <td th:if="${shift.value.contains(day)}"
+                        th:onclick="|remove(__${shift.key.id}__, __${day}__, this)|">〇</td>
                     <td th:if="!${shift.value.contains(day)}" th:onclick="|add(__${shift.key.id}__, __${day}__)|"></td>
                 </th:block>
             </tr>
@@ -132,6 +132,7 @@
     }
 
     function remove(id, day) {
+        alert(this);
         console.log("remove");
         if (!map.has(id)) {
             map.set(id, []);

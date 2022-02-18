@@ -242,7 +242,7 @@ class EmployeeService(
             it.hourlyWage = addEmployeeForm.hourlyWage
             it.isAndroidNotification = false
             it.mailAddress = addEmployeeForm.mailAddress
-            it.isTentative = true
+            it.isTentative = false
             it.gender = genderRepository.findById(addEmployeeForm.genderId ?: return null).orElse(null) ?: return null
             it.isTaxableOk = addEmployeeForm.isTaxable
         }
