@@ -121,8 +121,10 @@ class TentativeShiftController(
         val mapType = object : TypeToken<MutableMap<String, MutableList<AttendanceDay>>>() {}.type
         val changeAttendance =
             Gson().fromJson<MutableMap<String, MutableList<AttendanceDay>>>(changeAttendanceJson, mapType)
+                ?: mutableMapOf()
+
         tentativeShiftService.editAttendance(changeAttendance)
-        return "redirect:/tentative_shift"
+        return "redirect:/tentative_shift/edit"
     }
 
     @GetMapping("/submit")
@@ -146,7 +148,7 @@ class TentativeShiftController(
     }
 
     data class AttendanceDay(
-        val day: String,
+        val day: Int,
         val isAttendance: Boolean
     )
 }

@@ -1,6 +1,5 @@
 package com.rinats.rin.controller
 
-import com.rinats.rin.service.GetHolidaysJpApiService
 import com.rinats.rin.service.ShiftGeneratorService
 import com.rinats.rin.service.TentativeShiftService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,9 +18,9 @@ class ShiftGeneratorController(
     fun shiftGenerator(
         @RequestParam("delete_flag", required = false) deleteFlag: Boolean?,
     ): String {
-        if (deleteFlag == true) {
-            tentativeShiftService.deleteAll()
-        }
+//        if (deleteFlag == true) {
+        tentativeShiftService.deleteAll()
+//        }
         shiftGeneratorService.shiftGenerator()
         return "redirect:/tentative_shift"
     }
