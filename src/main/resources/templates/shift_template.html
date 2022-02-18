@@ -96,7 +96,7 @@
     <div>
         <table>
             <tr>
-                <th>役割</th>
+<!--                <th>役割</th>-->
                 <th>日曜日</th>
                 <th>月曜日</th>
                 <th>火曜日</th>
@@ -106,8 +106,8 @@
                 <th>土曜日</th>
                 <th>祝日前</th>
             </tr>
-            <tr th:each="shiftTemplate : ${shiftTemplateFormList}">
-                <td th:text="${shiftTemplate.role}"></td>
+            <tr th:each="shiftTemplate : ${shiftTemplateFormList[0]}">
+<!--                <td th:text="${shiftTemplate.role}"></td>-->
                 <td th:text="${shiftTemplate.sunday}"></td>
                 <td th:text="${shiftTemplate.monday}"></td>
                 <td th:text="${shiftTemplate.tuesday}"></td>

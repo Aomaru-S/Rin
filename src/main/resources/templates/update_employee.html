@@ -96,19 +96,19 @@
         <form action="#" th:action="@{/employee/update_confirm}" th:object="${employeeForm}" method="post">
             <input type="hidden" th:value="${employeeId}" name="employeeId">
             <label>姓
-                <input type="text" th:field="*{lastName}">
+                <input type="text" th:field="*{lastName}" required>
             </label>
             <label>名
-                <input type="text" th:field="*{firstName}">
+                <input type="text" th:field="*{firstName}" required>
             </label><br>
             <label>生年月日
-                <input type="date" th:field="*{birthday}">
+                <input type="date" th:field="*{birthday}" required>
             </label><br>
             <label>時給
-                <input type="number" th:field="*{hourlyWage}">
+                <input type="number" th:field="*{hourlyWage}" required>
             </label><br>
             <label>メールアドレス
-                <input type="email" th:field="*{mailAddress}">
+                <input type="email" th:field="*{mailAddress}" required>
             </label><br>
             <label>性別
                 <input type="radio" th:field="*{genderId}" value="0">男性

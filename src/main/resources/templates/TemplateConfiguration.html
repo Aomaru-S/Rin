@@ -123,31 +123,31 @@
 <!--                </label><br>-->
 <!--            </th:block>-->
             <th:block th:each="shiftTemplate, st : *{shiftTemplateList}" th:if="${st.index == 0}">
-                <h2 th:text="${shiftTemplateFormList.shiftTemplateList[__${st.index}__].role}"></h2>
+<!--                <h2 th:text="${shiftTemplateFormList.shiftTemplateList[__${st.index}__].role}"></h2>-->
                 <input type="hidden" th:field="*{shiftTemplateList[__${st.index}__].role}">
                 <label>日曜日
-                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].sunday}">
+                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].sunday}" required>
                 </label><br>
                 <label>月曜日
-                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].monday}">
+                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].monday}" required>
                 </label><br>
                 <label>火曜日
-                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].tuesday}">
+                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].tuesday}" required>
                 </label><br>
                 <label>水曜日
-                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].wednesday}">
+                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].wednesday}" required>
                 </label><br>
                 <label>木曜日
-                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].thursday}">
+                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].thursday}" required>
                 </label><br>
                 <label>金曜日
-                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].friday}">
+                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].friday}" required>
                 </label><br>
                 <label>土曜日
-                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].saturday}">
+                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].saturday}" required>
                 </label><br>
                 <label>祝日前
-                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].holiday}">
+                    <input type="number" min="0" th:field="*{shiftTemplateList[__${st.index}__].holiday}" required>
                 </label><br>
             </th:block>
             <input type="submit" value="確認">

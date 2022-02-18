@@ -94,7 +94,7 @@
     <h1>予約登録</h1>
     <div class="container">
         <form action="#" th:action="@{reservation_registration_complete}" method="post">
-            氏名入力<input type="text" name="customerName" value="" size="22"><br>
+            氏名入力<input type="text" name="customerName" value="" size="22" autofocus required><br>
             コース名
             <label>
                 <select name="courseId" required>
@@ -103,8 +103,8 @@
                 </select>
             </label>
             <br>
-            日時<input type="datetime-local" name="dateTime"><br>
-            人数<input type="number" name="numOfPeople" size="22"><br>
+            日時<input type="datetime-local" name="dateTime" required><br>
+            人数<input type="number" name="numOfPeople" size="22" required><br>
             座席
             <label>
                 <select name="tableName" required>
