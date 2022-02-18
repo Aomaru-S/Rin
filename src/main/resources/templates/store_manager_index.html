@@ -99,7 +99,7 @@
         </div>
         <input type="radio" id="employee_menu" name="menu" checked>
         <div class="category">
-            <a th:href="@{/employee}">従業員</a>
+            <a th:href="@{/employee}">従業員一覧</a>
             <a th:href="@{/labor_check}">労働力確認/編集</a>
             <a th:href="@{/hourly_wage_check}">時給設定</a>
         </div>
@@ -120,10 +120,10 @@
         </div>
         <input type="radio" id="shift_menu" name="menu">
         <div class="category">
-            <a th:href="@{/shift_plan}">シフト計画設定</a>
-            <a th:href="@{/tentative_shift}">仮シフト</a>
             <a th:href="@{/shift_hope}">提出済みシフト確認</a>
+            <a th:href="@{/tentative_shift}">仮シフト</a>
             <a th:href="@{/shift}">当月本シフト確認</a>
+            <a th:href="@{/shift_plan}">シフト計画設定</a>
         </div>
         <!--        <a th:href="@{/setting}">設定</a>-->
     </div>
