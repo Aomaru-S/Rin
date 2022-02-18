@@ -90,7 +90,9 @@
     </nav>
 </header>
 <main>
-    <h1>仮シフト確認 [[${year}]] [[${month}]]月</h1>
+    <h1>仮シフト確認 [[${year}]] [[${month}]]月
+        <button onclick="submit()">Display</button>
+    </h1>
     <div class="container">
         <table th:if="${!tentativeShiftList.isEmpty()}">
             <thead>
@@ -106,8 +108,9 @@
             <tr th:each="shift : ${tentativeShiftList}">
                 <td th:text="${shift.key.lastName} + ${shift.key.firstName}"></td>
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
-                    <td th:if="${shift.value.contains(day)}" th:onclick="|remove(__${year}__)|">〇</td>
-                    <td th:if="!${shift.value.contains(day)}" onclick="add()"></td>
+                    <td th:if="${shift.value.contains(day)}" th:onclick="|remove(__${shift.key.id}__, __${day}__)|">〇
+                    </td>
+                    <td th:if="!${shift.value.contains(day)}" th:onclick="|add(__${shift.key.id}__, __${day}__)|"></td>
                 </th:block>
             </tr>
             </tbody>
@@ -115,11 +118,45 @@
     </div>
 </main>
 <script>
-    function add() {
-        alert('add');
+    const map = new Map();
+
+    function add(id, day) {
+        console.log("add");
+        if (!map.has(id)) {
+            map.set(id, []);
+        }
+        map.get(id).push({
+            day: day,
+            isAttendance: true
+        });
     }
-    function remove(test) {
-        alert(test);
+
+    function remove(id, day) {
+        console.log("remove");
+        if (!map.has(id)) {
+            map.set(id, []);
+        }
+        map.get(id).push({
+            day: day,
+            isAttendance: false
+        });
+    }
+
+    function submit() {
+        const json = JSON.stringify(Object.fromEntries(map));
+        console.log("json: " + json);
+
+        const form = document.createElement("form");
+        const input = document.createElement("input");
+        input.type = 'hidden';
+        input.name = 'changeAttendanceJson';
+        input.value = json;
+        form.appendChild(input);
+        form.style.display = 'none';
+        document.querySelector('body').appendChild(form);
+        form.action = '/tentative_shift/edit';
+        form.method = 'post';
+        form.submit();
     }
 </script>
 <footer>

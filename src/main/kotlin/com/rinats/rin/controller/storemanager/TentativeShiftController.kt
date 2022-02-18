@@ -1,5 +1,7 @@
 package com.rinats.rin.controller.storemanager
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rinats.rin.model.other.CompleteMessage
 import com.rinats.rin.model.table.Employee
 import com.rinats.rin.service.ShiftGeneratorService
@@ -10,8 +12,8 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import java.util.*
-import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/tentative_shift")
@@ -34,7 +36,7 @@ class TentativeShiftController(
         var firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         val dayOfWeekMap = mutableMapOf<Int, String>()
         for (i in 1..7) {
-            dayOfWeekMap[i] = when(firstDayOfWeek) {
+            dayOfWeekMap[i] = when (firstDayOfWeek) {
                 1 -> "土"
                 2 -> "日"
                 3 -> "月"
@@ -78,7 +80,7 @@ class TentativeShiftController(
         var firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         val dayOfWeekMap = mutableMapOf<Int, String>()
         for (i in 1..7) {
-            dayOfWeekMap[i] = when(firstDayOfWeek) {
+            dayOfWeekMap[i] = when (firstDayOfWeek) {
                 1 -> "土"
                 2 -> "日"
                 3 -> "月"
@@ -114,15 +116,12 @@ class TentativeShiftController(
     @PostMapping("/edit")
     fun editTentativeShiftConfirm(
         model: Model,
-        request: HttpServletRequest
+        @RequestParam(required = false) changeAttendanceJson: String? = null
     ): String {
-        val changes = request.parameterMap.filter {
-            it.key.contains("changeList")
-        }
-        val changeList = mutableListOf<String>()
-        changes.forEach {
-            val change = it.value
-        }
+        val mapType = object : TypeToken<MutableMap<String, MutableList<AttendanceDay>>>() {}.type
+        val changeAttendance =
+            Gson().fromJson<MutableMap<String, MutableList<AttendanceDay>>>(changeAttendanceJson, mapType)
+        tentativeShiftService.editAttendance(changeAttendance)
         return "redirect:/tentative_shift"
     }
 
@@ -146,4 +145,8 @@ class TentativeShiftController(
         return "complete"
     }
 
+    data class AttendanceDay(
+        val day: String,
+        val isAttendance: Boolean
+    )
 }

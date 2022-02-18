@@ -19,19 +19,20 @@ repositories {
 
 dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.6.2")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:2.6.2")
-    implementation("org.springframework.boot:spring-boot-starter-web:2.6.2")
-    implementation("org.springframework.boot:spring-boot-starter-validation:2.6.2")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.6.3")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:2.6.3")
+    implementation("org.springframework.boot:spring-boot-starter-web:2.6.3")
+    implementation("org.springframework.boot:spring-boot-starter-validation:2.6.3")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     runtimeOnly("mysql:mysql-connector-java:8.0.25")
     implementation("org.passay:passay:1.6.1")
     implementation("commons-codec:commons-codec:1.15")
-    implementation("org.springframework.boot:spring-boot-starter-mail:2.6.2")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:2.6.2")
+    implementation("org.springframework.boot:spring-boot-starter-mail:2.6.3")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:2.6.3")
     testImplementation("org.springframework.security:spring-security-test:5.5.1")
     mybatisGenerator("org.mybatis.generator:mybatis-generator-core:1.4.0")
+    implementation ("com.google.code.gson:gson:2.9.0")
 }
 
 tasks.withType<KotlinCompile> {

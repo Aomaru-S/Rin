@@ -1,5 +1,6 @@
 package com.rinats.rin.service
 
+import com.rinats.rin.controller.storemanager.TentativeShiftController
 import com.rinats.rin.model.table.Shift
 import com.rinats.rin.model.table.TentativeShift
 import com.rinats.rin.repository.ShiftRepository
@@ -32,5 +33,9 @@ class TentativeShiftService(
 
     fun deleteAll() {
         tentativeShiftRepository.deleteAll()
+    }
+
+    fun editAttendance(changeAttendance: MutableMap<String, MutableList<TentativeShiftController.AttendanceDay>>?) {
+
     }
 }
