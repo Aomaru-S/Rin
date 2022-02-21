@@ -92,10 +92,9 @@
     <div class="container">
         <div class="category-header">
             <label for="employee_menu" id="employee_label">従業員</label>
-            <label for="reservation_menu" id="reservation_label">予約</label>
-            <label for="table_menu" id="table_label">テーブル</label>
-            <label for="course_menu" id="course_label">コース</label>
+            <label for="reservation_menu" id="reservation_label">予約管理</label>
             <label for="shift_menu" id="shift_label">シフト</label>
+            <label for="setting_menu" id="setting_label">設定</label>
         </div>
         <input type="radio" id="employee_menu" name="menu" checked>
         <div class="category">
@@ -107,14 +106,8 @@
         <div class="category">
             <a th:href="@{/reservation_registration}">予約登録</a>
             <a th:href="@{/reservation_check}">予約確認/編集</a>
-        </div>
-        <input type="radio" id="table_menu" name="menu">
-        <div class="category">
             <a th:href="@{/table_registration}">テーブル登録</a>
             <a th:href="@{/table_check}">テーブル確認/編集</a>
-        </div>
-        <input type="radio" id="course_menu" name="menu">
-        <div class="category">
             <a th:href="@{/course_registration}">コース登録</a>
             <a th:href="@{/course_check}">コース確認/編集</a>
         </div>
@@ -125,6 +118,12 @@
             <a th:href="@{/shift}">当月本シフト確認</a>
             <a th:href="@{/shift_plan}">シフト計画設定</a>
         </div>
+        <input type="radio" id="setting_menu" name="menu">
+        <div class="category">
+            <a th:href="@{/change_password}">パスワード変更</a>
+            <a th:href="@{/change_mail_address}">メールアドレス変更</a>
+            <a th:href="@{/logout}">ログアウト</a>
+        </div>
         <!--        <a th:href="@{/setting}">設定</a>-->
     </div>
 </main>
@@ -134,16 +133,13 @@
 <script>
     const employeeLabel = document.querySelector('#employee_label');
     const reservationLabel = document.querySelector('#reservation_label');
-    const tableLabel = document.querySelector('#table_label');
-    const courseLabel = document.querySelector('#course_label');
     const shiftLabel = document.querySelector('#shift_label');
+    const settingLabel = document.querySelector('#setting_label');
 
     employeeLabel.addEventListener('click', {id: 'employee_label', handleEvent: select});
     reservationLabel.addEventListener('click', {id: 'reservation_label', handleEvent: select});
-    tableLabel.addEventListener('click', {id: 'table_label', handleEvent: select});
-    courseLabel.addEventListener('click', {id: 'course_label', handleEvent: select});
     shiftLabel.addEventListener('click', {id: 'shift_label', handleEvent: select});
-
+    settingLabel.addEventListener('click', {id: 'setting_label', handleEvent: select});
     employeeLabel.classList.add('category-selected');
 
     function select() {
@@ -155,9 +151,8 @@
     function clear() {
         employeeLabel.classList.remove('category-selected');
         reservationLabel.classList.remove('category-selected');
-        tableLabel.classList.remove('category-selected');
-        courseLabel.classList.remove('category-selected');
         shiftLabel.classList.remove('category-selected');
+        settingLabel.classList.remove('category-selected');
     }
 </script>
 </body>
