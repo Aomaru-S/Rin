@@ -123,10 +123,10 @@
                 <td th:text="${shift.key.lastName} + ${shift.key.firstName}"></td>
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
                     <td th:if="${shift.value.contains(day)}"
-                        th:onclick="|remove(__${shift.key.id}__, __${day}__, this)|">〇
+                        th:onclick="|onDayClick(__${shift.key.id}__, __${day}__, this)|">〇
                     </td>
                     <td id="test" th:if="!${shift.value.contains(day)}"
-                        th:onclick="|add(__${shift.key.id}__, __${day}__, this)|"></td>
+                        th:onclick="|onDayClick(__${shift.key.id}__, __${day}__, this)|"></td>
                 </th:block>
             </tr>
             </tbody>
@@ -142,6 +142,14 @@
 </main>
 <script>
     const map = new Map();
+
+    function onDayClick(id, day, e) {
+        if (e.innerText === '〇') {
+            remove(id, day, e);
+        } else {
+            add(id, day, e);
+        }
+    }
 
     function add(id, day, e) {
         e.innerText = '〇';
