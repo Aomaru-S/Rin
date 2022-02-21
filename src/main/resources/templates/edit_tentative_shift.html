@@ -91,7 +91,6 @@
 </header>
 <main>
     <h1>仮シフト確認 [[${year}]] [[${month}]]月
-        <button onclick="submit()">Display</button>
     </h1>
     <div class="container">
         <table th:if="${!tentativeShiftList.isEmpty()}">
@@ -109,19 +108,28 @@
                 <td th:text="${shift.key.lastName} + ${shift.key.firstName}"></td>
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
                     <td th:if="${shift.value.contains(day)}"
-                        th:onclick="|remove(__${shift.key.id}__, __${day}__, this)|">〇</td>
-                    <td th:if="!${shift.value.contains(day)}" th:onclick="|add(__${shift.key.id}__, __${day}__)|"></td>
+                        th:onclick="|remove(__${shift.key.id}__, __${day}__, this)|">〇
+                    </td>
+                    <td id="test" th:if="!${shift.value.contains(day)}"
+                        th:onclick="|add(__${shift.key.id}__, __${day}__, this)|"></td>
                 </th:block>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+                <td th:colspan="${dayCount} + 1">
+                    <button onclick="submit()">Display</button>
+                </td>
+            </tr>
+            </tfoot>
         </table>
     </div>
 </main>
 <script>
     const map = new Map();
 
-    function add(id, day) {
-        console.log("add");
+    function add(id, day, e) {
+        e.innerText = '〇';
         if (!map.has(id)) {
             map.set(id, []);
         }
@@ -131,9 +139,8 @@
         });
     }
 
-    function remove(id, day) {
-        alert(this);
-        console.log("remove");
+    function remove(id, day, e) {
+        e.innerText = '';
         if (!map.has(id)) {
             map.set(id, []);
         }
