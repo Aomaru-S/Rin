@@ -23,7 +23,7 @@ header {
     padding-left: 10px;
     display: flex;
     justify-content: space-between;
-    /*height: 50px;*/
+    padding-right: 50px;
 }
 
 footer {

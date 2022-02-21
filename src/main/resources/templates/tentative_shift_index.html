@@ -87,7 +87,22 @@
                 </div>
             </div>
         </details>
-        <a th:href="@{/setting}">設定</a>
+        <details>
+            <summary>設定</summary>
+            <div class="links-container">
+                <div class="links">
+                    <a th:href="@{/change_password}">
+                        パスワード変更
+                    </a>
+                    <a th:href="@{/change_mail_address}">
+                        メールアドレス変更
+                    </a>
+                    <a th:href="@{/logout}">
+                        ログアウト
+                    </a>
+                </div>
+            </div>
+        </details>
     </nav>
 </header>
 <main>
@@ -112,6 +127,13 @@
                 </th:block>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+                <td th:colspan="${dayCount} + 1">
+                    <button onclick="location.href='/tentative_shift/edit'">編集</button>
+                </td>
+            </tr>
+            </tfoot>
         </table>
         <p th:if="${tentativeShiftList.isEmpty()}">仮シフトがありません。</p>
         <form action="#" th:action="@{/shift_generate}" method="post">

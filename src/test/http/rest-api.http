@@ -2,7 +2,7 @@
 POST http://localhost/api/auth/login
 Content-Type: application/x-www-form-urlencoded
 
-employeeId=181032&password=password
+employeeId=200053&password=password
 
 > {%
  client.global.set("token", response.body.access_token)

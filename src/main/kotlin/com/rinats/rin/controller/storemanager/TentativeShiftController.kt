@@ -124,7 +124,7 @@ class TentativeShiftController(
                 ?: mutableMapOf()
 
         tentativeShiftService.editAttendance(changeAttendance)
-        return "redirect:/tentative_shift/edit"
+        return "redirect:/tentative_shift"
     }
 
     @GetMapping("/submit")

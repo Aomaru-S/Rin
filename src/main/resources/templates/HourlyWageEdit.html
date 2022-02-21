@@ -88,7 +88,22 @@
                 </div>
             </div>
         </details>
-        <a th:href="@{/setting}">設定</a>
+        <details>
+            <summary>設定</summary>
+            <div class="links-container">
+                <div class="links">
+                    <a th:href="@{/change_password}">
+                        パスワード変更
+                    </a>
+                    <a th:href="@{/change_mail_address}">
+                        メールアドレス変更
+                    </a>
+                    <a th:href="@{/logout}">
+                        ログアウト
+                    </a>
+                </div>
+            </div>
+        </details>
     </nav>
 </header>
 <main>

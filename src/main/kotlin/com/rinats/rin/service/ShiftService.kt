@@ -18,7 +18,7 @@ class ShiftService(
     val authInfoRepository: AuthInfoRepository
 ) {
     fun getAllShift(year: Int, month: Int): ShiftResponse? {
-        val shifts = shiftRepository.findAll(Sort.by(Sort.Direction.ASC, "date"))
+        val shifts = shiftRepository.findAll(Sort.by(Sort.Direction.ASC, "employeeId"))
         val days = ArrayList<ShiftDay>()
         shifts.forEach {
             val calendar = Calendar.getInstance()

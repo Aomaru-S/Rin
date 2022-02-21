@@ -1,7 +1,10 @@
 package com.rinats.rin.controller.storemanager
 
 import com.rinats.rin.model.other.PrevNextYearMonth
+import com.rinats.rin.model.table.Employee
+import com.rinats.rin.service.EmployeeService
 import com.rinats.rin.service.ShiftService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,13 +15,15 @@ import java.util.*
 @Controller
 @RequestMapping("/shift")
 class ShiftController(
-    private val shiftService: ShiftService
+    @Autowired
+    private val shiftService: ShiftService,
+    private val employeeService: EmployeeService
 ) {
     @GetMapping("")
     fun index(
         model: Model,
         @RequestParam(name = "year") _year: Int? = null,
-        @RequestParam(name = "month") _month: Int? = null,
+        @RequestParam(name = "month") _month: Int? = null
     ): String {
         var year: Int
         var month: Int
@@ -36,7 +41,7 @@ class ShiftController(
 
         val shiftResponse = shiftService.getAllShift(year, month)
         val map = mutableMapOf<String, MutableList<Int>>()
-        val name = mutableListOf<String>()
+        val name = mutableMapOf<String, Employee>()
         shiftResponse?.days?.forEach {
             if (map.containsKey(it.employeeId)) {
                 map[it.employeeId]?.add(
@@ -45,7 +50,7 @@ class ShiftController(
             } else {
                 map[it.employeeId] = mutableListOf(it.day)
             }
-            name.add(it.firstName + it.lastName)
+            name[it.employeeId] = employeeService.getEmployee(it.employeeId, containerManager = false)!!
         }
 
         val prevNextYearMonth = PrevNextYearMonth(

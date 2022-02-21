@@ -4,6 +4,7 @@ import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.form.AuthForm
 import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.service.AuthService
+import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.*
 class AuthRestController(
     @Autowired
     val authService: AuthService,
-    private val employeeLaborRepository: EmployeeLaborRepository
+    private val employeeLaborRepository: EmployeeLaborRepository,
+    private val employeeService: EmployeeService
 ) {
     @NonAuth
     @PostMapping("/login")
@@ -29,7 +31,10 @@ class AuthRestController(
         if (validationResult.hasErrors() || accessToken == null) {
             return hashMapOf("access_token" to null)
         }
-
+        val employee = employeeService.getEmployee(authForm.employeeId, containTentative = true, containRetirement = true)
+        if (employee?.isTentative == true || employee?.isRetirement == true) {
+            return hashMapOf("access_token" to null)
+        }
         val laborList = employeeLaborRepository.findById_EmployeeId(authForm.employeeId!!)
         if (laborList[0].id!!.roleId != 1) {
             return hashMapOf("access_token" to null)

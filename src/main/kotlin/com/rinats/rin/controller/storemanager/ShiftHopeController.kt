@@ -2,7 +2,9 @@ package com.rinats.rin.controller.storemanager
 
 import com.rinats.rin.model.other.PrevNextYearMonth
 import com.rinats.rin.model.table.Employee
+import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.service.ShiftHopeService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,7 +15,9 @@ import java.util.*
 @Controller
 @RequestMapping("/shift_hope")
 class ShiftHopeController(
-    private val shiftHopeService: ShiftHopeService
+    @Autowired
+    private val shiftHopeService: ShiftHopeService,
+    private val employeeLaborRepository: EmployeeLaborRepository
 ) {
     @GetMapping("")
     fun index(
@@ -37,12 +41,16 @@ class ShiftHopeController(
 
         val shiftHopeMap = mutableMapOf<Employee, MutableList<Int>>()
         shiftHopeService.getAllShift(year, month).forEach {
-            if (shiftHopeMap.containsKey(it.id?.employee ?: throw IllegalStateException())) {
-                shiftHopeMap[it.id?.employee ?: throw IllegalStateException()]?.add(
+            val employee = it.id?.employee ?: throw IllegalStateException()
+            if (employee.isTentative == true || employee.isRetirement == true) {
+                return@forEach
+            }
+            if (shiftHopeMap.containsKey(employee)) {
+                shiftHopeMap[employee]?.add(
                     it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException()
                 )
             } else {
-                shiftHopeMap[it.id?.employee ?: throw IllegalStateException()] =
+                shiftHopeMap[employee] =
                     mutableListOf(it.id?.shiftDate?.dayOfMonth ?: throw IllegalStateException())
             }
         }
