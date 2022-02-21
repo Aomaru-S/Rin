@@ -117,12 +117,14 @@
         <form action="#" th:action="@{/shift_generate}" method="post">
             <input type="submit" value="シフト生成" th:if="${tentativeShiftList.isEmpty()}">
         </form>
-        <form action="#" th:action="@{/shift_generate(delete_flag=true)}" method="post">
-            <input type="submit" value="シフト再生成" th:if="${!tentativeShiftList.isEmpty()}">
-        </form>
-        <form action="#" th:action="@{/tentative_shift/submit}" method="post" th:if="${!tentativeShiftList.isEmpty()}">
-            <input type="submit" value="公開確認">
-        </form>
+        <th:block th:if="${!tentativeShiftList.isEmpty()}">
+            <form action="#" th:action="@{/shift_generate(delete_flag=true)}" method="post">
+                <input type="submit" value="シフト再生成">
+            </form>
+            <form action="#" th:action="@{/tentative_shift/submit}" method="post">
+                <input type="submit" value="公開確認">
+            </form>
+        </th:block>
     </div>
 </main>
 <footer>

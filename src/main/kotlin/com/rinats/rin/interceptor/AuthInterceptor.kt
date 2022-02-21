@@ -7,6 +7,7 @@ import com.rinats.rin.annotation.TentativeEmployee
 import com.rinats.rin.model.table.AuthInfo
 import com.rinats.rin.model.table.Employee
 import com.rinats.rin.repository.AuthInfoRepository
+import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.service.EmployeeService
 import org.springframework.core.annotation.AnnotationUtils
@@ -21,7 +22,8 @@ import javax.servlet.http.HttpServletResponse
 class AuthInterceptor(
     private val authInfoRepository: AuthInfoRepository,
     private val employeeRepository: EmployeeRepository,
-    private val employeeService: EmployeeService
+    private val employeeService: EmployeeService,
+    private val employeeLaborRepository: EmployeeLaborRepository
 ) : HandlerInterceptor {
 
     override fun preHandle(
@@ -63,7 +65,7 @@ class AuthInterceptor(
 
         val isApi = request.requestURI.startsWith("/api")
 
-        when(isApi) {
+        when (isApi) {
             true -> {
                 accessToken = request.getHeader("Authorization")
                 if (accessToken == null) {
@@ -119,6 +121,7 @@ class AuthInterceptor(
             return false
         }
 
+        request.setAttribute("is_api", isApi)
         request.setAttribute("employee", employee)
         request.setAttribute("access_token", accessToken)
         return true
@@ -154,7 +157,7 @@ class AuthInterceptor(
             return true
         }
 
-        if(!(hasStoreManager || hasPartTimeJob || hasTentativeEmployee)) {
+        if (!(hasStoreManager || hasPartTimeJob || hasTentativeEmployee)) {
             return true
         }
 

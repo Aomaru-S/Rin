@@ -90,7 +90,7 @@
     </nav>
 </header>
 <main>
-    <h1>仮シフト確認 [[${year}]] [[${month}]]月
+    <h1>仮シフト編集 [[${year}]] [[${month}]]月
     </h1>
     <div class="container">
         <table th:if="${!tentativeShiftList.isEmpty()}">
@@ -118,7 +118,7 @@
             <tfoot>
             <tr>
                 <td th:colspan="${dayCount} + 1">
-                    <button onclick="submit()">Display</button>
+                    <button onclick="submit()">確定</button>
                 </td>
             </tr>
             </tfoot>

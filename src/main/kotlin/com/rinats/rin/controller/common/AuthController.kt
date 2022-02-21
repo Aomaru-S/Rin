@@ -2,6 +2,7 @@ package com.rinats.rin.controller.common
 
 import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.form.AuthForm
+import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -11,6 +12,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestAttribute
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -18,7 +20,8 @@ import javax.servlet.http.HttpServletResponse
 @Controller
 class AuthController(
     @Autowired
-    val authService: AuthService
+    val authService: AuthService,
+    private val employeeLaborRepository: EmployeeLaborRepository
 ) {
     @NonAuth
     @GetMapping("/login")

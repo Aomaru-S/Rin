@@ -2,6 +2,7 @@ package com.rinats.rin
 
 import com.rinats.rin.interceptor.AuthInterceptor
 import com.rinats.rin.repository.AuthInfoRepository
+import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.repository.EmployeeRepository
 import com.rinats.rin.service.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,15 +17,16 @@ class WebMvcConfig(
     @Autowired
     private val authInfoRepository: AuthInfoRepository,
     private val employeeRepository: EmployeeRepository,
-    private val employeeService: EmployeeService
+    private val employeeService: EmployeeService,
+    private val employeeLaborRepository: EmployeeLaborRepository
 ) : WebMvcConfigurer{
     @Bean
     fun authorizationHandlerInterceptor(): AuthInterceptor? {
-        return AuthInterceptor(authInfoRepository, employeeRepository, employeeService)
+        return AuthInterceptor(authInfoRepository, employeeRepository, employeeService, employeeLaborRepository)
     }
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(AuthInterceptor(authInfoRepository, employeeRepository, employeeService))
+        registry.addInterceptor(AuthInterceptor(authInfoRepository, employeeRepository, employeeService, employeeLaborRepository))
             .addPathPatterns("/**")
     }
 }

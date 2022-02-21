@@ -2,6 +2,7 @@ package com.rinats.rin.controller.parttimejob
 
 import com.rinats.rin.annotation.NonAuth
 import com.rinats.rin.model.form.AuthForm
+import com.rinats.rin.repository.EmployeeLaborRepository
 import com.rinats.rin.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BindingResult
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin(methods = [RequestMethod.POST, RequestMethod.OPTIONS])
 class AuthRestController(
     @Autowired
-    val authService: AuthService
+    val authService: AuthService,
+    private val employeeLaborRepository: EmployeeLaborRepository
 ) {
     @NonAuth
     @PostMapping("/login")
@@ -25,6 +27,11 @@ class AuthRestController(
     ): HashMap<String, String?> {
         val accessToken = authService.login(authForm.employeeId ?: "", authForm.password ?: "")
         if (validationResult.hasErrors() || accessToken == null) {
+            return hashMapOf("access_token" to null)
+        }
+
+        val laborList = employeeLaborRepository.findById_EmployeeId(authForm.employeeId!!)
+        if (laborList[0].id!!.roleId != 1) {
             return hashMapOf("access_token" to null)
         }
         return hashMapOf("access_token" to accessToken)

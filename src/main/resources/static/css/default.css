@@ -83,6 +83,14 @@ td {
     border: solid 1px;
 }
 
+tfoot td {
+    border: none;
+}
+
+tfoot button {
+    width: 100%;
+}
+
 .prev-next {
     display: flex;
     justify-content: space-between;

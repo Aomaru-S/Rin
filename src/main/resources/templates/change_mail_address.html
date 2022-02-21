@@ -93,17 +93,31 @@
 <main>
     <h1>メールアドレス変更画面</h1>
     <div class="container">
-        <form action="#" th:action="@{/auth_mail_address}" method="post" th:object="${changeMailAddressForm}">
+        <form action="#" th:action="@{/auth_mail_address}" method="post" th:object="${changeMailAddressForm}"
+              onsubmit="return onSubmit()">
             <label>新メールアドレス入力
-                <input type="email" th:field="*{mailAddress}" th:value="*{mailAddress}" autofocus required>
+                <input id="email1" type="email" th:field="*{mailAddress}" th:value="*{mailAddress}" autofocus required>
             </label><br>
             <label>新メールアドレス確認
-                <input type="email" required>
+                <input id="email2" type="email" required>
             </label><br>
             <input type="submit" value="確認メール送信">
         </form>
     </div>
 </main>
+<script>
+    function onSubmit() {
+        const email1 = document.querySelector('#email1').value;
+        const email2 = document.querySelector('#email2').value;
+        const result = email1 === email2;
+
+        if (!result) {
+            alert('メールアドレスが一致しません。');
+        }
+
+        return result;
+    }
+</script>
 <footer>
     © 2022 www.rin-ats.com
 </footer>
