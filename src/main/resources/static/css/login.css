@@ -1,0 +1,31 @@
+.container {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    text-align: center;
+    width: 400px;
+}
+
+form * {
+    height: 40px;
+    margin: 10px 0;
+    width: 100%;
+}
+
+form input[type=text], form input[type=password] {
+    padding: 0 10px;
+}
+
+form input[type=submit] {
+    padding: 0 10px;
+    height: 30px;
+}
+
+.container > label {
+    width: 400px;
+    text-align: center;
+}
