@@ -122,8 +122,10 @@
             <tr th:each="shift : ${tentativeShiftList}">
                 <td th:text="${shift.key.lastName} + ${shift.key.firstName}"></td>
                 <th:block th:each="day : ${#numbers.sequence(1, dayCount)}">
-                    <td th:if="${shift.value.contains(day)}">〇</td>
-                    <td th:if="!${shift.value.contains(day)}"></td>
+                    <td th:if="${shift.value.contains(day) && !insufficientList[day - 1].isNumOfPeopleInsufficient()}">〇</td>
+                    <td th:if="${shift.value.contains(day) && insufficientList[day - 1].isNumOfPeopleInsufficient()}" class="not-insufficient">〇</td>
+                    <td th:if="${!shift.value.contains(day) && !insufficientList[day - 1].isNumOfPeopleInsufficient()}"></td>
+                    <td th:if="${!shift.value.contains(day) && insufficientList[day - 1].isNumOfPeopleInsufficient()}" class="not-insufficient"></td>
                 </th:block>
             </tr>
             </tbody>

@@ -41,6 +41,7 @@ class ShiftService(
     }
 
     fun getShift(year: Int, month: Int, token: String): Shift? {
+        val _month = month + 1
         val employeeId = authInfoRepository.findByAccessToken(token).get().employeeId
         val shifts = shiftRepository.findByEmployeeId(employeeId)
         val days = ArrayList<Int>()
@@ -48,12 +49,13 @@ class ShiftService(
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = it.date.time
             if (calendar.get(Calendar.YEAR) == year &&
-                calendar.get(Calendar.MONTH) + 1 == month
+//                calendar.get(Calendar.MONTH) + 1 == month
+                calendar.get(Calendar.MONTH) + 1 == _month
             ) {
                 days.add(calendar.get(Calendar.DAY_OF_MONTH))
             }
         }
-        return Shift(year, month, days)
+        return Shift(year, _month, days)
     }
 
     data class ShiftDay(

@@ -187,3 +187,7 @@ nav > a {
     position: relative;
     top: 17px;
 }
+
+.not-insufficient {
+    background-color: red;
+}

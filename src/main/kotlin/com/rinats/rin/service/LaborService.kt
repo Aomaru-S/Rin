@@ -18,7 +18,9 @@ class LaborService(
 
     fun getLabor(): List<EmployeeLabor> {
         return laborRepository.findAll().filter {
+            val employee = employeeService.getEmployee(it.id?.employeeId)
             it.id?.roleId != 0 && it.id?.roleId != 3
+                    && employee?.isTentative == false && employee.isRetirement == false
         }
     }
 

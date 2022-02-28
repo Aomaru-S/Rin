@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rinats.rin.model.other.CompleteMessage
 import com.rinats.rin.model.table.Employee
+import com.rinats.rin.repository.ShiftRepository
+import com.rinats.rin.repository.TentativeShiftDetailRepository
 import com.rinats.rin.service.ShiftGeneratorService
 import com.rinats.rin.service.TentativeShiftService
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +22,9 @@ import java.util.*
 class TentativeShiftController(
     @Autowired
     private val tentativeShiftService: TentativeShiftService,
-    private val shiftGeneratorService: ShiftGeneratorService
+    private val shiftGeneratorService: ShiftGeneratorService,
+    private val shiftRepository: ShiftRepository,
+    private val tentativeShiftDetailRepository: TentativeShiftDetailRepository
 ) {
     @GetMapping("")
     fun index(
@@ -60,6 +64,23 @@ class TentativeShiftController(
                 tentativeShiftMap[it.id?.employee!!] = mutableListOf(it.id?.shiftDate!!.dayOfMonth)
             }
         }
+
+        val shiftDetailResult = tentativeShiftDetailRepository.findAll().filter {
+            val localDate = it.id?.shiftDate ?: return@filter false
+            localDate.year == year && localDate.month.value == month
+        }
+
+        val insufficientList = mutableListOf<Insufficient>()
+        shiftDetailResult.forEach {
+            insufficientList.add(
+                Insufficient(
+                    it.isNumOfPeopleInsufficient ?: false,
+                    it.isLaborInsufficient ?: false
+                )
+            )
+        }
+
+        model.addAttribute("insufficientList", insufficientList)
         model.addAttribute("year", year)
         model.addAttribute("month", month)
         model.addAttribute("dayOfWeekMap", dayOfWeekMap)
@@ -104,6 +125,23 @@ class TentativeShiftController(
                 tentativeShiftMap[it.id?.employee!!] = mutableListOf(it.id?.shiftDate!!.dayOfMonth)
             }
         }
+
+        val shiftDetailResult = tentativeShiftDetailRepository.findAll().filter {
+            val localDate = it.id?.shiftDate ?: return@filter false
+            localDate.year == year && localDate.month.value == month
+        }
+
+        val insufficientList = mutableListOf<Insufficient>()
+        shiftDetailResult.forEach {
+            insufficientList.add(
+                Insufficient(
+                    it.isNumOfPeopleInsufficient ?: false,
+                    it.isLaborInsufficient ?: false
+                )
+            )
+        }
+
+        model.addAttribute("insufficientList", insufficientList)
         model.addAttribute("year", year)
         model.addAttribute("month", month)
         model.addAttribute("dayOfWeekMap", dayOfWeekMap)
@@ -119,11 +157,11 @@ class TentativeShiftController(
         @RequestParam(required = false) changeAttendanceJson: String? = null
     ): String {
         val mapType = object : TypeToken<MutableMap<String, MutableList<AttendanceDay>>>() {}.type
-        val changeAttendance =
+        val changeAttendanceMap =
             Gson().fromJson<MutableMap<String, MutableList<AttendanceDay>>>(changeAttendanceJson, mapType)
                 ?: mutableMapOf()
 
-        tentativeShiftService.editAttendance(changeAttendance)
+        tentativeShiftService.editAttendance(changeAttendanceMap)
         return "redirect:/tentative_shift"
     }
 
@@ -140,6 +178,7 @@ class TentativeShiftController(
     fun submitTentativeShift(
         model: Model
     ): String {
+        shiftRepository.deleteAll()
         tentativeShiftService.submitTentativeShift()
         val message = CompleteMessage("シフト確定: Rin", "シフトが公開されました。")
         model.addAttribute("message", message)
@@ -150,5 +189,10 @@ class TentativeShiftController(
     data class AttendanceDay(
         val day: Int,
         val isAttendance: Boolean
+    )
+
+    data class Insufficient(
+        val isNumOfPeopleInsufficient: Boolean,
+        val isLaborInsufficient: Boolean
     )
 }
